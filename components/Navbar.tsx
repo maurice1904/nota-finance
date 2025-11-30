@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -22,9 +23,18 @@ export default function Navbar() {
           {/* Logo */}
           <Link 
             href="/" 
-            className="text-2xl font-bold text-[#0B1120] hover:text-[#0050FF] transition-colors duration-300"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-300"
           >
-            Nota Finance
+            <Image
+              src="/logo.png"
+              alt="Nota Finance Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
+            <span className="text-2xl font-bold text-[#0B1120]">
+              Nota Finance
+            </span>
           </Link>
 
           {/* Navigation Links */}
