@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+:root {
+  /* Nota Finance Color Palette */
+  --deep-navy: #0B1120;
+  --silver: #E2E8F0;
+  --platinum: #94A3B8;
+  --signal-blue: #0050FF;
+  --slate-50: #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-700: #334155;
+  --slate-800: #1E293B;
+  --slate-900: #0F172A;
+}
+
+@theme inline {
+  --color-deep-navy: var(--deep-navy);
+  --color-silver: var(--silver);
+  --color-platinum: var(--platinum);
+  --color-signal-blue: var(--signal-blue);
+  --font-sans: var(--font-jakarta);
+}
+
+body {
+  background: linear-gradient(to bottom right, var(--slate-50), var(--slate-100));
+  color: var(--deep-navy);
+  font-family: var(--font-jakarta), -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, input, textarea {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Glassmorphism utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(11, 17, 32, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
