@@ -19,11 +19,11 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 glass border-b border-muted/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20 relative">
           {/* Logo */}
           <Link 
             href="/" 
-            className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-300"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-300 z-10"
           >
             <Image
               src="/logo.png"
@@ -37,8 +37,8 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Navigation Links - Absolutely Centered */}
+          <div className="hidden md:flex items-center space-x-8 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -61,7 +61,7 @@ export default function Navbar() {
           {/* CTA Button */}
           <Link
             href="/einreichen"
-            className="bg-signal text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-signal/80 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+            className="bg-signal text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-signal/80 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 z-10"
           >
             Fall einreichen
           </Link>
