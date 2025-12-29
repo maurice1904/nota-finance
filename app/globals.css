@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+/* 
+ * TYPOGRAFIE-FIX: Ligaturen deaktiviert
+ * Grund: Finance/Legal-Typografie erfordert maximale Lesbarkeit
+ * Betroffene Ligaturen: fi, fl, ff, ffi, ffl
+ */
+@layer base {
+  html, body, * {
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0;
+    -webkit-font-variant-ligatures: none;
+    -moz-font-variant-ligatures: none;
+  }
+}
+
 :root {
   /* Nota Finance Corporate Color Palette */
   --deep-navy: #181818;
