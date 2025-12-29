@@ -9,14 +9,14 @@ export default function PreisePage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100 pt-20 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block bg-gradient-to-br from-[#0050FF] to-[#0040CC] text-white px-8 py-3 rounded-full text-6xl font-bold mb-8">
+            <div className="inline-block bg-gradient-to-br from-signal to-signal/70 text-white px-8 py-3 rounded-full text-6xl font-bold mb-8">
               0€
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-[#0B1120] mb-6 leading-tight">
-              Kosten für Sie als Auftraggeber: <span className="text-[#0050FF]">0€</span>
+            <h1 className="text-5xl md:text-6xl font-bold text-primary mb-6 leading-tight">
+              Kosten für Sie als Auftraggeber: <span className="text-signal">0€</span>
             </h1>
             
-            <p className="text-2xl text-slate-700 font-semibold leading-relaxed">
+            <p className="text-2xl text-primary/70 font-semibold leading-relaxed">
               Unser Service ist für Sie als Auftraggeber in der Regel kostenfrei, entstehende 
               Kosten und Gebühren sind gesetzlich geregelt und vom Schuldner zu tragen.
             </p>
@@ -29,13 +29,13 @@ export default function PreisePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="prose prose-lg max-w-none">
-              <p className="text-lg text-slate-700 leading-relaxed mb-8">
+              <p className="text-lg text-primary/70 leading-relaxed mb-8">
                 Für Sie als Auftraggeber ist das außergerichtliche Mahnverfahren bei Nota Finance 
                 im Erfolgsfall in der Regel kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen 
                 sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. 
                 Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung.
               </p>
-              <p className="text-lg text-slate-700 leading-relaxed">
+              <p className="text-lg text-primary/70 leading-relaxed">
                 Sollte ein gerichtliches Mahnverfahren notwendig werden, informieren wir Sie im Vorfeld 
                 transparent über eventuell anfallende Gerichtskosten. Auch diese sind im Erfolgsfall von 
                 Ihrem Schuldner zu tragen. Unser Ziel ist es, Ihre Kostenrisiken stets so gering wie 
@@ -45,22 +45,22 @@ export default function PreisePage() {
 
             {/* Key Points */}
             <div className="grid md:grid-cols-3 gap-6 mt-12">
-              <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-                <CheckCircle className="w-12 h-12 text-[#0050FF] mb-4" />
-                <h3 className="text-xl font-bold text-[#0B1120] mb-2">Außergerichtlich</h3>
-                <p className="text-slate-700">Im Erfolgsfall für Sie kostenfrei</p>
+              <div className="bg-gradient-to-br from-slate-50 to-white border border-muted rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                <CheckCircle className="w-12 h-12 text-signal mb-4" />
+                <h3 className="text-xl font-bold text-primary mb-2">Außergerichtlich</h3>
+                <p className="text-primary/70">Im Erfolgsfall für Sie kostenfrei</p>
               </div>
 
-              <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-                <Euro className="w-12 h-12 text-[#0050FF] mb-4" />
-                <h3 className="text-xl font-bold text-[#0B1120] mb-2">100% Auszahlung</h3>
-                <p className="text-slate-700">Sie erhalten Ihren vollen Rechnungsbetrag</p>
+              <div className="bg-gradient-to-br from-slate-50 to-white border border-muted rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                <Euro className="w-12 h-12 text-signal mb-4" />
+                <h3 className="text-xl font-bold text-primary mb-2">100% Auszahlung</h3>
+                <p className="text-primary/70">Sie erhalten Ihren vollen Rechnungsbetrag</p>
               </div>
 
-              <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-                <TrendingUp className="w-12 h-12 text-[#0050FF] mb-4" />
-                <h3 className="text-xl font-bold text-[#0B1120] mb-2">Plus Nebenforderungen</h3>
-                <p className="text-slate-700">Mahnkosten & Verzugszinsen zusätzlich</p>
+              <div className="bg-gradient-to-br from-slate-50 to-white border border-muted rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                <TrendingUp className="w-12 h-12 text-signal mb-4" />
+                <h3 className="text-xl font-bold text-primary mb-2">Plus Nebenforderungen</h3>
+                <p className="text-primary/70">Mahnkosten & Verzugszinsen zusätzlich</p>
               </div>
             </div>
           </div>
@@ -71,11 +71,11 @@ export default function PreisePage() {
       <section className="py-24 bg-gradient-to-br from-slate-50 to-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0B1120] mb-6 text-center">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6 text-center">
               Beispielrechnung
             </h2>
             
-            <p className="text-lg text-slate-700 mb-12 text-center leading-relaxed">
+            <p className="text-lg text-primary/70 mb-12 text-center leading-relaxed">
               Anhand eines Beispiels zeigen wir Ihnen, welchen Betrag Sie von Ihrer offenen und 
               angemahnten Ausgangsrechnung bei Zahlung durch Ihren Kunden überwiesen bekommen. 
               Unsere Gebühren werden von Ihrem Kunden bezahlt, da er sich im Verzug befindet und 
@@ -85,48 +85,48 @@ export default function PreisePage() {
             </p>
 
             {/* Calculation Card */}
-            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-slate-200">
+            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-muted">
               <div className="space-y-8">
                 {/* Original Invoice */}
-                <div className="pb-6 border-b border-slate-200">
+                <div className="pb-6 border-b border-muted">
                   <div className="flex justify-between items-center">
                     <div>
-                      <h3 className="text-2xl font-bold text-[#0B1120]">Ihre Ausgangsrechnung</h3>
-                      <p className="text-slate-600 mt-1">Ursprünglicher Rechnungsbetrag</p>
+                      <h3 className="text-2xl font-bold text-primary">Ihre Ausgangsrechnung</h3>
+                      <p className="text-primary/60 mt-1">Ursprünglicher Rechnungsbetrag</p>
                     </div>
-                    <div className="text-3xl font-bold text-[#0B1120]">1.000,00 €</div>
+                    <div className="text-3xl font-bold text-primary">1.000,00 €</div>
                   </div>
                 </div>
 
                 {/* What Customer Pays */}
-                <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-6">
-                  <h4 className="text-xl font-bold text-[#0B1120] mb-4">Ihr Kunde zahlt zusätzlich:</h4>
+                <div className="bg-gradient-to-br from-signal/10 to-slate-50 rounded-2xl p-6">
+                  <h4 className="text-xl font-bold text-primary mb-4">Ihr Kunde zahlt zusätzlich:</h4>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-slate-700">Inkassogebühren (nach RVG §13)</span>
-                      <span className="font-semibold text-slate-900">+ 70,00 €</span>
+                      <span className="text-primary/70">Inkassogebühren (nach RVG §13)</span>
+                      <span className="font-semibold text-primary">+ 70,00 €</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-slate-700">Verzugszinsen (5% über Basiszinssatz)</span>
-                      <span className="font-semibold text-slate-900">+ 15,00 €</span>
+                      <span className="text-primary/70">Verzugszinsen (5% über Basiszinssatz)</span>
+                      <span className="font-semibold text-primary">+ 15,00 €</span>
                     </div>
-                    <div className="pt-3 border-t border-slate-300 flex justify-between items-center">
-                      <span className="font-bold text-slate-900">Gesamtzahlung Ihres Kunden</span>
-                      <span className="text-xl font-bold text-slate-900">1.085,00 €</span>
+                    <div className="pt-3 border-t border-muted flex justify-between items-center">
+                      <span className="font-bold text-primary">Gesamtzahlung Ihres Kunden</span>
+                      <span className="text-xl font-bold text-primary">1.085,00 €</span>
                     </div>
                   </div>
                 </div>
 
                 {/* What You Receive */}
-                <div className="bg-gradient-to-br from-[#0050FF] to-[#0040CC] rounded-2xl p-8 text-white">
+                <div className="bg-gradient-to-br from-signal to-signal/70 rounded-2xl p-8 text-white">
                   <div className="flex justify-between items-center mb-4">
                     <div>
                       <h3 className="text-3xl font-bold mb-2">Sie erhalten:</h3>
-                      <p className="text-blue-100">100% Ihrer Forderung + Nebenforderungen</p>
+                      <p className="text-white/80">100% Ihrer Forderung + Nebenforderungen</p>
                     </div>
                     <CheckCircle className="w-16 h-16" />
                   </div>
-                  <div className="space-y-2 pt-4 border-t border-blue-400">
+                  <div className="space-y-2 pt-4 border-t border-white/30">
                     <div className="flex justify-between items-center text-lg">
                       <span>Hauptforderung</span>
                       <span className="font-semibold">1.000,00 €</span>
@@ -139,7 +139,7 @@ export default function PreisePage() {
                       <span>Verzugszinsen</span>
                       <span className="font-semibold">+ 15,00 €</span>
                     </div>
-                    <div className="pt-4 border-t border-blue-400 flex justify-between items-center">
+                    <div className="pt-4 border-t border-white/30 flex justify-between items-center">
                       <span className="text-2xl font-bold">Auszahlung an Sie</span>
                       <span className="text-4xl font-bold">1.085,00 €</span>
                     </div>
@@ -147,7 +147,7 @@ export default function PreisePage() {
                 </div>
 
                 {/* Note */}
-                <div className="text-center text-sm text-slate-600 italic pt-4">
+                <div className="text-center text-sm text-primary/60 italic pt-4">
                   * Dies ist ein vereinfachtes Beispiel. Die tatsächlichen Gebühren richten sich nach 
                   §13 RVG und können je nach Forderungshöhe variieren. Verzugszinsen werden nach den 
                   gesetzlichen Bestimmungen berechnet.
@@ -161,11 +161,11 @@ export default function PreisePage() {
       {/* CTA Section */}
       <section className="py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-[#0B1120] mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
             Bereit für digitales Forderungsmanagement mit Nota Finance?
           </h2>
           
-          <p className="text-lg text-slate-700 mb-10">
+          <p className="text-lg text-primary/70 mb-10">
             Erleben Sie den Unterschied und reichen Sie Ihre erste Forderung noch heute ein. 
             Unser Team steht Ihnen bei Fragen jederzeit gerne zur Verfügung.
           </p>
@@ -173,7 +173,7 @@ export default function PreisePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/kontakt"
-              className="group bg-white text-[#0B1120] px-8 py-4 rounded-lg font-semibold text-lg border-2 border-slate-200 hover:border-[#0050FF] hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
+              className="group bg-white text-primary px-8 py-4 rounded-lg font-semibold text-lg border-2 border-muted hover:border-signal hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
             >
               Kontakt aufnehmen
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -181,7 +181,7 @@ export default function PreisePage() {
             
             <Link
               href="/einreichen"
-              className="group bg-[#0050FF] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#0040CC] hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
+              className="group bg-signal text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-signal/80 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
             >
               Fall einreichen
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -192,4 +192,3 @@ export default function PreisePage() {
     </main>
   );
 }
-

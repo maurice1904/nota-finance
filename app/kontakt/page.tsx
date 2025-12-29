@@ -81,14 +81,14 @@ ${formData.message}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100 pt-20 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#0050FF] to-[#0040CC] rounded-2xl mb-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-signal to-signal/70 rounded-2xl mb-8">
               <Mail className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-[#0B1120] mb-8 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold text-primary mb-8 leading-tight">
               Ihre Kontaktanfrage
             </h1>
             
-            <p className="text-xl text-slate-700 leading-relaxed">
+            <p className="text-xl text-primary/70 leading-relaxed">
               Vielen Dank für Ihr Interesse an unserem Service. Bitte füllen Sie die Informationen 
               aus und wir werden uns binnen 24h per Mail bei Ihnen melden.
             </p>
@@ -116,10 +116,10 @@ ${formData.message}
 
           {/* Contact Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 rounded-2xl p-8 space-y-6">
+            <div className="bg-gradient-to-br from-slate-50 to-white border-2 border-muted rounded-2xl p-8 space-y-6">
               {/* Name */}
               <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-[#0B1120] mb-2">
+                <label htmlFor="name" className="block text-sm font-semibold text-primary mb-2">
                   Name des Ansprechpartners *
                 </label>
                 <input
@@ -129,14 +129,14 @@ ${formData.message}
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-lg focus:border-[#0050FF] focus:ring-2 focus:ring-[#0050FF]/20 outline-none transition-all duration-300"
+                  className="w-full px-4 py-3 bg-white border-2 border-muted rounded-lg focus:border-signal focus:ring-2 focus:ring-signal/20 outline-none transition-all duration-300"
                   placeholder="Max Mustermann"
                 />
               </div>
 
               {/* Company */}
               <div>
-                <label htmlFor="company" className="block text-sm font-semibold text-[#0B1120] mb-2">
+                <label htmlFor="company" className="block text-sm font-semibold text-primary mb-2">
                   Name der Firma *
                 </label>
                 <input
@@ -146,14 +146,14 @@ ${formData.message}
                   required
                   value={formData.company}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-lg focus:border-[#0050FF] focus:ring-2 focus:ring-[#0050FF]/20 outline-none transition-all duration-300"
+                  className="w-full px-4 py-3 bg-white border-2 border-muted rounded-lg focus:border-signal focus:ring-2 focus:ring-signal/20 outline-none transition-all duration-300"
                   placeholder="Musterfirma GmbH"
                 />
               </div>
 
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-[#0B1120] mb-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-primary mb-2">
                   E-Mail *
                 </label>
                 <input
@@ -163,14 +163,14 @@ ${formData.message}
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-lg focus:border-[#0050FF] focus:ring-2 focus:ring-[#0050FF]/20 outline-none transition-all duration-300"
+                  className="w-full px-4 py-3 bg-white border-2 border-muted rounded-lg focus:border-signal focus:ring-2 focus:ring-signal/20 outline-none transition-all duration-300"
                   placeholder="max@musterfirma.de"
                 />
               </div>
 
               {/* Phone (optional) */}
               <div>
-                <label htmlFor="phone" className="block text-sm font-semibold text-[#0B1120] mb-2">
+                <label htmlFor="phone" className="block text-sm font-semibold text-primary mb-2">
                   Telefonnummer (optional)
                 </label>
                 <input
@@ -179,14 +179,14 @@ ${formData.message}
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-lg focus:border-[#0050FF] focus:ring-2 focus:ring-[#0050FF]/20 outline-none transition-all duration-300"
+                  className="w-full px-4 py-3 bg-white border-2 border-muted rounded-lg focus:border-signal focus:ring-2 focus:ring-signal/20 outline-none transition-all duration-300"
                   placeholder="+49 123 456789"
                 />
               </div>
 
               {/* Message */}
               <div>
-                <label htmlFor="message" className="block text-sm font-semibold text-[#0B1120] mb-2">
+                <label htmlFor="message" className="block text-sm font-semibold text-primary mb-2">
                   Ihre Nachricht *
                 </label>
                 <textarea
@@ -196,7 +196,7 @@ ${formData.message}
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-lg focus:border-[#0050FF] focus:ring-2 focus:ring-[#0050FF]/20 outline-none transition-all duration-300 resize-none"
+                  className="w-full px-4 py-3 bg-white border-2 border-muted rounded-lg focus:border-signal focus:ring-2 focus:ring-signal/20 outline-none transition-all duration-300 resize-none"
                   placeholder="Beschreiben Sie hier Ihr Anliegen..."
                 />
               </div>
@@ -210,15 +210,15 @@ ${formData.message}
                   required
                   checked={formData.acceptAGB}
                   onChange={handleChange}
-                  className="mt-1 w-5 h-5 text-[#0050FF] border-2 border-slate-300 rounded focus:ring-2 focus:ring-[#0050FF]/20 transition-all duration-300"
+                  className="mt-1 w-5 h-5 text-signal border-2 border-muted rounded focus:ring-2 focus:ring-signal/20 transition-all duration-300"
                 />
-                <label htmlFor="acceptAGB" className="text-sm text-slate-700 leading-relaxed">
+                <label htmlFor="acceptAGB" className="text-sm text-primary/70 leading-relaxed">
                   Ich akzeptiere die{" "}
                   <a 
                     href="/agb.pdf" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-[#0050FF] hover:underline font-semibold"
+                    className="text-signal hover:underline font-semibold"
                   >
                     Allgemeinen Geschäftsbedingungen (AGB)
                   </a>{" "}
@@ -227,7 +227,7 @@ ${formData.message}
                     href="/datenschutz.pdf" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-[#0050FF] hover:underline font-semibold"
+                    className="text-signal hover:underline font-semibold"
                   >
                     Datenschutzerklärung
                   </a>
@@ -240,7 +240,7 @@ ${formData.message}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#0050FF] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#0040CC] hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  className="w-full bg-signal text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-signal/80 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
                   {isSubmitting ? (
                     <>
@@ -260,10 +260,10 @@ ${formData.message}
 
           {/* Additional Info */}
           <div className="mt-12 text-center">
-            <p className="text-slate-600 mb-4">Oder kontaktieren Sie uns direkt per E-Mail:</p>
+            <p className="text-primary/60 mb-4">Oder kontaktieren Sie uns direkt per E-Mail:</p>
             <a 
               href="mailto:admin@notafinance.de" 
-              className="text-[#0050FF] hover:underline font-semibold text-lg"
+              className="text-signal hover:underline font-semibold text-lg"
             >
               admin@notafinance.de
             </a>
@@ -273,4 +273,3 @@ ${formData.message}
     </main>
   );
 }
-

@@ -1,24 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  /* Nota Finance Color Palette */
-  --deep-navy: #0B1120;
-  --silver: #E2E8F0;
-  --platinum: #94A3B8;
-  --signal-blue: #0050FF;
+  /* Nota Finance Corporate Color Palette */
+  --deep-navy: #181818;
+  --silver: #C1D6E6;
+  --platinum: #C1D6E6;
+  --signal-blue: #0026b0;
+  --accent-blue: #008CFF;
   --slate-50: #F8FAFC;
   --slate-100: #F1F5F9;
-  --slate-200: #E2E8F0;
-  --slate-700: #334155;
+  --slate-200: #C1D6E6;
+  --slate-700: #008CFF;
   --slate-800: #1E293B;
-  --slate-900: #0F172A;
+  --slate-900: #181818;
 }
 
 @theme inline {
+  /* Legacy color mappings */
   --color-deep-navy: var(--deep-navy);
   --color-silver: var(--silver);
   --color-platinum: var(--platinum);
   --color-signal-blue: var(--signal-blue);
+  --color-accent-blue: var(--accent-blue);
+  
+  /* Semantic color system */
+  --color-primary: var(--deep-navy);
+  --color-signal: var(--signal-blue);
+  --color-accent: var(--accent-blue);
+  --color-muted: var(--platinum);
+  
   --font-sans: var(--font-jakarta);
 }
 
@@ -43,7 +53,7 @@ button, a, input, textarea {
 }
 
 .glass-dark {
-  background: rgba(11, 17, 32, 0.7);
+  background: rgba(24, 24, 24, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);

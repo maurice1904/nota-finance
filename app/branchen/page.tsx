@@ -132,12 +132,12 @@ export default function BranchenPage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100 pt-20 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-[#0B1120] mb-8 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold text-primary mb-8 leading-tight">
               Für jede Branche die passende Lösung:{" "}
-              <span className="text-[#0050FF]">Nota Finance versteht Ihre Bedürfnisse.</span>
+              <span className="text-signal">Nota Finance versteht Ihre Bedürfnisse.</span>
             </h1>
             
-            <p className="text-xl text-slate-700 leading-relaxed">
+            <p className="text-xl text-primary/70 leading-relaxed">
               Ob Freiberufler, kleines Handwerksunternehmen, moderne Agentur oder etablierte Arztpraxis – 
               jede Branche hat ihre eigenen Abläufe und Herausforderungen, besonders wenn es um offene 
               Forderungen geht. Bei Nota Finance haben wir es uns zur Aufgabe gemacht, Ihnen ein 
@@ -160,7 +160,7 @@ export default function BranchenPage() {
               return (
                 <div
                   key={industry.id}
-                  className="bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300"
+                  className="bg-gradient-to-br from-slate-50 to-white border-2 border-muted rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300"
                 >
                   {/* Header - Always Visible */}
                   <button
@@ -168,16 +168,16 @@ export default function BranchenPage() {
                     className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors duration-300"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 bg-gradient-to-br from-[#0050FF] to-[#0040CC] rounded-xl flex items-center justify-center flex-shrink-0">
+                      <div className="w-14 h-14 bg-gradient-to-br from-signal to-signal/70 rounded-xl flex items-center justify-center flex-shrink-0">
                         <Icon className="w-7 h-7 text-white" />
                       </div>
-                      <h3 className="text-2xl font-bold text-[#0B1120]">
+                      <h3 className="text-2xl font-bold text-primary">
                         {industry.title}
                       </h3>
                     </div>
                     <ChevronDown
                       className={cn(
-                        "w-6 h-6 text-[#0050FF] transition-transform duration-300",
+                        "w-6 h-6 text-signal transition-transform duration-300",
                         isOpen && "rotate-180"
                       )}
                     />
@@ -193,31 +193,31 @@ export default function BranchenPage() {
                     <div className="px-6 pb-6 space-y-6">
                       {/* Subtitle */}
                       <div className="pl-[72px]">
-                        <p className="text-slate-700 leading-relaxed font-medium">
+                        <p className="text-primary/70 leading-relaxed font-medium">
                           {industry.subtitle}
                         </p>
                       </div>
 
                       {/* Challenge */}
-                      <div className="bg-white rounded-xl p-6 border border-slate-200">
-                        <h4 className="text-lg font-bold text-[#0B1120] mb-3">
+                      <div className="bg-white rounded-xl p-6 border border-muted">
+                        <h4 className="text-lg font-bold text-primary mb-3">
                           Ihre Herausforderung:
                         </h4>
-                        <p className="text-slate-700 leading-relaxed">
+                        <p className="text-primary/70 leading-relaxed">
                           {industry.challenge}
                         </p>
                       </div>
 
                       {/* Solutions */}
-                      <div className="bg-white rounded-xl p-6 border border-slate-200">
-                        <h4 className="text-lg font-bold text-[#0B1120] mb-4">
+                      <div className="bg-white rounded-xl p-6 border border-muted">
+                        <h4 className="text-lg font-bold text-primary mb-4">
                           Unsere Lösung für Sie:
                         </h4>
                         <ul className="space-y-3">
                           {industry.solutions.map((solution, idx) => (
                             <li key={idx} className="flex items-start gap-3">
-                              <div className="w-2 h-2 bg-[#0050FF] rounded-full mt-2 flex-shrink-0" />
-                              <p className="text-slate-700 leading-relaxed">
+                              <div className="w-2 h-2 bg-signal rounded-full mt-2 flex-shrink-0" />
+                              <p className="text-primary/70 leading-relaxed">
                                 {solution}
                               </p>
                             </li>
@@ -246,4 +246,3 @@ export default function BranchenPage() {
     </main>
   );
 }
-

@@ -94,14 +94,14 @@ export default function FAQPage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100 pt-20 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#0050FF] to-[#0040CC] rounded-2xl mb-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-signal to-signal/70 rounded-2xl mb-8">
               <HelpCircle className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-[#0B1120] mb-8 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold text-primary mb-8 leading-tight">
               Häufig gestellte Fragen
             </h1>
             
-            <p className="text-xl text-slate-700 leading-relaxed">
+            <p className="text-xl text-primary/70 leading-relaxed">
               Hier finden Sie Antworten auf die wichtigsten Fragen rund um Nota Finance und 
               unseren Service. Klicken Sie auf eine Frage, um die Antwort zu sehen.
             </p>
@@ -119,7 +119,7 @@ export default function FAQPage() {
               return (
                 <div
                   key={index}
-                  className="bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300"
+                  className="bg-gradient-to-br from-slate-50 to-white border-2 border-muted rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300"
                 >
                   {/* Question - Always Visible */}
                   <button
@@ -127,16 +127,16 @@ export default function FAQPage() {
                     className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors duration-300"
                   >
                     <div className="flex items-start gap-4 flex-1">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#0050FF] to-[#0040CC] rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                      <div className="w-8 h-8 bg-gradient-to-br from-signal to-signal/70 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                         <span className="text-white font-bold text-sm">{index + 1}</span>
                       </div>
-                      <h3 className="text-xl font-bold text-[#0B1120] pr-4">
+                      <h3 className="text-xl font-bold text-primary pr-4">
                         {faq.question}
                       </h3>
                     </div>
                     <ChevronDown
                       className={cn(
-                        "w-6 h-6 text-[#0050FF] transition-transform duration-300 flex-shrink-0",
+                        "w-6 h-6 text-signal transition-transform duration-300 flex-shrink-0",
                         isOpen && "rotate-180"
                       )}
                     />
@@ -153,13 +153,13 @@ export default function FAQPage() {
                       {Array.isArray(faq.answer) ? (
                         <div className="space-y-3">
                           {faq.answer.map((paragraph, pIndex) => (
-                            <p key={pIndex} className="text-slate-700 leading-relaxed">
+                            <p key={pIndex} className="text-primary/70 leading-relaxed">
                               {paragraph}
                             </p>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-slate-700 leading-relaxed">{faq.answer}</p>
+                        <p className="text-primary/70 leading-relaxed">{faq.answer}</p>
                       )}
                     </div>
                   </div>
@@ -173,11 +173,11 @@ export default function FAQPage() {
       {/* Final CTA Section */}
       <section className="py-24 bg-gradient-to-br from-slate-50 to-slate-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-[#0B1120] mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
             Ihre Fragen blieben unbeantwortet?
           </h2>
           
-          <p className="text-lg text-slate-700 mb-10">
+          <p className="text-lg text-primary/70 mb-10">
             Das tut uns Leid. Nehmen Sie gerne mit uns Kontakt auf und wir beantworten Ihre Fragen 
             persönlich und individuell. Oder reichen Sie jetzt direkt und unkompliziert einen Fall 
             oder mehrere Fälle ein.
@@ -186,7 +186,7 @@ export default function FAQPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/kontakt"
-              className="group bg-white text-[#0B1120] px-8 py-4 rounded-lg font-semibold text-lg border-2 border-slate-200 hover:border-[#0050FF] hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
+              className="group bg-white text-primary px-8 py-4 rounded-lg font-semibold text-lg border-2 border-muted hover:border-signal hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
             >
               Kontakt aufnehmen
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -194,7 +194,7 @@ export default function FAQPage() {
             
             <Link
               href="/einreichen"
-              className="group bg-[#0050FF] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#0040CC] hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
+              className="group bg-signal text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-signal/80 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
             >
               Fall einreichen
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -205,4 +205,3 @@ export default function FAQPage() {
     </main>
   );
 }
-
