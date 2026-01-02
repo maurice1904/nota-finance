@@ -16,6 +16,13 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
 
+  // Same-Page-Navigation: Scroll to top wenn bereits auf der Zielseite
+  const scrollToTopIfSamePage = (href: string) => {
+    if (pathname === href) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+  };
+
   return (
     <nav className="sticky top-0 z-50 glass border-b border-border-subtle">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,6 +30,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link 
             href="/" 
+            onClick={() => scrollToTopIfSamePage("/")}
             className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-300 z-10"
           >
             <Image
@@ -43,6 +51,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={() => scrollToTopIfSamePage(link.href)}
                 className={cn(
                   "text-sm font-medium transition-all duration-300 hover:text-brand-900 relative",
                   pathname === link.href 
@@ -61,6 +70,7 @@ export default function Navbar() {
           {/* CTA Button - Primary: bg-brand-900 + text-white, Hover: bg-brand-700 */}
           <Link
             href="/einreichen"
+            onClick={() => scrollToTopIfSamePage("/einreichen")}
             className="bg-brand-900 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-brand-700 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 z-10 focus:outline-none focus:ring-2 focus:ring-focus-ring"
           >
             Fall einreichen

@@ -1,6 +1,5 @@
 import { Euro, CheckCircle, TrendingUp } from "lucide-react";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import CTASection from "@/components/CTASection";
 
 export default function PreisePage() {
   return (
@@ -159,36 +158,15 @@ export default function PreisePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6">
-            Bereit für digitales Forderungsmanagement mit Nota Finance?
-          </h2>
-          
-          <p className="text-lg text-text-900/70 mb-10">
-            Erleben Sie den Unterschied und reichen Sie Ihre erste Forderung noch heute ein. 
-            Unser Team steht Ihnen bei Fragen jederzeit gerne zur Verfügung.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/kontakt"
-              className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
-            >
-              Kontakt aufnehmen
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
-            
-            <Link
-              href="/einreichen"
-              className="group bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
-            >
-              Fall einreichen
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CTASection
+        title="Bereit für digitales Forderungsmanagement mit Nota Finance?"
+        subtitle="Erleben Sie den Unterschied und reichen Sie Ihre erste Forderung noch heute ein. Unser Team steht Ihnen bei Fragen jederzeit gerne zur Verfügung."
+        buttons={[
+          { text: "Kontakt aufnehmen", href: "/kontakt" },
+          { text: "Häufig gestellte Fragen", href: "/faq" },
+          { text: "Fall einreichen", href: "/einreichen", primary: true },
+        ]}
+      />
     </main>
   );
 }

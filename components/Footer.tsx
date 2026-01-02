@@ -8,7 +8,7 @@ export default function Footer() {
           {/* Left Side - Copyright */}
           <div className="space-y-2">
             <p className="text-sm text-surface-100">
-              © 2025 Nota Finance. Ein Service der 24collect GmbH.
+              © 2026 Nota Finance. Ein Service der twenty4collect GmbH.
             </p>
           </div>
 

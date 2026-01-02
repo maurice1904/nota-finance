@@ -77,7 +77,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: "Wer ist Nota Finance? Wie sicher sind meine Daten?",
-    answer: "Nota Finance ist die innovative digitale Marke der 24collect GmbH, einem etablierten und BDIU-zertifizierten Inkassounternehmen mit über 15 Jahren Erfahrung im Forderungsmanagement in Deutschland. Mit Nota Finance profitieren Sie von dieser langjährigen Expertise, kombiniert mit einer modernen, schnellen und unkomplizierten Online-Lösung. Der Schutz Ihrer Daten und der Daten Ihrer Kunden hat für uns höchste Priorität. Wir arbeiten streng nach den Richtlinien der DSGVO. Unsere Systeme sind sicher, und wir gewährleisten einen vertraulichen Umgang mit allen Informationen."
+    answer: "Nota Finance ist die innovative digitale Marke der twenty4collect GmbH, einem etablierten und BDIU-zertifizierten Inkassounternehmen mit über 15 Jahren Erfahrung im Forderungsmanagement in Deutschland. Mit Nota Finance profitieren Sie von dieser langjährigen Expertise, kombiniert mit einer modernen, schnellen und unkomplizierten Online-Lösung. Der Schutz Ihrer Daten und der Daten Ihrer Kunden hat für uns höchste Priorität. Wir arbeiten streng nach den Richtlinien der DSGVO. Unsere Systeme sind sicher, und wir gewährleisten einen vertraulichen Umgang mit allen Informationen."
   }
 ];
 

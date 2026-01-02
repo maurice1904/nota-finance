@@ -1,5 +1,6 @@
 import { Target, Heart, Zap, Shield, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import CTASection from "@/components/CTASection";
 
 export default function UnternehmenPage() {
   return (
@@ -54,7 +55,7 @@ export default function UnternehmenPage() {
                       Die Gründung
                     </h3>
                     <p className="text-text-900/70 leading-relaxed">
-                      Gründung der twenty4collect GmbH als kundenorientiertes Inkasso-Unternehmen
+                      Gründung der twenty4collect GmbH als kundenorientiertes, digitales Inkasso-Unternehmen
                     </p>
                   </div>
                   <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-brand-900 rounded-full border-4 border-white shadow-lg" />
@@ -109,7 +110,7 @@ export default function UnternehmenPage() {
                   <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-brand-900 to-brand-700 rounded-full border-4 border-white shadow-2xl animate-pulse" />
                   <div className="md:w-1/2 md:pl-12">
                     <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 py-2 rounded-full font-bold text-xl mb-4">
-                      2025
+                      2026
                     </div>
                     <h3 className="text-2xl font-bold text-brand-900 mb-3">
                       Launch von Nota Finance
@@ -164,7 +165,7 @@ export default function UnternehmenPage() {
             </h2>
             <p className="text-xl text-text-900/70 max-w-3xl mx-auto">
               Unser Handeln bei Nota Finance wird von klaren Prinzipien geleitet, die darauf 
-              ausgerichtet sind, Ihnen den bestmöglichen Service zu bieten:
+              ausgerichtet sind, Ihnen den bestmöglichen Inkasso-Service zu bieten:
             </p>
           </div>
 
@@ -229,36 +230,15 @@ export default function UnternehmenPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 bg-gradient-to-br from-white to-surface-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6">
-            Bereit für digitales Forderungsmanagement mit Nota Finance?
-          </h2>
-          
-          <p className="text-lg text-text-900/70 mb-10">
-            Erleben Sie den Unterschied und reichen Sie Ihre erste Forderung noch heute ein. 
-            Unser Team steht Ihnen bei Fragen jederzeit gerne zur Verfügung.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/einreichen"
-              className="group bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
-            >
-              Fall einreichen
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
-            
-            <Link
-              href="/kontakt"
-              className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
-            >
-              Kontakt aufnehmen
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CTASection
+        title="Bereit für digitales Forderungsmanagement mit Nota Finance?"
+        subtitle="Erleben Sie den Unterschied und reichen Sie Ihre erste Forderung noch heute ein. Unser Team steht Ihnen bei Fragen jederzeit gerne zur Verfügung."
+        buttons={[
+          { text: "Kontakt aufnehmen", href: "/kontakt" },
+          { text: "Häufig gestellte Fragen", href: "/faq" },
+          { text: "Fall einreichen", href: "/einreichen", primary: true },
+        ]}
+      />
     </main>
   );
 }
