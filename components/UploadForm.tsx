@@ -201,8 +201,8 @@ export default function UploadForm() {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Email Input */}
-        <div className="bg-gradient-to-br from-slate-50 to-white border-2 border-muted rounded-2xl p-8">
-          <label htmlFor="email" className="block text-lg font-semibold text-primary mb-3">
+        <div className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8">
+          <label htmlFor="email" className="block text-lg font-semibold text-text-900 mb-3">
             Ihre E-Mail-Adresse *
           </label>
           <input
@@ -211,17 +211,17 @@ export default function UploadForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-4 bg-white border-2 border-muted rounded-lg focus:border-signal focus:ring-2 focus:ring-signal/20 outline-none transition-all duration-300 text-lg"
+            className="w-full px-4 py-4 bg-white border-2 border-border-subtle rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 text-lg"
             placeholder="ihre.email@beispiel.de"
           />
-          <p className="text-sm text-primary/60 mt-2">
+          <p className="text-sm text-neutral-500 mt-2">
             Ohne E-Mail-Adresse ist kein Upload möglich. Sie erhalten die Bestätigung an diese Adresse.
           </p>
         </div>
 
         {/* File Upload Area */}
-        <div className="bg-gradient-to-br from-slate-50 to-white border-2 border-muted rounded-2xl p-8">
-          <h3 className="text-lg font-semibold text-primary mb-4">
+        <div className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8">
+          <h3 className="text-lg font-semibold text-text-900 mb-4">
             Dateien hochladen *
           </h3>
 
@@ -234,8 +234,8 @@ export default function UploadForm() {
             className={`
               relative border-3 border-dashed rounded-2xl p-12 text-center transition-all duration-300
               ${isDragging 
-                ? "border-signal bg-signal/10" 
-                : "border-muted hover:border-signal hover:bg-slate-50"
+                ? "border-brand-900 bg-brand-900/10" 
+                : "border-border-subtle hover:border-brand-900 hover:bg-surface-100/30"
               }
             `}
           >
@@ -249,13 +249,13 @@ export default function UploadForm() {
               disabled={!email || !isValidEmail(email)}
             />
 
-            <Upload className="w-16 h-16 text-muted mx-auto mb-4" />
+            <Upload className="w-16 h-16 text-neutral-500 mx-auto mb-4" />
             
-            <h4 className="text-xl font-bold text-primary mb-2">
+            <h4 className="text-xl font-bold text-text-900 mb-2">
               Dateien hier ablegen oder auswählen
             </h4>
             
-            <p className="text-primary/60 mb-6">
+            <p className="text-neutral-500 mb-6">
               Unterstützte Formate: PDF, XRechnung (XML), ZUGFeRD (XML/PDF)
               <br />
               Maximale Dateigröße: 10 MB pro Datei
@@ -266,8 +266,8 @@ export default function UploadForm() {
               className={`
                 inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300
                 ${email && isValidEmail(email)
-                  ? "bg-signal text-white hover:bg-signal/80 hover:shadow-lg cursor-pointer"
-                  : "bg-muted text-primary/50 cursor-not-allowed"
+                  ? "bg-brand-900 text-white hover:bg-brand-700 hover:shadow-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                  : "bg-surface-100 text-neutral-500 cursor-not-allowed"
                 }
               `}
             >
@@ -276,7 +276,7 @@ export default function UploadForm() {
             </label>
 
             {!email && (
-              <p className="text-sm text-primary/50 mt-4">
+              <p className="text-sm text-neutral-500 mt-4">
                 Bitte geben Sie zuerst Ihre E-Mail-Adresse ein
               </p>
             )}
@@ -285,39 +285,39 @@ export default function UploadForm() {
           {/* Uploaded Files List */}
           {files.length > 0 && (
             <div className="mt-6 space-y-3">
-              <h4 className="font-semibold text-primary">Hochgeladene Dateien:</h4>
+              <h4 className="font-semibold text-text-900">Hochgeladene Dateien:</h4>
               {files.map((uploadedFile) => (
                 <div
                   key={uploadedFile.id}
-                  className="flex items-center gap-3 p-4 bg-white border border-muted rounded-lg"
+                  className="flex items-center gap-3 p-4 bg-white border border-border-subtle rounded-lg"
                 >
-                  <FileText className="w-8 h-8 text-signal flex-shrink-0" />
+                  <FileText className="w-8 h-8 text-brand-900 flex-shrink-0" />
                   
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-primary truncate">
+                    <p className="font-medium text-text-900 truncate">
                       {uploadedFile.file.name}
                     </p>
-                    <p className="text-sm text-primary/50">
+                    <p className="text-sm text-neutral-500">
                       {(uploadedFile.file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                     {uploadedFile.error && (
-                      <p className="text-sm text-red-600 mt-1">{uploadedFile.error}</p>
+                      <p className="text-sm text-error mt-1">{uploadedFile.error}</p>
                     )}
                   </div>
 
                   {/* Status Icon */}
                   <div className="flex-shrink-0">
                     {uploadedFile.status === "pending" && (
-                      <div className="w-6 h-6 border-2 border-muted rounded-full" />
+                      <div className="w-6 h-6 border-2 border-border-subtle rounded-full" />
                     )}
                     {uploadedFile.status === "uploading" && (
-                      <div className="w-6 h-6 border-2 border-signal border-t-transparent rounded-full animate-spin" />
+                      <div className="w-6 h-6 border-2 border-brand-900 border-t-transparent rounded-full animate-spin" />
                     )}
                     {uploadedFile.status === "success" && (
-                      <CheckCircle className="w-6 h-6 text-green-600" />
+                      <CheckCircle className="w-6 h-6 text-success" />
                     )}
                     {uploadedFile.status === "error" && (
-                      <AlertCircle className="w-6 h-6 text-red-600" />
+                      <AlertCircle className="w-6 h-6 text-error" />
                     )}
                   </div>
 
@@ -326,9 +326,9 @@ export default function UploadForm() {
                     <button
                       type="button"
                       onClick={() => removeFile(uploadedFile.id)}
-                      className="flex-shrink-0 p-1 hover:bg-slate-100 rounded transition-colors duration-300"
+                      className="flex-shrink-0 p-1 hover:bg-surface-100 rounded transition-colors duration-300"
                     >
-                      <X className="w-5 h-5 text-primary/50" />
+                      <X className="w-5 h-5 text-neutral-500" />
                     </button>
                   )}
                 </div>
@@ -337,22 +337,22 @@ export default function UploadForm() {
           )}
 
           {/* AGB Checkbox */}
-          <div className="flex items-start gap-3 mt-6 pt-6 border-t border-muted">
+          <div className="flex items-start gap-3 mt-6 pt-6 border-t border-border-subtle">
             <input
               type="checkbox"
               id="acceptAGB"
               checked={acceptAGB}
               onChange={(e) => setAcceptAGB(e.target.checked)}
               required
-              className="mt-1 w-5 h-5 text-signal border-2 border-muted rounded focus:ring-2 focus:ring-signal/20 transition-all duration-300"
+              className="mt-1 w-5 h-5 text-brand-900 border-2 border-border-subtle rounded focus:ring-2 focus:ring-focus-ring transition-all duration-300"
             />
-            <label htmlFor="acceptAGB" className="text-sm text-primary/70 leading-relaxed">
+            <label htmlFor="acceptAGB" className="text-sm text-text-900/70 leading-relaxed">
               Ich akzeptiere die{" "}
               <a
                 href="/agb.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-signal hover:underline font-semibold"
+                className="text-brand-900 hover:underline font-semibold"
               >
                 Allgemeinen Geschäftsbedingungen (AGB)
               </a>{" "}
@@ -361,7 +361,7 @@ export default function UploadForm() {
                 href="/datenschutz.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-signal hover:underline font-semibold"
+                className="text-brand-900 hover:underline font-semibold"
               >
                 Datenschutzerklärung
               </a>
@@ -380,7 +380,7 @@ export default function UploadForm() {
                 files.length === 0 ||
                 !acceptAGB
               }
-              className="w-full bg-signal text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-signal/80 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="w-full bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
               {isSubmitting ? (
                 <>
@@ -399,16 +399,16 @@ export default function UploadForm() {
       </form>
 
       {/* Alternative Email Option */}
-      <div className="mt-8 p-6 bg-slate-100 rounded-xl text-center border border-muted">
-        <Mail className="w-8 h-8 text-primary/60 mx-auto mb-3" />
-        <p className="text-sm text-primary/70 mb-2">
+      <div className="mt-8 p-6 bg-surface-100 rounded-xl text-center border border-border-subtle">
+        <Mail className="w-8 h-8 text-neutral-500 mx-auto mb-3" />
+        <p className="text-sm text-text-900/70 mb-2">
           Sie können ihre Fälle natürlich auch per Mail einreichen.
         </p>
         <p className="text-sm">
           Senden Sie dazu einfach eine Mail an{" "}
           <a
             href="mailto:fall@notafinance.de"
-            className="text-signal hover:underline font-semibold"
+            className="text-brand-900 hover:underline font-semibold"
           >
             fall@notafinance.de
           </a>

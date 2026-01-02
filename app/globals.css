@@ -15,40 +15,62 @@
 }
 
 :root {
-  /* Nota Finance Corporate Color Palette */
-  --deep-navy: #181818;
-  --silver: #C1D6E6;
-  --platinum: #C1D6E6;
-  --signal-blue: #0026b0;
-  --accent-blue: #008CFF;
-  --slate-50: #F8FAFC;
-  --slate-100: #F1F5F9;
-  --slate-200: #C1D6E6;
-  --slate-700: #008CFF;
-  --slate-800: #1E293B;
-  --slate-900: #181818;
+  /* 
+   * Nota Finance Corporate Color Palette (2025)
+   * Single source of truth - no duplicate tokens
+   */
+  
+  /* PRIMITIVES */
+  --brand-900: #0524b0;     /* Primary brand – CTAs, buttons */
+  --brand-700: #1B52D7;     /* Secondary brand – hover states, accents */
+  --neutral-500: #767888;   /* Muted text, icons, secondary UI */
+  --surface-100: #C0C7D3;   /* Cards, soft backgrounds */
+  --ghost-white: #F5F7FA;   /* Page backgrounds – max 1x per page, für schwebende Cards */
+  --text-900: #13111F;      /* Primary text (no pure black) */
+  --white: #FFFFFF;
+  
+  /* STATES */
+  --success: #0F9D58;
+  --warning: #F59E0B;
+  --error: #E11D48;
+  
+  /* DERIVED TOKENS */
+  --border-subtle: rgba(118, 120, 136, 0.12);
+  --border-strong: rgba(19, 17, 31, 0.12);
+  --focus-ring: rgba(2, 28, 139, 0.18);
 }
 
 @theme inline {
-  /* Legacy color mappings */
-  --color-deep-navy: var(--deep-navy);
-  --color-silver: var(--silver);
-  --color-platinum: var(--platinum);
-  --color-signal-blue: var(--signal-blue);
-  --color-accent-blue: var(--accent-blue);
+  /* Semantic color system mapped to CSS variables */
+  --color-brand-900: var(--brand-900);
+  --color-brand-700: var(--brand-700);
+  --color-neutral-500: var(--neutral-500);
+  --color-surface-100: var(--surface-100);
+  --color-ghost-white: var(--ghost-white);
+  --color-text-900: var(--text-900);
   
-  /* Semantic color system */
-  --color-primary: var(--deep-navy);
-  --color-signal: var(--signal-blue);
-  --color-accent: var(--accent-blue);
-  --color-muted: var(--platinum);
+  /* State colors */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  
+  /* Border tokens */
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-focus-ring: var(--focus-ring);
+  
+  /* Legacy mappings for backward compatibility during migration */
+  /* TODO: Remove after full migration */
+  --color-primary: var(--text-900);
+  --color-signal: var(--brand-900);
+  --color-muted: var(--surface-100);
   
   --font-sans: var(--font-jakarta);
 }
 
 body {
-  background: linear-gradient(to bottom right, var(--slate-50), var(--slate-100));
-  color: var(--deep-navy);
+  background: linear-gradient(to bottom right, var(--white), var(--surface-100));
+  color: var(--text-900);
   font-family: var(--font-jakarta), -apple-system, BlinkMacSystemFont, sans-serif;
   min-height: 100vh;
 }
@@ -67,8 +89,14 @@ button, a, input, textarea {
 }
 
 .glass-dark {
-  background: rgba(24, 24, 24, 0.7);
+  background: rgba(19, 17, 31, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Focus ring utility for accessibility */
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--focus-ring);
 }

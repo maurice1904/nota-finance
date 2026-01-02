@@ -17,7 +17,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky top-0 z-50 glass border-b border-muted/50">
+    <nav className="sticky top-0 z-50 glass border-b border-border-subtle">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 relative">
           {/* Logo */}
@@ -32,7 +32,7 @@ export default function Navbar() {
               height={40}
               className="object-contain"
             />
-            <span className="text-2xl font-bold text-primary">
+            <span className="text-2xl font-bold text-text-900">
               Nota Finance
             </span>
           </Link>
@@ -44,24 +44,24 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-sm font-medium transition-all duration-300 hover:text-signal relative",
+                  "text-sm font-medium transition-all duration-300 hover:text-brand-900 relative",
                   pathname === link.href 
-                    ? "text-signal" 
-                    : "text-primary/70"
+                    ? "text-brand-900" 
+                    : "text-text-900/70"
                 )}
               >
                 {link.label}
                 {pathname === link.href && (
-                  <span className="absolute -bottom-[1.6rem] left-0 right-0 h-0.5 bg-signal" />
+                  <span className="absolute -bottom-[1.6rem] left-0 right-0 h-0.5 bg-brand-900" />
                 )}
               </Link>
             ))}
           </div>
 
-          {/* CTA Button */}
+          {/* CTA Button - Primary: bg-brand-900 + text-white, Hover: bg-brand-700 */}
           <Link
             href="/einreichen"
-            className="bg-signal text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-signal/80 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 z-10"
+            className="bg-brand-900 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-brand-700 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 z-10 focus:outline-none focus:ring-2 focus:ring-focus-ring"
           >
             Fall einreichen
           </Link>
