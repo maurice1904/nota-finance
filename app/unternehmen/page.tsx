@@ -4,8 +4,8 @@ import Link from "next/link";
 export default function UnternehmenPage() {
   return (
     <main>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 pt-20 pb-24">
+      {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col justify-center py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-5xl md:text-6xl font-bold text-text-900 mb-8 leading-tight text-center">

@@ -6,46 +6,49 @@ import Image from "next/image";
 export default function Home() {
   return (
     <main>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 pt-20 pb-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-bold text-text-900 mb-8 leading-tight">
-              Ihre Forderung.
-              <br />
-              <span className="text-brand-900">Unsere Mission.</span>
-          </h1>
-            
-            <p className="text-xl md:text-2xl text-text-900/70 mb-12 leading-relaxed">
-              Inkasso der neusten Generation: Einfach, digital, kundenorientiert, zuverlässig. 
-              Laden Sie ihre Rechnung hoch und wir kümmern uns um den Rest. Die effizienteste 
-              Inkasso-Lösung für Selbstständige sowie kleine und mittlere Unternehmen aller 
-              Branchen mit Forderungshöhen ab 50€.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/kontakt"
-                className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
-              >
-                Kontakt aufnehmen
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
+      {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col">
+        {/* Main Hero Content - Centered */}
+        <div className="flex-1 flex flex-col justify-center py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-4xl mx-auto">
+              <h1 className="text-5xl md:text-7xl font-bold text-text-900 mb-8 leading-tight">
+                Ihre Forderung.
+                <br />
+                <span className="text-brand-900">Unsere Mission.</span>
+            </h1>
               
-              <Link
-                href="/einreichen"
-                className="group bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
-              >
-                Fall einreichen
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
+              <p className="text-xl md:text-2xl text-text-900/70 mb-12 leading-relaxed">
+                Inkasso der neusten Generation: Einfach, digital, kundenorientiert, zuverlässig. 
+                Laden Sie ihre Rechnung hoch und wir kümmern uns um den Rest. Die effizienteste 
+                Inkasso-Lösung für Selbstständige sowie kleine und mittlere Unternehmen aller 
+                Branchen mit Forderungshöhen ab 50€.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/kontakt"
+                  className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                >
+                  Kontakt aufnehmen
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                </Link>
+                
+                <Link
+                  href="/einreichen"
+                  className="group bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                >
+                  Fall einreichen
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Trust Slider */}
-        <div className="mt-24 border-t border-border-subtle pt-12">
-          <p className="text-center text-sm font-medium text-neutral-500 mb-8 uppercase tracking-wide">
+        {/* Trust Slider - Pinned to Bottom */}
+        <div className="pb-8 border-t border-border-subtle pt-8">
+          <p className="text-center text-sm font-medium text-neutral-500 mb-6 uppercase tracking-wide">
             Vertrauenspartner & Zertifizierungen
           </p>
           <div className="max-w-6xl mx-auto px-4 flex flex-wrap justify-center items-center gap-12 opacity-60 grayscale">

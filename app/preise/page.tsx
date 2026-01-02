@@ -5,8 +5,8 @@ import { ArrowRight } from "lucide-react";
 export default function PreisePage() {
   return (
     <main>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 pt-20 pb-24">
+      {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col justify-center py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-8 py-3 rounded-full text-6xl font-bold mb-8">
