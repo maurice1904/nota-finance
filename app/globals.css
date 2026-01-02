@@ -79,6 +79,89 @@ body {
   /* Font smoothing for crisp text on high-res screens */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* 
+   * TYPOGRAFIE-OPTIMIERUNG: Plus Jakarta Sans
+   * Geometrische Sans-Serifs profitieren von subtil engerem Tracking
+   * und großzügiger Line-Height für den Fintech-Look
+   */
+  letter-spacing: -0.011em;  /* Subtil enger – optimal für 16-18px Body */
+  line-height: 1.6;          /* Elegante Zeilenhöhe für Fließtext */
+}
+
+/* 
+ * HEADLINE TYPOGRAPHY SCALE
+ * Größere Headlines → engeres Tracking (optische Kompensation)
+ * Plus Jakarta Sans: -0.02em bis -0.03em bei Display-Größen
+ */
+h1 {
+  letter-spacing: -0.03em;   /* Display-Größe: stark komprimiert */
+  line-height: 1.1;          /* Eng für Impact */
+}
+
+h2 {
+  letter-spacing: -0.025em;  /* Große Headlines */
+  line-height: 1.2;
+}
+
+h3 {
+  letter-spacing: -0.02em;   /* Section Headers */
+  line-height: 1.25;
+}
+
+h4 {
+  letter-spacing: -0.015em;  /* Subsections */
+  line-height: 1.3;
+}
+
+h5, h6 {
+  letter-spacing: -0.01em;   /* Kleine Headlines – nahe Body */
+  line-height: 1.4;
+}
+
+/* 
+ * PARAGRAPH & PROSE OPTIMIERUNG
+ * Maximale Lesbarkeit für längere Textblöcke
+ */
+p {
+  letter-spacing: -0.011em;
+  line-height: 1.65;         /* Etwas mehr Luft als Body-Default */
+}
+
+/* 
+ * UI-ELEMENTE: Buttons, Labels, Navigation
+ * Leicht positives Tracking bei kleinen Größen für Klarheit
+ */
+button, 
+[role="button"],
+.btn {
+  letter-spacing: 0.01em;    /* Minimal offen für Lesbarkeit */
+  line-height: 1.2;
+}
+
+/* 
+ * SMALL TEXT & CAPTIONS
+ * Bei <14px: positives Tracking verhindert "Zusammenkleben"
+ */
+small,
+.text-sm,
+.text-xs,
+figcaption,
+.caption {
+  letter-spacing: 0.015em;   /* Offen für kleine Größen */
+  line-height: 1.5;
+}
+
+/* 
+ * FINTECH-SPEZIFISCH: Zahlen & Währungen
+ * Tabular figures + leicht positives Tracking für Klarheit
+ */
+.tabular-nums,
+[data-currency],
+.amount,
+.price {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;    /* Zahlen brauchen Luft */
 }
 
 /* Smooth transitions for all interactive elements */
