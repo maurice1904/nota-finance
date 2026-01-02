@@ -14,7 +14,7 @@ export default function TrustSlider() {
           observer.disconnect(); // Only animate once
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.5 }
     );
 
     if (sectionRef.current) {
@@ -34,7 +34,7 @@ export default function TrustSlider() {
       }`}
     >
       <p className="text-center text-sm font-medium text-neutral-500 mb-6 uppercase tracking-wide">
-        Vertrauenspartner & Zertifizierungen
+        Unsere Partner
       </p>
       <div className="max-w-6xl mx-auto px-4 flex flex-wrap justify-center items-center gap-12 opacity-60 grayscale">
         <div className="text-2xl font-bold text-text-900/70">BDIU</div>
