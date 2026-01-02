@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Upload, CheckCircle, Euro, ArrowRight } from "lucide-react";
 import CTASection from "@/components/CTASection";
+import TrustSlider from "@/components/TrustSlider";
 import Image from "next/image";
 
 export default function Home() {
@@ -45,21 +46,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* Trust Slider - Pinned to Bottom */}
-        <div className="pb-8 border-t border-border-subtle pt-8">
-          <p className="text-center text-sm font-medium text-neutral-500 mb-6 uppercase tracking-wide">
-            Vertrauenspartner & Zertifizierungen
-          </p>
-          <div className="max-w-6xl mx-auto px-4 flex flex-wrap justify-center items-center gap-12 opacity-60 grayscale">
-            <div className="text-2xl font-bold text-text-900/70">BDIU</div>
-            <div className="text-2xl font-bold text-text-900/70">SCHUFA</div>
-            <div className="text-2xl font-bold text-text-900/70">Wolters Kluwer</div>
-            <div className="text-2xl font-bold text-text-900/70">GeoTrust</div>
-            <div className="text-2xl font-bold text-text-900/70">GDD</div>
-          </div>
-        </div>
       </section>
+
+      {/* Trust Slider - Separate Section with Fade-in */}
+      <TrustSlider />
 
       {/* Erklärung Section - So einfach ist es */}
       <section className="py-24 bg-white">
