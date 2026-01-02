@@ -69,10 +69,16 @@
 }
 
 body {
-  background: linear-gradient(to bottom right, var(--white), var(--surface-100));
+  /* High-End Gradient Background */
+  /* Uses surface-50 (Ghost White) to White for a subtle, clean depth */
+  background: linear-gradient(to bottom right, var(--white), var(--surface-50));
+  background-attachment: fixed; /* Prevents gradient stretching on long pages */
   color: var(--text-900);
   font-family: var(--font-jakarta), -apple-system, BlinkMacSystemFont, sans-serif;
   min-height: 100vh;
+  /* Font smoothing for crisp text on high-res screens */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Smooth transitions for all interactive elements */
@@ -82,16 +88,16 @@ button, a, input, textarea {
 
 /* Glassmorphism utilities */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--white); /* White border highlight */
 }
 
 .glass-dark {
-  background: rgba(19, 17, 31, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(19, 17, 31, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
