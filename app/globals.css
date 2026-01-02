@@ -85,15 +85,21 @@ body {
    * Geometrische Sans-Serifs profitieren von subtil engerem Tracking
    * und großzügiger Line-Height für den Fintech-Look
    */
-  letter-spacing: -0.011em;  /* Subtil enger – optimal für 16-18px Body */
-  line-height: 1.6;          /* Elegante Zeilenhöhe für Fließtext */
+  word-spacing: 0.1em;       /* ~30-40% mehr Wortabstand für Lesbarkeit */
+  letter-spacing: -0.01em;   /* Buchstaben minimal enger → Wort als Einheit */
+  line-height: 1.7;          /* Großzügiger Zeilenabstand für Eleganz */
 }
 
 /* 
  * HEADLINE TYPOGRAPHY SCALE
  * Größere Headlines → engeres Tracking (optische Kompensation)
  * Plus Jakarta Sans: -0.02em bis -0.03em bei Display-Größen
+ * word-spacing: normal → Headlines brauchen keinen erhöhten Wortabstand
  */
+h1, h2, h3, h4, h5, h6 {
+  word-spacing: normal;      /* Headlines: normaler Wortabstand */
+}
+
 h1 {
   letter-spacing: -0.03em;   /* Display-Größe: stark komprimiert */
   line-height: 1.1;          /* Eng für Impact */
@@ -122,19 +128,22 @@ h5, h6 {
 /* 
  * PARAGRAPH & PROSE OPTIMIERUNG
  * Maximale Lesbarkeit für längere Textblöcke
+ * Erbt word-spacing vom Body (0.1em)
  */
 p {
-  letter-spacing: -0.011em;
-  line-height: 1.65;         /* Etwas mehr Luft als Body-Default */
+  letter-spacing: -0.01em;   /* Konsistent mit Body */
+  line-height: 1.75;         /* Etwas mehr Luft für längere Texte */
 }
 
 /* 
  * UI-ELEMENTE: Buttons, Labels, Navigation
  * Leicht positives Tracking bei kleinen Größen für Klarheit
+ * Normaler Wortabstand für kurze UI-Texte
  */
 button, 
 [role="button"],
 .btn {
+  word-spacing: normal;      /* UI: normaler Wortabstand */
   letter-spacing: 0.01em;    /* Minimal offen für Lesbarkeit */
   line-height: 1.2;
 }

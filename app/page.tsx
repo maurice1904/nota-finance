@@ -200,7 +200,7 @@ export default function Home() {
                 Wahrung Ihrer Kundenbeziehung
               </h3>
               <p className="text-text-900/70 leading-relaxed">
-                Wir behandeln Ihren Kunden als Kunden und beschädigen nicht Ihre Kundenbeziehung.
+                Wir behandeln Ihren Kunden als Kunden und beschädigen nicht Ihre Kundenbeziehung. Ihre Kunden sollen Ihre Kunden bleiben.
               </p>
             </div>
 
