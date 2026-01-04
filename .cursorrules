@@ -605,48 +605,53 @@ Automatischer Scroll-Reset bei Client-Navigation.
 In Layout eingebunden, nicht manuell verwenden.
 
 # ============================================
+# BEKANNTE TODOS
+# ============================================
+
+1. **OpenGraph-Bild ersetzen**
+   - `app/opengraph-image.tsx` generiert aktuell ein dynamisches Bild
+   - Für bessere Performance: Durch statisches Bild `/public/og-image.png` (1200×630px) ersetzen
+   - Dann `opengraph-image.tsx` löschen und in `layout.tsx` referenzieren
+
+# ============================================
 # OPTIONALE VERBESSERUNGSVORSCHLÄGE
 # ============================================
 
 Diese Vorschläge sind NICHT im aktuellen Code implementiert:
 
-1. **Meta-Tags pro Seite**
-   - Individuelle `metadata` Exports für jede Seite
-   - OpenGraph / Twitter Cards
-
-2. **Loading States**
+1. **Loading States**
    - loading.tsx für Seiten-Transitions
    - Skeleton Components
 
-3. **Error Handling**
+2. **Error Handling**
    - error.tsx Boundaries
    - not-found.tsx Seite
 
-4. **Form Validation**
+3. **Form Validation**
    - React Hook Form oder Zod Integration
    - Inline Validation statt alert()
 
-5. **Supabase Error Handling**
+4. **Supabase Error Handling**
    - Toast Notifications statt console.error
    - Retry Logic
 
-6. **Mobile Navigation**
+5. **Mobile Navigation**
    - Hamburger Menu für mobile Breakpoints
    - Aktuell keine mobile Nav implementiert!
 
-7. **Animation Library**
+6. **Animation Library**
    - Framer Motion für komplexere Animationen
    - Staggered Animations
 
-8. **Dark Mode**
+7. **Dark Mode**
    - Design Tokens sind vorbereitet
    - Implementation fehlt
 
-9. **i18n**
+8. **i18n**
    - Aktuell hardcoded Deutsch
    - Next-intl für Mehrsprachigkeit
 
-10. **Testing**
-    - Keine Tests vorhanden
-    - Jest + React Testing Library empfohlen
+9. **Testing**
+   - Keine Tests vorhanden
+   - Jest + React Testing Library empfohlen
 

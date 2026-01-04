@@ -1,4 +1,17 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Impressum",
+  description:
+    "Rechtliche Informationen und Anbieterkennzeichnung der Nota Finance Website.",
+  openGraph: {
+    title: "Impressum | Nota Finance",
+    description:
+      "Rechtliche Informationen und Anbieterkennzeichnung der Nota Finance Website.",
+    url: "https://www.notafinance.de/impressum",
+  },
+};
 
 export default function ImpressumPage() {
   return (

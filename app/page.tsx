@@ -3,6 +3,19 @@ import { Upload, CheckCircle, Euro, ArrowRight } from "lucide-react";
 import CTASection from "@/components/CTASection";
 import TrustSlider from "@/components/TrustSlider";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Digitales Inkasso ohne Registrierung",
+  description:
+    "Fordern Sie offene Rechnungen einfach online ein. Sofortiger Start per Upload, ohne Vertragsbindung, ab 50€. Die Lösung für Freelancer & KMU.",
+  openGraph: {
+    title: "Digitales Inkasso ohne Registrierung | Nota Finance",
+    description:
+      "Fordern Sie offene Rechnungen einfach online ein. Sofortiger Start per Upload, ohne Vertragsbindung, ab 50€. Die Lösung für Freelancer & KMU.",
+    url: "https://www.notafinance.de",
+  },
+};
 
 export default function Home() {
   return (

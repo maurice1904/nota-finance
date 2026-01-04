@@ -1,5 +1,18 @@
 import { Euro, CheckCircle, TrendingUp } from "lucide-react";
 import CTASection from "@/components/CTASection";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Preise & Konditionen - Kein Kostenrisiko",
+  description:
+    "Transparente und faire Konditionen. Im außergerichtlichen Verfahren tragen Sie keine Kosten. Die Kosten sind vom Schuldner zu tragen.",
+  openGraph: {
+    title: "Preise & Konditionen - Kein Kostenrisiko | Nota Finance",
+    description:
+      "Transparente und faire Konditionen. Im außergerichtlichen Verfahren tragen Sie keine Kosten. Die Kosten sind vom Schuldner zu tragen.",
+    url: "https://www.notafinance.de/preise",
+  },
+};
 
 export default function PreisePage() {
   return (

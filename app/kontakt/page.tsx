@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Send, CheckCircle } from "lucide-react";
+import { Mail, Send, CheckCircle, Linkedin } from "lucide-react";
 
 export default function KontaktPage() {
   const [formData, setFormData] = useState({
@@ -259,14 +259,29 @@ ${formData.message}
           </form>
 
           {/* Additional Info */}
-          <div className="mt-12 text-center">
-            <p className="text-neutral-500 mb-4">Oder kontaktieren Sie uns direkt per E-Mail:</p>
-            <a 
-              href="mailto:admin@notafinance.de" 
-              className="text-brand-900 hover:underline font-semibold text-lg"
-            >
-              admin@notafinance.de
-            </a>
+          <div className="mt-12 text-center space-y-6">
+            <div>
+              <p className="text-neutral-500 mb-4">Oder kontaktieren Sie uns direkt per E-Mail:</p>
+              <a 
+                href="mailto:service@notafinance.de" 
+                className="text-brand-900 hover:underline font-semibold text-lg"
+              >
+                service@notafinance.de
+              </a>
+            </div>
+            
+            <div className="pt-4 border-t border-border-subtle">
+              <p className="text-neutral-500 mb-4">Folgen Sie uns auf LinkedIn:</p>
+              <a 
+                href="https://www.linkedin.com/company/nota-finance/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-brand-900 hover:underline font-semibold text-lg"
+              >
+                <Linkedin className="w-5 h-5" />
+                Nota Finance auf LinkedIn
+              </a>
+            </div>
           </div>
         </div>
       </section>
