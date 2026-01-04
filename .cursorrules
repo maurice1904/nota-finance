@@ -1,0 +1,671 @@
+## Nota Finance – Project Rules & Guidelines
+# ===========================================
+# Diese Datei definiert verbindliche Regeln für die Entwicklung.
+# Basiert auf tatsächlich verwendeten Patterns im bestehenden Code.
+# ⚠️ PRIORITÄT DER REGELN
+- Alles unter "MUSS" ist verbindlich.
+- Code-Beispiele sind Referenzen, keine Copy-Pflicht.
+- Bei Konflikten gilt: Konsistenz > visuelle Effekte.
+Du darfst abstrahieren, aber keine Regeln brechen.
+
+# PRIME DIRECTIVES (Unverhandelbar)
+- Denke vor dem Handeln: Analysiere erst die Datei, bevor du schreibst.
+- Keine Halluzinationen: Nutze nur existierende Bibliotheken (lucide-react, supabase-js).
+- Sicherheit: Zeige niemals .env Keys im Chat. Lösche sie nicht.
+- TypeScript: Nutze strikte Typisierung (kein any). Interfaces müssen definiert sein.
+- Refactoring: Wenn du eine Datei bearbeitest, die noch alte Farb-Variablen (--color-primary etc.) nutzt, ersetze sie sofort durch die neuen Tokens (--text-900 etc.). 
+
+## TECH STACK
+# -----------
+# Alle Technologien, die tatsächlich im Projekt verwendet werden:
+
+- Framework: Next.js 16.0.5 (App Router)
+- React: 19.2.0
+- TypeScript: 5.x (strict mode)
+- Styling: Tailwind CSS 4 (via @tailwindcss/postcss)
+- Icons: lucide-react (^0.555.0)
+- Backend: Supabase (Storage für Datei-Uploads)
+- Utilities: clsx + tailwind-merge (cn() Helper in lib/utils.ts)
+- IDs: uuid (v4)
+
+## PROJEKTSTRUKTUR
+# ----------------
+
+```
+nota-finance/
+├── app/                    # Next.js App Router Pages
+│   ├── layout.tsx          # Root Layout (Navbar, Footer, Fonts)
+│   ├── page.tsx            # Homepage
+│   ├── globals.css         # Design Tokens, Typography, Utilities
+│   └── [route]/page.tsx    # Einzelne Seiten
+├── components/             # Wiederverwendbare React-Komponenten
+├── lib/                    # Utilities und Konfiguration
+│   ├── utils.ts            # cn() Helper
+│   └── supabase.ts         # Supabase Client
+└── public/                 # Statische Assets (logo.png, PDFs)
+```
+
+### Routing-Konvention
+- Deutsch-sprachige URL-Slugs: `/einreichen`, `/kontakt`, `/preise`, `/branchen`, `/unternehmen`, `/faq`, `/impressum`
+- Keine dynamischen Routen im aktuellen Scope
+
+## DESIGN SYSTEM
+# ==============
+
+### Farbpalette (Single Source of Truth)
+Alle Farben sind in `globals.css` als CSS Custom Properties definiert.
+NIEMALS neue Farben erfinden – nur diese Tokens verwenden:
+
+```css
+/* PRIMITIVES */
+--brand-900: #0524b0;     /* Primary – CTAs, Buttons, Akzente */
+--brand-700: #1B52D7;     /* Hover-States, sekundäre Akzente */
+--neutral-500: #767888;   /* Muted Text, Icons, Beschriftungen */
+--surface-100: #C0C7D3;   /* Cards, weiche Hintergründe */
+--ghost-white: #F5F7FA;   /* Page Backgrounds (sparsam!) */
+--text-900: #13111F;      /* Primärer Text (NIEMALS reines Schwarz #000) */
+--white: #FFFFFF;
+
+/* STATES */
+--success: #0F9D58;
+--warning: #F59E0B;
+--error: #E11D48;
+
+/* DERIVED TOKENS */
+--border-subtle: rgba(118, 120, 136, 0.12);
+--border-strong: rgba(19, 17, 31, 0.12);
+--focus-ring: rgba(2, 28, 139, 0.18);
+```
+
+### Tailwind Farbklassen
+Verwende die semantischen Klassen aus dem @theme Block:
+- `text-text-900`, `text-text-900/70` (für sekundären Text)
+- `bg-brand-900`, `hover:bg-brand-700`
+- `text-brand-900` (für Links, Akzente)
+- `bg-surface-100`, `bg-white`
+- `border-border-subtle`, `border-border-strong`
+- `text-neutral-500` (für muted/caption Text)
+- `text-success`, `text-error`, `text-warning`
+
+### Typografie
+
+**Font:** Plus Jakarta Sans (via next/font/google)
+- Gewichte: 300, 400, 500, 600, 700, 800
+- Variable: `--font-jakarta`
+- Body-Klasse: `font-sans` (mapped to Jakarta)
+
+**Ligaturen sind DEAKTIVIERT** (Finance-Typografie erfordert maximale Lesbarkeit)
+
+**Headline-Skalierung:**
+| Element | letter-spacing | line-height |
+|---------|---------------|-------------|
+| h1      | -0.03em       | 1.1         |
+| h2      | -0.025em      | 1.2         |
+| h3      | -0.02em       | 1.25        |
+| h4      | -0.015em      | 1.3         |
+| h5/h6   | -0.01em       | 1.4         |
+| Body/p  | -0.01em       | 1.7 / 1.75  |
+| UI/Btns | 0.01em        | 1.2         |
+| Small   | 0.015em       | 1.5         |
+
+**Headline-Muster:**
+```tsx
+<h1 className="text-5xl md:text-7xl font-bold text-text-900 mb-8 leading-tight">
+<h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6">
+<h3 className="text-2xl font-bold text-text-900 mb-4">
+```
+
+**Body-Text-Muster:**
+```tsx
+<p className="text-xl text-text-900/70 leading-relaxed">
+<p className="text-lg text-text-900/70 leading-relaxed">
+<p className="text-text-900/70 leading-relaxed">
+```
+
+## LAYOUT-PRINZIPIEN
+# ==================
+
+### Container
+```tsx
+// Standard Content Container
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+// Zentrierter Text-Content
+<div className="max-w-4xl mx-auto text-center">
+
+// Schmaler Content (Formulare, FAQ)
+<div className="max-w-3xl mx-auto">
+```
+
+### Hero Sections
+Jede Seite beginnt mit einem Hero, der die volle Viewport-Höhe abzüglich der Navbar einnimmt:
+```tsx
+<section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col justify-center py-8">
+```
+
+### Navbar
+- Höhe: `h-20` (5rem)
+- Position: `sticky top-0 z-50`
+- Effekt: `.glass` (Glassmorphism)
+- Links absolut zentriert: `absolute left-1/2 -translate-x-1/2`
+
+### Sections
+```tsx
+// Standard Section
+<section className="py-24 bg-white">
+
+// Gradient Section (abwechselnd)
+<section className="py-24 bg-gradient-to-br from-white to-surface-100">
+```
+
+### Footer
+```tsx
+<footer className="bg-gradient-to-br from-text-900 to-text-900/80 text-white mt-24">
+```
+
+### Grid-Patterns
+```tsx
+// 3-Spalten Feature Grid
+<div className="grid md:grid-cols-3 gap-12">
+
+// 2-Spalten Grid
+<div className="grid md:grid-cols-2 gap-8">
+
+// Responsive Stacking
+<div className="flex flex-col sm:flex-row gap-4 justify-center">
+```
+
+## KOMPONENTEN-PATTERNS
+# =====================
+
+### Buttons
+
+**Primary Button:**
+```tsx
+<Link
+  href="/einreichen"
+  className="group bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+>
+  Fall einreichen
+  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+</Link>
+```
+
+**Secondary Button:**
+```tsx
+<Link
+  href="/kontakt"
+  className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+>
+  Kontakt aufnehmen
+  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+</Link>
+```
+
+**Navbar Button (kleiner):**
+```tsx
+<Link
+  href="/einreichen"
+  className="bg-brand-900 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-brand-700 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+>
+```
+
+**Disabled State:**
+```tsx
+disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+```
+
+### Cards
+
+**Feature Card:**
+```tsx
+<div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 transition-all duration-300">
+  <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
+    <Icon className="w-8 h-8 text-white" />
+  </div>
+  <h3 className="text-2xl font-bold text-text-900 mb-4">Titel</h3>
+  <p className="text-text-900/70 leading-relaxed">Beschreibung</p>
+</div>
+```
+
+**Large Content Card:**
+```tsx
+<div className="bg-white rounded-3xl p-8 md:p-12 shadow-lg hover:shadow-2xl transition-shadow duration-300">
+```
+
+**Accordion/Expandable Card:**
+```tsx
+<div className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300">
+```
+
+### Icon Boxes
+```tsx
+// Feature Icon (groß)
+<div className="w-20 h-20 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center">
+  <Icon className="w-10 h-10 text-white" />
+</div>
+
+// Card Icon (medium)
+<div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center">
+  <Icon className="w-8 h-8 text-white" />
+</div>
+
+// Timeline Dot
+<div className="w-12 h-12 bg-brand-900 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
+  <span className="text-white font-bold">1</span>
+</div>
+```
+
+### Form Inputs
+```tsx
+<input
+  type="email"
+  className="w-full px-4 py-3 bg-white border-2 border-border-subtle rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300"
+  placeholder="ihre.email@beispiel.de"
+/>
+
+<textarea
+  className="w-full px-4 py-3 bg-white border-2 border-border-subtle rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 resize-none"
+  rows={6}
+/>
+
+// Checkbox
+<input
+  type="checkbox"
+  className="mt-1 w-5 h-5 text-brand-900 border-2 border-border-subtle rounded focus:ring-2 focus:ring-focus-ring transition-all duration-300"
+/>
+```
+
+### Labels
+```tsx
+<label className="block text-sm font-semibold text-text-900 mb-2">
+  Name des Ansprechpartners *
+</label>
+
+// Größeres Label
+<label className="block text-lg font-semibold text-text-900 mb-3">
+```
+
+### Success/Error Messages
+```tsx
+// Success Alert
+<div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-6 flex items-start gap-4">
+  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+  <div>
+    <h3 className="text-lg font-bold text-green-900 mb-1">Erfolgreich!</h3>
+    <p className="text-green-700">Beschreibung</p>
+  </div>
+</div>
+```
+
+## ICONS
+# ======
+
+**Bibliothek:** lucide-react
+**Import-Pattern:**
+```tsx
+import { ArrowRight, CheckCircle, Upload, Mail, Euro } from "lucide-react";
+```
+
+**Größen:**
+- Inline mit Text: `w-5 h-5`
+- In Buttons: `w-5 h-5`
+- Feature Cards: `w-8 h-8` bis `w-12 h-12`
+- Hero Icons: `w-10 h-10`
+
+**Häufig verwendete Icons:**
+- Navigation: `ArrowRight`
+- Status: `CheckCircle`, `AlertCircle`
+- Aktionen: `Upload`, `Send`, `FileText`, `X`
+- Features: `Euro`, `Shield`, `Zap`, `Target`, `Clock`, `Users`
+- Seiten: `Mail`, `HelpCircle`, `FileUp`
+- Branchen: `Laptop`, `Wrench`, `Heart`, `MessageSquare`, `ShoppingCart`, `Hotel`, `Server`, `Cog`
+- UI: `ChevronDown`
+
+## TRANSITIONS & ANIMATIONEN
+# ==========================
+
+**Standard-Transition:**
+```tsx
+transition-all duration-300
+```
+
+**Hover-Effekte:**
+```tsx
+hover:shadow-lg hover:scale-105  // Buttons, Cards
+hover:shadow-xl hover:scale-105  // Primary Buttons
+hover:shadow-2xl hover:scale-105 // Large Cards
+active:scale-95                  // Click feedback
+```
+
+**Icon-Animation:**
+```tsx
+group-hover:translate-x-1 transition-transform duration-300  // Arrow icons
+group-hover:rotate-3 transition-all duration-300             // Feature icons
+group-hover:rotate-6 transition-transform duration-300       // Card icons
+```
+
+**Accordion:**
+```tsx
+// Expand/Collapse
+className={cn(
+  "overflow-hidden transition-all duration-500",
+  isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+)}
+
+// Chevron rotation
+className={cn(
+  "w-6 h-6 text-brand-900 transition-transform duration-300",
+  isOpen && "rotate-180"
+)}
+```
+
+**Intersection Observer Animation:**
+```tsx
+// Fade-in on scroll (TrustSlider Pattern)
+className={`transition-all duration-700 ease-out ${
+  isVisible
+    ? "opacity-100 translate-y-0"
+    : "opacity-0 translate-y-8"
+}`}
+```
+
+**Loading Spinner:**
+```tsx
+<div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+```
+
+## ACCESSIBILITY
+# ==============
+
+### Sprache
+- `<html lang="de">` ist gesetzt
+
+### Fokus-Management
+- Alle interaktiven Elemente haben: `focus:outline-none focus:ring-2 focus:ring-focus-ring`
+- `focus-visible` Utility in globals.css definiert
+- `scroll-smooth` auf html-Element
+
+### Semantik
+- Korrekte Heading-Hierarchie (h1 → h2 → h3)
+- `<main>` Element für Hauptinhalt
+- `<section>` für thematische Abschnitte
+- `<nav>` für Navigation
+- `<footer>` für Footer
+
+### Formulare
+- Labels mit `htmlFor` und korrespondierender `id`
+- `required` Attribut auf Pflichtfeldern
+- Visuelle Kennzeichnung: `*` nach Label-Text
+
+### Links
+- Externe Links haben `target="_blank"` mit `rel="noopener noreferrer"`
+
+### Bilder
+- `alt` Attribute auf allen Images
+
+## CLIENT VS SERVER COMPONENTS
+# ============================
+
+### "use client" verwenden wenn:
+- useState, useEffect, useRef oder andere Hooks
+- Event Handler (onClick, onChange, etc.)
+- Browser APIs (window, IntersectionObserver)
+- Interaktive UI (Accordions, Forms, Modals)
+
+### Aktuelle Client Components:
+- `components/Navbar.tsx` (usePathname)
+- `components/TrustSlider.tsx` (IntersectionObserver)
+- `components/UploadForm.tsx` (useState, File handling)
+- `components/ScrollToTop.tsx` (usePathname, useLayoutEffect)
+- `app/kontakt/page.tsx` (Form state)
+- `app/branchen/page.tsx` (Accordion state)
+- `app/faq/page.tsx` (Accordion state)
+
+### Server Components (default):
+- Alle anderen Seiten und Komponenten
+- Layout.tsx
+- CTASection, Footer
+
+## CODE-STIL & KONVENTIONEN
+# =========================
+
+### TypeScript
+- Strict mode aktiviert
+- Interfaces für Props definieren
+- Readonly für Props: `Readonly<{ children: React.ReactNode }>`
+
+### Imports
+```tsx
+// 1. React/Next imports
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+
+// 2. Third-party imports
+import { Icon1, Icon2 } from "lucide-react";
+
+// 3. Local imports
+import { cn } from "@/lib/utils";
+import ComponentName from "@/components/ComponentName";
+```
+
+### cn() Utility
+Für bedingte Klassen verwenden:
+```tsx
+import { cn } from "@/lib/utils";
+
+className={cn(
+  "base-classes",
+  condition && "conditional-classes",
+  anotherCondition ? "if-true" : "if-false"
+)}
+```
+
+### Component Structure
+```tsx
+// Props Interface (wenn nötig)
+interface ComponentProps {
+  title: string;
+  optional?: boolean;
+}
+
+// Component
+export default function ComponentName({ title, optional = false }: ComponentProps) {
+  // Hooks
+  const [state, setState] = useState();
+  
+  // Handlers
+  const handleClick = () => {};
+  
+  // Render
+  return (
+    <main>
+      <section>...</section>
+    </main>
+  );
+}
+```
+
+### Seiten-Struktur
+Jede Seite folgt diesem Muster:
+```tsx
+export default function PageName() {
+  return (
+    <main>
+      {/* Hero Section - Volle Höhe */}
+      <section className="... h-[calc(100dvh-5rem)] ...">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Icon Box (optional) */}
+            <h1>...</h1>
+            <p>...</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Content Sections */}
+      <section className="py-24 bg-white">...</section>
+      <section className="py-24 bg-gradient-to-br from-white to-surface-100">...</section>
+
+      {/* CTA Section */}
+      <CTASection
+        title="..."
+        subtitle="..."
+        buttons={[
+          { text: "Kontakt aufnehmen", href: "/kontakt" },
+          { text: "Häufig gestellte Fragen", href: "/faq" },
+          { text: "Fall einreichen", href: "/einreichen", primary: true },
+        ]}
+      />
+    </main>
+  );
+}
+```
+
+## PERFORMANCE
+# ============
+
+### Images
+- Immer `next/image` verwenden
+- `width` und `height` oder `fill` angeben
+- `priority` für Above-the-fold Images
+
+### Fonts
+- Via `next/font/google` laden (automatisches Optimierung)
+- Font Variable in className verwenden
+
+### Client-Side
+- IntersectionObserver für Scroll-Animationen
+- `disconnect()` nach einmaliger Animation
+- SSR-safe Hooks: `useIsomorphicLayoutEffect`
+
+## GLASSMORPHISM
+# ==============
+
+```css
+.glass {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--white);
+}
+
+.glass-dark {
+  background: rgba(19, 17, 31, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+```
+
+Aktuell verwendet: Navbar
+
+## WIEDERVERWENDBARE KOMPONENTEN
+# ==============================
+
+### CTASection
+```tsx
+<CTASection
+  title="Titel"
+  subtitle="Optionaler Untertitel"
+  buttons={[
+    { text: "Button Text", href: "/pfad" },
+    { text: "Primary Button", href: "/pfad", primary: true },
+  ]}
+/>
+```
+
+### TrustSlider
+Zeigt Partner-Logos mit Fade-in Animation.
+
+### UploadForm
+Vollständiges Drag-&-Drop Upload-Formular mit Supabase-Integration.
+
+### ScrollToTop
+Automatischer Scroll-Reset bei Client-Navigation.
+
+### Navbar / Footer
+In Layout eingebunden, nicht manuell verwenden.
+
+# ============================================
+# BEKANNTE INKONSISTENZEN & TECHNISCHE SCHULDEN
+# ============================================
+
+## ⚠️ Zu behebende Probleme:
+
+1. **Legacy Color Mappings**
+   - In `globals.css` existieren noch `--color-primary`, `--color-signal`, `--color-muted`
+   - Diese sind als "TODO: Remove after full migration" markiert
+   - NICHT verwenden, stattdessen die neuen Tokens nutzen
+
+2. **Undefined Variable**
+   - `body` Hintergrund referenziert `--surface-50`, welches NICHT definiert ist
+   - Sollte `--ghost-white` oder `--surface-100` sein
+
+3. **Inkonsistente Success-Farben**
+   - Erfolgs-Meldungen verwenden hardcoded `green-*` Tailwind-Klassen
+   - Sollte `--success` Token verwenden
+   - Betrifft: UploadForm.tsx, kontakt/page.tsx
+
+4. **CTASection Key-Warning**
+   - `buttons.map((button, index) => ...)` verwendet `index` als key
+   - Potenzielle React-Warnung bei Re-renders
+
+5. **Impressum Placeholder-Daten**
+   - `app/impressum/page.tsx` enthält Dummy-Daten
+   - Muss mit echten Unternehmensdaten aktualisiert werden
+
+6. **Prose-Klasse Inkonsistenz**
+   - Manche Seiten verwenden `prose prose-lg`, andere custom styling
+   - Sollte einheitlich sein
+
+7. **ArrowRight Doppel-Import**
+   - In `app/faq/page.tsx` wird ArrowRight doppelt importiert (Zeile 4 & 7)
+
+# ============================================
+# OPTIONALE VERBESSERUNGSVORSCHLÄGE
+# ============================================
+
+Diese Vorschläge sind NICHT im aktuellen Code implementiert:
+
+1. **Meta-Tags pro Seite**
+   - Individuelle `metadata` Exports für jede Seite
+   - OpenGraph / Twitter Cards
+
+2. **Loading States**
+   - loading.tsx für Seiten-Transitions
+   - Skeleton Components
+
+3. **Error Handling**
+   - error.tsx Boundaries
+   - not-found.tsx Seite
+
+4. **Form Validation**
+   - React Hook Form oder Zod Integration
+   - Inline Validation statt alert()
+
+5. **Supabase Error Handling**
+   - Toast Notifications statt console.error
+   - Retry Logic
+
+6. **Mobile Navigation**
+   - Hamburger Menu für mobile Breakpoints
+   - Aktuell keine mobile Nav implementiert!
+
+7. **Animation Library**
+   - Framer Motion für komplexere Animationen
+   - Staggered Animations
+
+8. **Dark Mode**
+   - Design Tokens sind vorbereitet
+   - Implementation fehlt
+
+9. **i18n**
+   - Aktuell hardcoded Deutsch
+   - Next-intl für Mehrsprachigkeit
+
+10. **Testing**
+    - Keine Tests vorhanden
+    - Jest + React Testing Library empfohlen
+
