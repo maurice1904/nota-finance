@@ -185,13 +185,13 @@ export default function UploadForm() {
     <div className="max-w-4xl mx-auto">
       {/* Success Message */}
       {submitSuccess && (
-        <div className="mb-8 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-6 flex items-start gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
-          <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+        <div className="mb-8 bg-success/10 border-2 border-success/30 rounded-2xl p-6 flex items-start gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
+          <CheckCircle className="w-6 h-6 text-success flex-shrink-0 mt-1" />
           <div>
-            <h3 className="text-lg font-bold text-green-900 mb-1">
+            <h3 className="text-lg font-bold text-text-900 mb-1">
               Erfolgreich eingereicht!
             </h3>
-            <p className="text-green-700">
+            <p className="text-text-900/70">
               Ihre Fälle wurden erfolgreich hochgeladen. Sie erhalten in Kürze eine 
               Bestätigungs-E-Mail mit Ihrem Aktenzeichen.
             </p>

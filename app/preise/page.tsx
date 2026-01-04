@@ -27,7 +27,7 @@ export default function PreisePage() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="prose prose-lg max-w-none">
+            <div className="prose prose-lg max-w-none text-text-900/70">
               <p className="text-lg text-text-900/70 leading-relaxed mb-8">
                 Für Sie als Auftraggeber ist das außergerichtliche Mahnverfahren bei Nota Finance 
                 im Erfolgsfall in der Regel kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen 

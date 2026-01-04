@@ -29,9 +29,9 @@ export default function CTASection({ title, subtitle, buttons }: CTASectionProps
         )}
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          {buttons.map((button, index) => (
+          {buttons.map((button) => (
             <Link
-              key={index}
+              key={button.href}
               href={button.href}
               className={
                 button.primary

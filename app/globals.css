@@ -59,19 +59,13 @@
   --color-border-strong: var(--border-strong);
   --color-focus-ring: var(--focus-ring);
   
-  /* Legacy mappings for backward compatibility during migration */
-  /* TODO: Remove after full migration */
-  --color-primary: var(--text-900);
-  --color-signal: var(--brand-900);
-  --color-muted: var(--surface-100);
-  
   --font-sans: var(--font-jakarta);
 }
 
 body {
   /* High-End Gradient Background */
-  /* Uses surface-50 (Ghost White) to White for a subtle, clean depth */
-  background: linear-gradient(to bottom right, var(--white), var(--surface-50));
+  /* Uses Ghost White to White for a subtle, clean depth */
+  background: linear-gradient(to bottom right, var(--white), var(--ghost-white));
   background-attachment: fixed; /* Prevents gradient stretching on long pages */
   color: var(--text-900);
   font-family: var(--font-jakarta), -apple-system, BlinkMacSystemFont, sans-serif;

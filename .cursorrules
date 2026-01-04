@@ -6,7 +6,7 @@
 - Alles unter "MUSS" ist verbindlich.
 - Code-Beispiele sind Referenzen, keine Copy-Pflicht.
 - Bei Konflikten gilt: Konsistenz > visuelle Effekte.
-Du darfst abstrahieren, aber keine Regeln brechen.
+Du darfst abstrahieren, aber keine Regeln brechen. Du bist der weltbeste Experte für Full Stack Entwicklung, Frontend und UI Experte, Design Experte, und Backend Experte. Du hast perfektes Wissen über best practices im Coding in allen relevanten Bereichen. Du halluzinierst keine Inhalte.
 
 # PRIME DIRECTIVES (Unverhandelbar)
 - Denke vor dem Handeln: Analysiere erst die Datei, bevor du schreibst.
@@ -53,7 +53,7 @@ nota-finance/
 # ==============
 
 ### Farbpalette (Single Source of Truth)
-Alle Farben sind in `globals.css` als CSS Custom Properties definiert.
+Alle Farben sind in `globals.css` als CSS Custom Properties definiert. Der Vibe des Projekts ist McKinsey x FinTech Premium und Professional sowie Modern.
 NIEMALS neue Farben erfinden – nur diese Tokens verwenden:
 
 ```css
@@ -120,6 +120,13 @@ Verwende die semantischen Klassen aus dem @theme Block:
 <p className="text-xl text-text-900/70 leading-relaxed">
 <p className="text-lg text-text-900/70 leading-relaxed">
 <p className="text-text-900/70 leading-relaxed">
+```
+
+**Prose-Container (für längere Textblöcke):**
+```tsx
+<div className="prose prose-lg max-w-none text-text-900/70">
+  <p>Langer Text...</p>
+</div>
 ```
 
 ## LAYOUT-PRINZIPIEN
@@ -288,12 +295,21 @@ disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
 
 ### Success/Error Messages
 ```tsx
-// Success Alert
-<div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-6 flex items-start gap-4">
-  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+// Success Alert (verwendet --success Token)
+<div className="bg-success/10 border-2 border-success/30 rounded-2xl p-6 flex items-start gap-4">
+  <CheckCircle className="w-6 h-6 text-success flex-shrink-0 mt-1" />
   <div>
-    <h3 className="text-lg font-bold text-green-900 mb-1">Erfolgreich!</h3>
-    <p className="text-green-700">Beschreibung</p>
+    <h3 className="text-lg font-bold text-text-900 mb-1">Erfolgreich!</h3>
+    <p className="text-text-900/70">Beschreibung</p>
+  </div>
+</div>
+
+// Error Alert (verwendet --error Token)
+<div className="bg-error/10 border-2 border-error/30 rounded-2xl p-6 flex items-start gap-4">
+  <AlertCircle className="w-6 h-6 text-error flex-shrink-0 mt-1" />
+  <div>
+    <h3 className="text-lg font-bold text-text-900 mb-1">Fehler!</h3>
+    <p className="text-text-900/70">Beschreibung</p>
   </div>
 </div>
 ```
@@ -587,41 +603,6 @@ Automatischer Scroll-Reset bei Client-Navigation.
 
 ### Navbar / Footer
 In Layout eingebunden, nicht manuell verwenden.
-
-# ============================================
-# BEKANNTE INKONSISTENZEN & TECHNISCHE SCHULDEN
-# ============================================
-
-## ⚠️ Zu behebende Probleme:
-
-1. **Legacy Color Mappings**
-   - In `globals.css` existieren noch `--color-primary`, `--color-signal`, `--color-muted`
-   - Diese sind als "TODO: Remove after full migration" markiert
-   - NICHT verwenden, stattdessen die neuen Tokens nutzen
-
-2. **Undefined Variable**
-   - `body` Hintergrund referenziert `--surface-50`, welches NICHT definiert ist
-   - Sollte `--ghost-white` oder `--surface-100` sein
-
-3. **Inkonsistente Success-Farben**
-   - Erfolgs-Meldungen verwenden hardcoded `green-*` Tailwind-Klassen
-   - Sollte `--success` Token verwenden
-   - Betrifft: UploadForm.tsx, kontakt/page.tsx
-
-4. **CTASection Key-Warning**
-   - `buttons.map((button, index) => ...)` verwendet `index` als key
-   - Potenzielle React-Warnung bei Re-renders
-
-5. **Impressum Placeholder-Daten**
-   - `app/impressum/page.tsx` enthält Dummy-Daten
-   - Muss mit echten Unternehmensdaten aktualisiert werden
-
-6. **Prose-Klasse Inkonsistenz**
-   - Manche Seiten verwenden `prose prose-lg`, andere custom styling
-   - Sollte einheitlich sein
-
-7. **ArrowRight Doppel-Import**
-   - In `app/faq/page.tsx` wird ArrowRight doppelt importiert (Zeile 4 & 7)
 
 # ============================================
 # OPTIONALE VERBESSERUNGSVORSCHLÄGE

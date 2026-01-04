@@ -13,7 +13,7 @@ export default function UnternehmenPage() {
               Über <span className="text-brand-900">Nota Finance</span>
             </h1>
             
-            <div className="prose prose-lg max-w-none">
+            <div className="prose prose-lg max-w-none text-text-900/70">
               <p className="text-xl text-text-900/70 leading-relaxed mb-8">
                 Nota Finance ist die innovative Digital-Marke der twenty4collect GmbH, einem digitalen 
                 Vorreiter und BDIU-zertifizierten Inkassounternehmen mit über 15 Jahren Erfahrung im 
