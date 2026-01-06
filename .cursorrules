@@ -637,35 +637,31 @@ Automatischer Loading-State für Seiten-Transitions mit zentriertem Spinner.
 
 Diese Vorschläge sind NICHT im aktuellen Code implementiert:
 
-1. **Error Handling**
-   - error.tsx Boundaries
-   - not-found.tsx Seite
-
-2. **Form Validation**
+1. **Form Validation**
    - React Hook Form oder Zod Integration
    - Inline Validation statt alert()
 
-3. **Supabase Error Handling**
+2. **Supabase Error Handling**
    - Toast Notifications statt console.error
    - Retry Logic
 
-4. **Mobile Navigation**
+3. **Mobile Navigation**
    - Hamburger Menu für mobile Breakpoints
    - Aktuell keine mobile Nav implementiert!
 
-5. **Animation Library**
+4. **Animation Library**
    - Framer Motion für komplexere Animationen
    - Staggered Animations
 
-6. **Dark Mode**
+5. **Dark Mode**
    - Design Tokens sind vorbereitet
    - Implementation fehlt
 
-7. **i18n**
+6. **i18n**
    - Aktuell hardcoded Deutsch
    - Next-intl für Mehrsprachigkeit
 
-8. **Testing**
+7. **Testing**
    - Keine Tests vorhanden
    - Jest + React Testing Library empfohlen
 
