@@ -33,8 +33,8 @@ export default function Home() {
             </h1>
               
               <p className="text-xl md:text-2xl text-text-900/70 mb-12 leading-relaxed">
-                Inkasso der neusten Generation: Einfach, digital, kundenorientiert, zuverlässig. 
-                Laden Sie ihre Rechnung hoch und wir kümmern uns um den Rest. Die effizienteste 
+                Inkasso der neusten Generation: Einfach, digital, zuverlässig. 
+                Laden Sie einfach Ihre Rechnung hoch und wir kümmern uns um den Rest. Die effizienteste 
                 Inkasso-Lösung für Selbstständige sowie kleine und mittlere Unternehmen aller 
                 Branchen mit Forderungshöhen ab 50€.
               </p>

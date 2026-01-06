@@ -150,11 +150,15 @@ Jede Seite beginnt mit einem Hero, der die volle Viewport-Höhe abzüglich der N
 <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col justify-center py-8">
 ```
 
-### Navbar
+### Navbar (Responsive)
 - Höhe: `h-20` (5rem)
 - Position: `sticky top-0 z-50`
-- Effekt: `.glass` (Glassmorphism)
-- Links absolut zentriert: `absolute left-1/2 -translate-x-1/2`
+- Effekt: `.glass` (Glassmorphism, kein extra border-b nötig)
+- **Desktop (lg+):** Links absolut zentriert (`absolute left-1/2 -translate-x-1/2`), CTA rechts
+- **Tablet/Mobile (<lg):** Hamburger Menu mit Slide-in Panel (max-w-sm, von rechts)
+- Touch-Targets: ≥44px (`w-11 h-11`)
+- Accessibility: `aria-expanded`, `aria-controls`, `aria-modal`, Escape-Key, Scroll-Lock, **Focus Trap**
+- Mobile Menu: Außerhalb `<nav>` gerendert für korrekten z-index (`z-[60]` Overlay, `z-[70]` Panel)
 
 ### Sections
 ```tsx
@@ -745,27 +749,29 @@ getSupportMessage(); // "...kontaktieren Sie uns unter service@notafinance.de"
 
 Diese Vorschläge sind NICHT im aktuellen Code implementiert:
 
-1. **Mobile Navigation**
-   - Hamburger Menu für mobile Breakpoints
-   - Aktuell keine mobile Nav implementiert!
-
-2. **Animation Library**
+1. **Animation Library**
    - Framer Motion für komplexere Animationen
    - Staggered Animations
 
-3. **Dark Mode**
+2. **Dark Mode**
    - Design Tokens sind vorbereitet
    - Implementation fehlt
 
-4. **i18n**
+3. **i18n**
    - Aktuell hardcoded Deutsch
    - Next-intl für Mehrsprachigkeit
 
-5. **Testing**
+4. **Testing**
    - Keine Tests vorhanden
    - Jest + React Testing Library empfohlen
 
-6. **Error Tracking Service**
+5. **Error Tracking Service**
    - Sentry Integration für Production
    - logError() ist bereits vorbereitet für Sentry-Anbindung
 
+6. **Mobile NavBar**
+   - Reduced CTA Button sollte immer sichtbar sein (dafür brand name raus ggfs)
+
+7. **Mobile View**
+- Hero Seiten falsch dargestellt
+- Schriften zu groß (was ist optimum / best practice?)
