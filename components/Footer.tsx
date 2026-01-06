@@ -50,7 +50,7 @@ export default function Footer() {
               href="/kontakt" 
               className="text-sm text-surface-100 hover:text-white transition-colors duration-300"
             >
-              Kontakt aufnehmen
+              Kontakt
             </Link>
           </div>
         </div>
