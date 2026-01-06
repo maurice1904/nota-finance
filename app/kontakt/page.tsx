@@ -1,7 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Send, CheckCircle, Linkedin } from "lucide-react";
+import { Mail, Send, CheckCircle, Linkedin, AlertCircle } from "lucide-react";
+
+interface FormErrors {
+  name?: string;
+  company?: string;
+  email?: string;
+  message?: string;
+  agb?: string;
+}
 
 export default function KontaktPage() {
   const [formData, setFormData] = useState({
@@ -15,12 +23,58 @@ export default function KontaktPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  // Email validation
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  // Clear specific error
+  const clearError = (field: keyof FormErrors) => {
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
+  };
+
+  // Validate form
+  const validateForm = (): FormErrors => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Bitte geben Sie Ihren Namen ein.";
+    }
+
+    if (!formData.company.trim()) {
+      newErrors.company = "Bitte geben Sie den Firmennamen ein.";
+    }
+
+    if (!formData.email) {
+      newErrors.email = "Bitte geben Sie Ihre E-Mail-Adresse ein.";
+    } else if (!isValidEmail(formData.email)) {
+      newErrors.email = "Bitte geben Sie eine gültige E-Mail-Adresse ein.";
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Bitte geben Sie eine Nachricht ein.";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Die Nachricht sollte mindestens 10 Zeichen lang sein.";
+    }
+
+    if (!formData.acceptAGB) {
+      newErrors.agb = "Bitte akzeptieren Sie die AGB und Datenschutzerklärung.";
+    }
+
+    return newErrors;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.acceptAGB) {
-      alert("Bitte akzeptieren Sie die AGB.");
+    // Validate form
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+
+    // If there are errors, don't submit
+    if (Object.keys(validationErrors).length > 0) {
       return;
     }
 
@@ -73,6 +127,22 @@ ${formData.message}
       ...prev,
       [name]: type === "checkbox" ? checked : value
     }));
+
+    // Clear error for this field
+    if (name in errors) {
+      clearError(name as keyof FormErrors);
+    }
+  };
+
+  // Inline error component
+  const FormError = ({ message }: { message: string | undefined }) => {
+    if (!message) return null;
+    return (
+      <p className="flex items-center gap-1.5 text-sm text-error mt-2 animate-in fade-in slide-in-from-top-1 duration-200">
+        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+        {message}
+      </p>
+    );
   };
 
   return (
@@ -126,12 +196,14 @@ ${formData.message}
                   type="text"
                   id="name"
                   name="name"
-                  required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border-2 border-border-subtle rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300"
+                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 ${
+                    errors.name ? "border-error" : "border-border-subtle"
+                  }`}
                   placeholder="Max Mustermann"
                 />
+                <FormError message={errors.name} />
               </div>
 
               {/* Company */}
@@ -143,12 +215,14 @@ ${formData.message}
                   type="text"
                   id="company"
                   name="company"
-                  required
                   value={formData.company}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border-2 border-border-subtle rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300"
+                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 ${
+                    errors.company ? "border-error" : "border-border-subtle"
+                  }`}
                   placeholder="Musterfirma GmbH"
                 />
+                <FormError message={errors.company} />
               </div>
 
               {/* Email */}
@@ -160,12 +234,14 @@ ${formData.message}
                   type="email"
                   id="email"
                   name="email"
-                  required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border-2 border-border-subtle rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300"
+                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 ${
+                    errors.email ? "border-error" : "border-border-subtle"
+                  }`}
                   placeholder="max@musterfirma.de"
                 />
+                <FormError message={errors.email} />
               </div>
 
               {/* Phone (optional) */}
@@ -192,47 +268,53 @@ ${formData.message}
                 <textarea
                   id="message"
                   name="message"
-                  required
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border-2 border-border-subtle rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 resize-none"
+                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 resize-none ${
+                    errors.message ? "border-error" : "border-border-subtle"
+                  }`}
                   placeholder="Beschreiben Sie hier Ihr Anliegen..."
                 />
+                <FormError message={errors.message} />
               </div>
 
               {/* AGB Checkbox */}
-              <div className="flex items-start gap-3 pt-4">
-                <input
-                  type="checkbox"
-                  id="acceptAGB"
-                  name="acceptAGB"
-                  required
-                  checked={formData.acceptAGB}
-                  onChange={handleChange}
-                  className="mt-1 w-5 h-5 text-brand-900 border-2 border-border-subtle rounded focus:ring-2 focus:ring-focus-ring transition-all duration-300"
-                />
-                <label htmlFor="acceptAGB" className="text-sm text-text-900/70 leading-relaxed">
-                  Ich akzeptiere die{" "}
-                  <a 
-                    href="/agb.pdf" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-brand-900 hover:underline font-semibold"
-                  >
-                    Allgemeinen Geschäftsbedingungen (AGB)
-                  </a>{" "}
-                  und die{" "}
-                  <a 
-                    href="/datenschutz.pdf" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-brand-900 hover:underline font-semibold"
-                  >
-                    Datenschutzerklärung
-                  </a>
-                  .
-                </label>
+              <div className="pt-4">
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    id="acceptAGB"
+                    name="acceptAGB"
+                    checked={formData.acceptAGB}
+                    onChange={handleChange}
+                    className={`mt-1 w-5 h-5 text-brand-900 border-2 rounded focus:ring-2 focus:ring-focus-ring transition-all duration-300 ${
+                      errors.agb ? "border-error" : "border-border-subtle"
+                    }`}
+                  />
+                  <label htmlFor="acceptAGB" className="text-sm text-text-900/70 leading-relaxed">
+                    Ich akzeptiere die{" "}
+                    <a 
+                      href="/agb.pdf" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-brand-900 hover:underline font-semibold"
+                    >
+                      Allgemeinen Geschäftsbedingungen (AGB)
+                    </a>{" "}
+                    und die{" "}
+                    <a 
+                      href="/datenschutz.pdf" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-brand-900 hover:underline font-semibold"
+                    >
+                      Datenschutzerklärung
+                    </a>
+                    .
+                  </label>
+                </div>
+                <FormError message={errors.agb} />
               </div>
 
               {/* Submit Button */}

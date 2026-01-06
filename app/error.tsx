@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { AlertCircle, RefreshCw, Home, Mail } from "lucide-react";
+import { logError } from "@/lib/errors";
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -19,9 +20,9 @@ interface ErrorProps {
  */
 export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
-    // Fehler nur serverseitig loggen (nicht an den Client senden)
-    // In Produktion: An Error-Tracking-Service senden (z.B. Sentry)
-    console.error("Application Error:", error.digest || "Unknown error");
+    // Strukturiertes Logging (keine sensiblen Daten an Client)
+    // In Produktion: Wird an Error-Tracking-Service gesendet (z.B. Sentry)
+    logError("GlobalErrorBoundary", error, { digest: error.digest });
   }, [error]);
 
   return (

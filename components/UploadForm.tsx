@@ -1,15 +1,26 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { Upload, X, FileText, CheckCircle, AlertCircle, Mail } from "lucide-react";
+import { useState, useCallback, useRef } from "react";
+import { Upload, X, FileText, CheckCircle, AlertCircle, Mail, RefreshCcw } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
+import { FormError, FormErrorSummary } from "@/components/FormError";
+import { useToast } from "@/components/Toast";
+import { analyzeError, logError, withRetry, getSupportMessage } from "@/lib/errors";
 
 interface UploadedFile {
   id: string;
   file: File;
-  status: "pending" | "uploading" | "success" | "error";
+  status: "pending" | "uploading" | "success" | "error" | "retrying";
   error?: string;
+  retryCount?: number;
+}
+
+interface FormErrors {
+  email?: string;
+  files?: string;
+  agb?: string;
+  submit?: string;
 }
 
 export default function UploadForm() {
@@ -19,10 +30,90 @@ export default function UploadForm() {
   const [isDragging, setIsDragging] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [successCount, setSuccessCount] = useState(0);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const toast = useToast();
+  const successRef = useRef<HTMLDivElement>(null);
 
-  // Email validation
-  const isValidEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  // Email validation - comprehensive check
+  const validateEmail = (email: string): { valid: boolean; error?: string } => {
+    if (!email || email.trim() === "") {
+      return { valid: false, error: "Bitte geben Sie Ihre E-Mail-Adresse ein." };
+    }
+
+    // Basic format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return { valid: false, error: "Ungültiges E-Mail-Format." };
+    }
+
+    // Check for common typos in domains
+    const commonDomainTypos: Record<string, string> = {
+      "gmial.com": "gmail.com",
+      "gmal.com": "gmail.com",
+      "gamil.com": "gmail.com",
+      "gmil.com": "gmail.com",
+      "gmaill.com": "gmail.com",
+      "hotmal.com": "hotmail.com",
+      "hotmai.com": "hotmail.com",
+      "outlok.com": "outlook.com",
+      "outloo.com": "outlook.com",
+      "yahooo.com": "yahoo.com",
+      "yahho.com": "yahoo.com",
+    };
+
+    const domain = email.split("@")[1]?.toLowerCase();
+    if (domain && commonDomainTypos[domain]) {
+      return { 
+        valid: false, 
+        error: `Meinten Sie ...@${commonDomainTypos[domain]}?` 
+      };
+    }
+
+    // Check for valid TLD (at least 2 characters)
+    const tld = domain?.split(".").pop();
+    if (!tld || tld.length < 2) {
+      return { valid: false, error: "Ungültige Domain-Endung." };
+    }
+
+    // Check for disposable/temporary email domains
+    const disposableDomains = [
+      "tempmail.com", "throwaway.com", "mailinator.com", "guerrillamail.com",
+      "10minutemail.com", "temp-mail.org", "fakeinbox.com", "trashmail.com"
+    ];
+    if (domain && disposableDomains.includes(domain)) {
+      return { valid: false, error: "Bitte verwenden Sie keine Wegwerf-E-Mail-Adresse." };
+    }
+
+    return { valid: true };
+  };
+
+  // Legacy helper for simple checks
+  const isValidEmail = (email: string) => validateEmail(email).valid;
+
+  // Handle email change with validation
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    clearError("email");
+    
+    // Validate on change if user has already typed something
+    if (value.length > 0) {
+      const validation = validateEmail(value);
+      if (!validation.valid && value.includes("@")) {
+        // Only show error after @ is typed to avoid premature errors
+        setErrors((prev) => ({ ...prev, email: validation.error }));
+      }
+    }
+  };
+
+  // Validate email on blur (when user leaves the field)
+  const handleEmailBlur = () => {
+    if (email.length > 0) {
+      const validation = validateEmail(email);
+      if (!validation.valid) {
+        setErrors((prev) => ({ ...prev, email: validation.error }));
+      }
+    }
   };
 
   // File validation
@@ -45,6 +136,11 @@ export default function UploadForm() {
   const handleFileSelect = (selectedFiles: FileList | null) => {
     if (!selectedFiles) return;
 
+    // Reset success state when user starts new upload
+    if (submitSuccess) {
+      setSubmitSuccess(false);
+    }
+
     const newFiles: UploadedFile[] = [];
     
     Array.from(selectedFiles).forEach((file) => {
@@ -58,6 +154,7 @@ export default function UploadForm() {
     });
 
     setFiles((prev) => [...prev, ...newFiles]);
+    clearError("files");
   };
 
   // Handle drag and drop
@@ -92,10 +189,115 @@ export default function UploadForm() {
     setFiles((prev) => prev.filter((f) => f.id !== fileId));
   };
 
-  // Upload files to Supabase
-  const uploadFiles = async () => {
+  // Upload a single file to Supabase with retry logic
+  // Returns the generated filename on success, null on failure
+  const uploadSingleFile = async (uploadedFile: UploadedFile, userEmail: string): Promise<string | null> => {
+    const fileExt = uploadedFile.file.name.split(".").pop();
+    const fileName = `${uuidv4()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    try {
+      // Step 1: Upload file to Storage
+      await withRetry(
+        async () => {
+          const { error: uploadError } = await supabase.storage
+            .from("invoices")
+            .upload(filePath, uploadedFile.file, {
+              cacheControl: "3600",
+              upsert: false,
+            });
+
+          if (uploadError) {
+            throw uploadError;
+          }
+        },
+        {
+          maxAttempts: 3,
+          baseDelay: 1000,
+          onRetry: (attempt) => {
+            // Update UI to show retry status
+            setFiles((prev) =>
+              prev.map((f) =>
+                f.id === uploadedFile.id
+                  ? { ...f, status: "retrying", retryCount: attempt }
+                  : f
+              )
+            );
+            toast.info(
+              `Erneuter Versuch (${attempt}/3)`,
+              `Upload von "${uploadedFile.file.name}" wird wiederholt...`
+            );
+          },
+        }
+      );
+
+      // Step 2: Save metadata to database (only if storage upload succeeded)
+      const { error: dbError } = await supabase
+        .from("uploads")
+        .insert({
+          email: userEmail,
+          filename: fileName,
+        });
+
+      if (dbError) {
+        // Log database error but don't fail the upload
+        // The file is already in storage, so we consider this a partial success
+        logError("UploadForm.uploadSingleFile.dbInsert", dbError, {
+          fileName,
+          email: userEmail,
+        });
+        // Note: In production, you might want to implement a cleanup or retry mechanism
+      }
+
+      return fileName;
+    } catch (error) {
+      const errorDetails = analyzeError(error);
+      logError("UploadForm.uploadSingleFile", error, {
+        fileName: uploadedFile.file.name,
+        fileSize: uploadedFile.file.size,
+      });
+
+      // Update file status with user-friendly error
+      setFiles((prev) =>
+        prev.map((f) =>
+          f.id === uploadedFile.id
+            ? { ...f, status: "error", error: errorDetails.userMessage }
+            : f
+        )
+      );
+
+      return null;
+    }
+  };
+
+  // Retry a failed upload
+  const retryUpload = async (fileId: string) => {
+    const fileToRetry = files.find((f) => f.id === fileId);
+    if (!fileToRetry || fileToRetry.status !== "error") return;
+
+    // Reset to uploading status
+    setFiles((prev) =>
+      prev.map((f) =>
+        f.id === fileId ? { ...f, status: "uploading", error: undefined, retryCount: 0 } : f
+      )
+    );
+
+    const uploadedFileName = await uploadSingleFile(fileToRetry, email);
+    if (uploadedFileName) {
+      setFiles((prev) =>
+        prev.map((f) => (f.id === fileId ? { ...f, status: "success" } : f))
+      );
+      toast.success("Upload erfolgreich", `"${fileToRetry.file.name}" wurde hochgeladen.`);
+    }
+  };
+
+  // Upload all files to Supabase (Storage + Database)
+  const uploadFiles = async (): Promise<{ success: number; failed: number; filenames: string[] }> => {
     const validFiles = files.filter((f) => f.status === "pending");
-    
+    let successCount = 0;
+    let failedCount = 0;
+    const uploadedFilenames: string[] = [];
+
     for (const uploadedFile of validFiles) {
       // Update status to uploading
       setFiles((prev) =>
@@ -104,78 +306,143 @@ export default function UploadForm() {
         )
       );
 
-      try {
-        const fileExt = uploadedFile.file.name.split(".").pop();
-        const fileName = `${uuidv4()}.${fileExt}`;
-        const filePath = `${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from("invoices")
-          .upload(filePath, uploadedFile.file, {
-            cacheControl: "3600",
-            upsert: false,
-          });
-
-        if (uploadError) {
-          throw uploadError;
-        }
-
-        // Update status to success
+      const uploadedFileName = await uploadSingleFile(uploadedFile, email);
+      
+      if (uploadedFileName) {
         setFiles((prev) =>
           prev.map((f) =>
             f.id === uploadedFile.id ? { ...f, status: "success" } : f
           )
         );
-      } catch (error) {
-        console.error("Upload error:", error);
-        setFiles((prev) =>
-          prev.map((f) =>
-            f.id === uploadedFile.id
-              ? { ...f, status: "error", error: "Upload fehlgeschlagen" }
-              : f
-          )
-        );
+        successCount++;
+        uploadedFilenames.push(uploadedFileName);
+      } else {
+        failedCount++;
       }
     }
+
+    return { success: successCount, failed: failedCount, filenames: uploadedFilenames };
+  };
+
+  // Clear specific error when user starts typing/interacting
+  const clearError = (field: keyof FormErrors) => {
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
+  };
+
+  // Validate form and return errors
+  const validateForm = (): FormErrors => {
+    const newErrors: FormErrors = {};
+
+    // Use comprehensive email validation
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.valid) {
+      newErrors.email = emailValidation.error;
+    }
+
+    if (files.length === 0) {
+      newErrors.files = "Bitte laden Sie mindestens eine Datei hoch.";
+    } else if (files.every((f) => f.status === "error")) {
+      newErrors.files = "Alle hochgeladenen Dateien sind ungültig.";
+    }
+
+    if (!acceptAGB) {
+      newErrors.agb = "Bitte akzeptieren Sie die AGB und Datenschutzerklärung.";
+    }
+
+    return newErrors;
   };
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isValidEmail(email)) {
-      alert("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
-      return;
-    }
+    // Validate form
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
 
-    if (files.length === 0) {
-      alert("Bitte laden Sie mindestens eine Datei hoch.");
-      return;
-    }
-
-    if (!acceptAGB) {
-      alert("Bitte akzeptieren Sie die AGB.");
+    // If there are errors, don't submit
+    if (Object.keys(validationErrors).length > 0) {
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      await uploadFiles();
+      const result = await uploadFiles();
       
-      // Show success message
-      setSubmitSuccess(true);
-      
-      // Reset form after 3 seconds
-      setTimeout(() => {
+      // Handle results based on success/failure counts
+      if (result.failed === 0 && result.success > 0) {
+        // All files uploaded successfully
+        setSubmitSuccess(true);
+        setSuccessCount(result.success);
+        setErrors({});
+        
+        // Reset form fields but keep success message visible
         setEmail("");
         setFiles([]);
         setAcceptAGB(false);
-        setSubmitSuccess(false);
-      }, 3000);
+        
+        // Scroll to success message (with offset for navbar)
+        setTimeout(() => {
+          if (successRef.current) {
+            const navbarHeight = 80; // h-20 = 5rem = 80px
+            const additionalOffset = 24; // Extra padding
+            const elementPosition = successRef.current.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - navbarHeight - additionalOffset;
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth"
+            });
+          }
+        }, 150);
+        
+        toast.success(
+          "Erfolgreich eingereicht!",
+          `${result.success} ${result.success === 1 ? "Datei wurde" : "Dateien wurden"} hochgeladen. Sie erhalten eine Bestätigung per E-Mail.`
+        );
+        
+        // Success message stays visible until user navigates away or uploads new files
+      } else if (result.failed > 0 && result.success > 0) {
+        // Partial success
+        toast.error(
+          "Teilweise erfolgreich",
+          `${result.success} hochgeladen, ${result.failed} fehlgeschlagen. Klicken Sie auf "Erneut versuchen" bei den fehlerhaften Dateien.`
+        );
+      } else if (result.failed > 0 && result.success === 0) {
+        // All failed
+        const errorDetails = analyzeError(new Error("All uploads failed"));
+        toast.error(
+          "Upload fehlgeschlagen",
+          `Alle Dateien konnten nicht hochgeladen werden. ${getSupportMessage()}`,
+          {
+            label: "Alle erneut versuchen",
+            onClick: () => {
+              // Reset failed files to pending and retry
+              setFiles((prev) =>
+                prev.map((f) =>
+                  f.status === "error" ? { ...f, status: "pending", error: undefined } : f
+                )
+              );
+            },
+          }
+        );
+      }
     } catch (error) {
-      console.error("Submission error:", error);
-      alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+      logError("UploadForm.handleSubmit", error);
+      const errorDetails = analyzeError(error);
+      
+      setErrors({ submit: errorDetails.userMessage });
+      toast.error(
+        "Fehler beim Einreichen",
+        errorDetails.userMessage,
+        errorDetails.isRetryable
+          ? {
+              label: "Erneut versuchen",
+              onClick: () => handleSubmit(e),
+            }
+          : undefined
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -185,23 +452,62 @@ export default function UploadForm() {
     <div className="max-w-4xl mx-auto">
       {/* Success Message */}
       {submitSuccess && (
-        <div className="mb-8 bg-success/10 border-2 border-success/30 rounded-2xl p-6 flex items-start gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
-          <CheckCircle className="w-6 h-6 text-success flex-shrink-0 mt-1" />
-          <div>
-            <h3 className="text-lg font-bold text-text-900 mb-1">
+        <div 
+          ref={successRef}
+          className="mb-8 relative overflow-hidden bg-gradient-to-br from-white via-white to-success/5 border border-success/40 rounded-2xl p-8 animate-in fade-in slide-in-from-top-4 duration-500 shadow-lg shadow-success/10"
+        >
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-success/10 to-transparent rounded-bl-full" />
+          <div className="absolute top-6 right-6 w-10 h-10 bg-gradient-to-br from-success to-success/80 rounded-full flex items-center justify-center shadow-md shadow-success/30">
+            <CheckCircle className="w-5 h-5 text-white" />
+          </div>
+          
+          <div className="relative pr-16">
+            <h3 className="text-lg font-bold text-success mb-3">
               Erfolgreich eingereicht!
             </h3>
-            <p className="text-text-900/70">
-              Ihre Fälle wurden erfolgreich hochgeladen. Sie erhalten in Kürze eine 
-              Bestätigungs-E-Mail mit Ihrem Aktenzeichen.
+            
+            <p className="text-text-900/70 mb-6">
+              {successCount === 1 
+                ? "Ihr Fall wurde erfolgreich hochgeladen und wird jetzt von uns bearbeitet."
+                : "Ihre Fälle wurden erfolgreich hochgeladen und werden jetzt von uns bearbeitet."
+              }
             </p>
+            
+            {/* Next steps */}
+            <div className="space-y-3">
+              <p className="text-sm font-semibold text-text-900 uppercase tracking-wide">
+                Nächste Schritte
+              </p>
+              <div className="grid gap-2">
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
+                  <span className="text-sm text-text-900/70">Wir prüfen Ihre Unterlagen und melden uns bei Rückfragen</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
+                  <span className="text-sm text-text-900/70">Wir senden Ihnen eine Bestätigungs-E-Mail mit eindeutigem Aktenzeichen</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
+                  <span className="text-sm text-text-900/70">Wir starten den Inkassoprozess automatisch nach Prüfung</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Error Summary */}
+        {errors.submit && (
+          <FormErrorSummary errors={[errors.submit]} />
+        )}
+
         {/* Email Input */}
-        <div className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8">
+        <div className={`bg-gradient-to-br from-white to-surface-100/50 border-2 rounded-2xl p-8 ${
+          errors.email ? "border-error/30" : "border-border-subtle"
+        }`}>
           <label htmlFor="email" className="block text-lg font-semibold text-text-900 mb-3">
             Ihre E-Mail-Adresse *
           </label>
@@ -209,21 +515,35 @@ export default function UploadForm() {
             type="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-4 py-4 bg-white border-2 border-border-subtle rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 text-lg"
+            onChange={(e) => handleEmailChange(e.target.value)}
+            onBlur={handleEmailBlur}
+            className={`w-full px-4 py-4 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 text-lg ${
+              errors.email ? "border-error" : "border-border-subtle"
+            }`}
             placeholder="ihre.email@beispiel.de"
           />
-          <p className="text-sm text-neutral-500 mt-2">
-            Ohne E-Mail-Adresse ist kein Upload möglich. Sie erhalten die Bestätigung an diese Adresse.
-          </p>
+          <FormError message={errors.email} />
+          {!errors.email && email && isValidEmail(email) && (
+            <p className="flex items-center text-sm text-success mt-2">
+              <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ marginRight: "8px" }} />
+              <span>E-Mail-Adresse ist gültig</span>
+            </p>
+          )}
+          {!errors.email && !email && (
+            <p className="text-sm text-neutral-500 mt-2">
+              Ohne gültige E-Mail-Adresse ist kein Upload möglich. Sie erhalten die Bestätigung an diese Adresse.
+            </p>
+          )}
         </div>
 
         {/* File Upload Area */}
-        <div className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8">
+        <div className={`bg-gradient-to-br from-white to-surface-100/50 border-2 rounded-2xl p-8 ${
+          errors.files ? "border-error/50" : "border-border-subtle"
+        }`}>
           <h3 className="text-lg font-semibold text-text-900 mb-4">
             Dateien hochladen *
           </h3>
+          <FormError message={errors.files} />
 
           {/* Drag & Drop Zone */}
           <div
@@ -289,7 +609,13 @@ export default function UploadForm() {
               {files.map((uploadedFile) => (
                 <div
                   key={uploadedFile.id}
-                  className="flex items-center gap-3 p-4 bg-white border border-border-subtle rounded-lg"
+                  className={`flex items-center gap-3 p-4 bg-white border rounded-lg transition-all duration-300 ${
+                    uploadedFile.status === "error"
+                      ? "border-error/50 bg-error/5"
+                      : uploadedFile.status === "success"
+                      ? "border-success/50 bg-success/5"
+                      : "border-border-subtle"
+                  }`}
                 >
                   <FileText className="w-8 h-8 text-brand-900 flex-shrink-0" />
                   
@@ -299,6 +625,11 @@ export default function UploadForm() {
                     </p>
                     <p className="text-sm text-neutral-500">
                       {(uploadedFile.file.size / 1024 / 1024).toFixed(2)} MB
+                      {uploadedFile.status === "retrying" && uploadedFile.retryCount && (
+                        <span className="ml-2 text-warning">
+                          • Versuch {uploadedFile.retryCount}/3
+                        </span>
+                      )}
                     </p>
                     {uploadedFile.error && (
                       <p className="text-sm text-error mt-1">{uploadedFile.error}</p>
@@ -310,7 +641,7 @@ export default function UploadForm() {
                     {uploadedFile.status === "pending" && (
                       <div className="w-6 h-6 border-2 border-border-subtle rounded-full" />
                     )}
-                    {uploadedFile.status === "uploading" && (
+                    {(uploadedFile.status === "uploading" || uploadedFile.status === "retrying") && (
                       <div className="w-6 h-6 border-2 border-brand-900 border-t-transparent rounded-full animate-spin" />
                     )}
                     {uploadedFile.status === "success" && (
@@ -321,52 +652,75 @@ export default function UploadForm() {
                     )}
                   </div>
 
-                  {/* Remove Button */}
-                  {uploadedFile.status === "pending" && (
-                    <button
-                      type="button"
-                      onClick={() => removeFile(uploadedFile.id)}
-                      className="flex-shrink-0 p-1 hover:bg-surface-100 rounded transition-colors duration-300"
-                    >
-                      <X className="w-5 h-5 text-neutral-500" />
-                    </button>
-                  )}
+                  {/* Action Buttons */}
+                  <div className="flex-shrink-0 flex items-center gap-1">
+                    {/* Retry Button for failed uploads */}
+                    {uploadedFile.status === "error" && (
+                      <button
+                        type="button"
+                        onClick={() => retryUpload(uploadedFile.id)}
+                        className="p-1.5 hover:bg-surface-100 rounded transition-colors duration-300 text-brand-900"
+                        title="Erneut versuchen"
+                      >
+                        <RefreshCcw className="w-5 h-5" />
+                      </button>
+                    )}
+                    
+                    {/* Remove Button */}
+                    {(uploadedFile.status === "pending" || uploadedFile.status === "error") && (
+                      <button
+                        type="button"
+                        onClick={() => removeFile(uploadedFile.id)}
+                        className="p-1.5 hover:bg-surface-100 rounded transition-colors duration-300"
+                        title="Entfernen"
+                      >
+                        <X className="w-5 h-5 text-neutral-500" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
           {/* AGB Checkbox */}
-          <div className="flex items-start gap-3 mt-6 pt-6 border-t border-border-subtle">
-            <input
-              type="checkbox"
-              id="acceptAGB"
-              checked={acceptAGB}
-              onChange={(e) => setAcceptAGB(e.target.checked)}
-              required
-              className="mt-1 w-5 h-5 text-brand-900 border-2 border-border-subtle rounded focus:ring-2 focus:ring-focus-ring transition-all duration-300"
-            />
-            <label htmlFor="acceptAGB" className="text-sm text-text-900/70 leading-relaxed">
-              Ich akzeptiere die{" "}
-              <a
-                href="/agb.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-brand-900 hover:underline font-semibold"
-              >
-                Allgemeinen Geschäftsbedingungen (AGB)
-              </a>{" "}
-              und die{" "}
-              <a
-                href="/datenschutz.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-brand-900 hover:underline font-semibold"
-              >
-                Datenschutzerklärung
-              </a>
-              .
-            </label>
+          <div className="mt-6 pt-6 border-t border-border-subtle">
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="acceptAGB"
+                checked={acceptAGB}
+                onChange={(e) => {
+                  setAcceptAGB(e.target.checked);
+                  clearError("agb");
+                }}
+                className={`w-5 h-5 text-brand-900 border-2 rounded focus:ring-2 focus:ring-focus-ring transition-all duration-300 flex-shrink-0 ${
+                  errors.agb ? "border-error" : "border-border-subtle"
+                }`}
+              />
+              <label htmlFor="acceptAGB" className="text-sm text-text-900/70 leading-normal">
+                Ich akzeptiere die{" "}
+                <a
+                  href="/agb.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-900 hover:underline font-semibold"
+                >
+                  Allgemeinen Geschäftsbedingungen (AGB)
+                </a>{" "}
+                und die{" "}
+                <a
+                  href="/datenschutz.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-900 hover:underline font-semibold"
+                >
+                  Datenschutzerklärung
+                </a>
+                .
+              </label>
+            </div>
+            <FormError message={errors.agb} />
           </div>
 
           {/* Submit Button */}
@@ -402,7 +756,7 @@ export default function UploadForm() {
       <div className="mt-8 p-6 bg-surface-100 rounded-xl text-center border border-border-subtle">
         <Mail className="w-8 h-8 text-neutral-500 mx-auto mb-3" />
         <p className="text-sm text-text-900/70 mb-2">
-          Sie können ihre Fälle natürlich auch per Mail einreichen.
+          Sie können Ihre Fälle natürlich auch per Mail einreichen.
         </p>
         <p className="text-sm">
           Senden Sie dazu einfach eine Mail an{" "}

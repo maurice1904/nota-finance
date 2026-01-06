@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import { Providers } from "@/components/Providers";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -96,10 +97,12 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.variable} antialiased font-sans`}
       >
-        <ScrollToTop />
-        <Navbar />
-        {children}
-        <Footer />
+        <Providers>
+          <ScrollToTop />
+          <Navbar />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

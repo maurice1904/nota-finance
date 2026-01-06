@@ -604,6 +604,10 @@ Automatischer Scroll-Reset bei Client-Navigation.
 ### Navbar / Footer
 In Layout eingebunden, nicht manuell verwenden.
 
+### Providers (components/Providers.tsx)
+Client-side Provider-Wrapper für Context (ToastProvider etc.).
+Im Root Layout eingebunden – nicht manuell verwenden.
+
 ### Skeleton (Loading States)
 ```tsx
 import { Skeleton, SkeletonCard, SkeletonText, SkeletonButton } from "@/components/Skeleton";
@@ -622,6 +626,110 @@ import { Skeleton, SkeletonCard, SkeletonText, SkeletonButton } from "@/componen
 ### Loading (app/loading.tsx)
 Automatischer Loading-State für Seiten-Transitions mit zentriertem Spinner.
 
+### FormError (Inline Validation)
+```tsx
+import { FormError, FormErrorSummary } from "@/components/FormError";
+
+// Einzelner Feld-Fehler (unter dem Input)
+<FormError message={errors.email} />
+
+// Fehler-Zusammenfassung (oben im Formular)
+<FormErrorSummary errors={["Fehler 1", "Fehler 2"]} />
+```
+
+**Pattern für Formular-Validation:**
+```tsx
+interface FormErrors {
+  email?: string;
+  // ... weitere Felder
+}
+
+const [errors, setErrors] = useState<FormErrors>({});
+
+const clearError = (field: keyof FormErrors) => {
+  setErrors((prev) => ({ ...prev, [field]: undefined }));
+};
+
+const validateForm = (): FormErrors => {
+  const newErrors: FormErrors = {};
+  if (!email) newErrors.email = "Bitte geben Sie Ihre E-Mail ein.";
+  return newErrors;
+};
+
+// Im Submit-Handler:
+const validationErrors = validateForm();
+setErrors(validationErrors);
+if (Object.keys(validationErrors).length > 0) return;
+
+// Input mit Error-State:
+<input
+  className={`... ${errors.email ? "border-error" : "border-border-subtle"}`}
+  onChange={(e) => { setValue(e.target.value); clearError("email"); }}
+/>
+<FormError message={errors.email} />
+```
+
+### Toast Notifications (components/Toast.tsx)
+```tsx
+import { useToast } from "@/components/Toast";
+
+const toast = useToast();
+
+// Success Toast
+toast.success("Erfolgreich!", "Ihre Daten wurden gespeichert.");
+
+// Error Toast mit optionaler Retry-Action
+toast.error(
+  "Upload fehlgeschlagen",
+  "Bitte versuchen Sie es erneut.",
+  {
+    label: "Erneut versuchen",
+    onClick: () => handleRetry(),
+  }
+);
+
+// Info Toast
+toast.info("Hinweis", "Die Verarbeitung läuft...");
+```
+
+**Toast-Typen:** `success`, `error`, `info`, `warning`
+**Auto-Dismiss:** Success/Info: 5s, Error: 8s
+
+### Error Handling (lib/errors.ts)
+```tsx
+import { analyzeError, logError, withRetry, getSupportMessage } from "@/lib/errors";
+
+// Fehler analysieren (user-freundliche Meldung)
+const errorDetails = analyzeError(error);
+// errorDetails.userMessage  - Für UI (sicher, keine technischen Details)
+// errorDetails.isRetryable  - Soll Retry angeboten werden?
+// errorDetails.code         - Interner Fehlercode
+
+// Strukturiertes Logging (server-side only)
+logError("UploadForm", error, { fileId: "123" });
+
+// Retry-Wrapper mit exponential backoff
+const result = await withRetry(
+  async () => await supabase.storage.upload(...),
+  {
+    maxAttempts: 3,
+    baseDelay: 1000,
+    onRetry: (attempt, errorDetails) => {
+      toast.info(`Versuch ${attempt}/3...`);
+    },
+  }
+);
+
+// Support-Nachricht
+getSupportMessage(); // "...kontaktieren Sie uns unter service@notafinance.de"
+```
+
+**Best Practices:**
+- Niemals rohe Fehlermeldungen an den User
+- `logError()` für alle Fehler (DSGVO-konform)
+- `withRetry()` für alle externen API-Calls
+- Toast für User-Feedback, nicht console.error
+
 # ============================================
 # BEKANNTE TODOS
 # ============================================
@@ -637,31 +745,27 @@ Automatischer Loading-State für Seiten-Transitions mit zentriertem Spinner.
 
 Diese Vorschläge sind NICHT im aktuellen Code implementiert:
 
-1. **Form Validation**
-   - React Hook Form oder Zod Integration
-   - Inline Validation statt alert()
-
-2. **Supabase Error Handling**
-   - Toast Notifications statt console.error
-   - Retry Logic
-
-3. **Mobile Navigation**
+1. **Mobile Navigation**
    - Hamburger Menu für mobile Breakpoints
    - Aktuell keine mobile Nav implementiert!
 
-4. **Animation Library**
+2. **Animation Library**
    - Framer Motion für komplexere Animationen
    - Staggered Animations
 
-5. **Dark Mode**
+3. **Dark Mode**
    - Design Tokens sind vorbereitet
    - Implementation fehlt
 
-6. **i18n**
+4. **i18n**
    - Aktuell hardcoded Deutsch
    - Next-intl für Mehrsprachigkeit
 
-7. **Testing**
+5. **Testing**
    - Keine Tests vorhanden
    - Jest + React Testing Library empfohlen
+
+6. **Error Tracking Service**
+   - Sentry Integration für Production
+   - logError() ist bereits vorbereitet für Sentry-Anbindung
 
