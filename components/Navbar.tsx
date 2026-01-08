@@ -102,11 +102,11 @@ export default function Navbar() {
       <nav className="sticky top-0 z-50 glass" aria-label="Hauptnavigation">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex items-center justify-between h-20">
-            {/* Logo */}
+            {/* Logo + Brand Name */}
             <Link 
               href="/" 
               onClick={() => handleLinkClick("/")}
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-300"
+              className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity duration-300"
             >
               <Image
                 src="/logo.png"
@@ -115,7 +115,12 @@ export default function Navbar() {
                 height={40}
                 className="object-contain"
               />
-              <span className="text-2xl font-bold text-text-900 leading-none">
+              {/* Mobile: Stacked brand name */}
+              <span className="sm:hidden text-base font-bold text-text-900 leading-tight">
+                Nota<br />Finance
+              </span>
+              {/* Desktop/Tablet: Single line brand name */}
+              <span className="hidden sm:block text-2xl font-bold text-text-900 leading-none">
                 Nota Finance
               </span>
             </Link>
@@ -143,8 +148,17 @@ export default function Navbar() {
             </div>
 
             {/* Right side: CTA + Hamburger */}
-            <div className="flex items-center gap-3">
-              {/* CTA Button - Hidden on mobile (<sm), visible on sm+ */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* Mobile CTA Button - Stacked text, visible only on mobile (<sm) */}
+              <Link
+                href="/einreichen"
+                onClick={() => handleLinkClick("/einreichen")}
+                className="sm:hidden bg-brand-900 text-white px-3 py-2 rounded-lg font-semibold text-xs text-center leading-tight hover:bg-brand-700 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              >
+                Fall<br />einreichen
+              </Link>
+
+              {/* Desktop/Tablet CTA Button - Single line, visible on sm+ */}
               <Link
                 href="/einreichen"
                 onClick={() => handleLinkClick("/einreichen")}
