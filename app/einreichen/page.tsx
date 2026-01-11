@@ -50,10 +50,10 @@ export default function EinreichenPage() {
       {/* Bottom Links */}
       <section className="py-16 bg-gradient-to-br from-surface-100/30 via-white to-brand-700/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
             <Link
               href="/produkt"
-              className="group inline-flex items-center gap-2 bg-white text-text-900 px-6 py-3 rounded-lg font-semibold border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 bg-white text-text-900 px-6 sm:px-6 py-3 sm:py-3 rounded-lg font-semibold text-base border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
               <HelpCircle className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 transition-colors duration-300" />
               Warum Nota Finance?
@@ -61,7 +61,7 @@ export default function EinreichenPage() {
             
             <Link
               href="/kontakt"
-              className="group inline-flex items-center gap-2 bg-white text-text-900 px-6 py-3 rounded-lg font-semibold border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 bg-white text-text-900 px-6 sm:px-6 py-3 sm:py-3 rounded-lg font-semibold text-base border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
               <Mail className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 transition-colors duration-300" />
               Kontakt aufnehmen

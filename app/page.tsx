@@ -62,7 +62,7 @@ export default function Home() {
                 
                 <Link
                   href="/einreichen"
-                  className="group bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                  className="group bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-brand-900 hover:bg-brand-700 hover:border-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
                 >
                   Fall einreichen
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -92,7 +92,7 @@ export default function Home() {
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Fall einreichen
               </h3>
-              <p className="text-text-900/70 leading-relaxed">
+              <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
                 Reichen Sie Ihren Fall oder mehrere Fälle direkt per Upload oder Drag-&-Drop ein. 
                 Als PDF-Datei, als E-Rechnung im XRechnungs Format oder als E-Rechnung im ZUGFeRD 
                 Format. Sie können Ihre Fälle alternativ auch per Mail einreichen.
@@ -107,7 +107,7 @@ export default function Home() {
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Wir übernehmen
               </h3>
-              <p className="text-text-900/70 leading-relaxed">
+              <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
                 Den Eingang inklusive Aktenzeichen bestätigen wir automatisch nach Prüfung der 
                 Dokumente per Bestätigungs-E-Mail. Wir führen das außergerichtliche Mahnverfahren 
                 durch und leiten bei Bedarf nach Rücksprache mit Ihnen auch das gerichtliche 
@@ -123,7 +123,7 @@ export default function Home() {
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Zahlung erhalten
               </h3>
-              <p className="text-text-900/70 leading-relaxed">
+              <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
                 Sobald der Kunde die Forderung beglichen hat, erhalten Sie 100% des Rechnungsbetrages. 
                 Die gesetzlich festgelegten Gebühren sind nicht von Ihnen, sondern vom Schuldner zu tragen.
               </p>
@@ -155,15 +155,37 @@ export default function Home() {
           </div>
 
           <div className="relative max-w-4xl mx-auto">
-            {/* Timeline Line */}
+            {/* Desktop Timeline Line (center) */}
             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-900 via-brand-700 to-surface-100 transform -translate-x-1/2" />
 
+            {/* Mobile Timeline Line (left side) */}
+            <div className="md:hidden absolute left-6 top-6 bottom-6 w-0.5 bg-gradient-to-b from-brand-900 via-brand-700 to-surface-100" />
+
             {/* Timeline Items */}
-            <div className="space-y-16">
+            <div className="space-y-12 md:space-y-16">
               {/* Punkt 1 */}
-              <div className="relative flex items-center">
-                <div className="md:w-1/2 md:pr-12 text-right">
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3">
+              <div className="relative flex items-start md:items-center">
+                {/* Mobile: Number circle on left */}
+                <div className="md:hidden flex-shrink-0 w-12 h-12 bg-brand-900 rounded-full flex items-center justify-center border-4 border-white shadow-lg z-10">
+                  <span className="text-white font-bold">1</span>
+                </div>
+                
+                {/* Mobile: Content on right */}
+                <div className="md:hidden pl-6 flex-1">
+                  <h3 className="text-lg font-bold text-text-900 mb-2">
+                    Außergerichtliches Mahnverfahren
+                  </h3>
+                  <p className="text-text-900/70 leading-relaxed text-sm">
+                    Wir erinnern Ihre Kunden an offene Rechnungen und führen das außergerichtliche 
+                    Mahnverfahren durch. Im außergerichtlichen Mahnverfahren entstehen Ihnen als 
+                    Auftraggeber dabei keinerlei Kosten. Ihre säumigen Kunden zahlen gesetzlich 
+                    festgelegte Gebühren.
+                  </p>
+                </div>
+
+                {/* Desktop: Content on left */}
+                <div className="hidden md:block md:w-1/2 md:pr-12 text-right">
+                  <h3 className="text-xl md:text-2xl font-bold text-text-900 mb-3">
                     Außergerichtliches Mahnverfahren
                   </h3>
                   <p className="text-text-900/70 leading-relaxed">
@@ -173,20 +195,45 @@ export default function Home() {
                     festgelegte Gebühren.
                   </p>
                 </div>
+                
+                {/* Desktop: Center circle */}
                 <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-brand-900 rounded-full items-center justify-center border-4 border-white shadow-lg">
                   <span className="text-white font-bold">1</span>
                 </div>
-                <div className="md:w-1/2" />
+                <div className="hidden md:block md:w-1/2" />
               </div>
 
               {/* Punkt 2 */}
-              <div className="relative flex items-center">
-                <div className="md:w-1/2" />
+              <div className="relative flex items-start md:items-center">
+                {/* Mobile: Number circle on left */}
+                <div className="md:hidden flex-shrink-0 w-12 h-12 bg-brand-900 rounded-full flex items-center justify-center border-4 border-white shadow-lg z-10">
+                  <span className="text-white font-bold">2</span>
+                </div>
+                
+                {/* Mobile: Content on right */}
+                <div className="md:hidden pl-6 flex-1">
+                  <h3 className="text-lg font-bold text-text-900 mb-2">
+                    Gerichtliches Mahnverfahren
+                  </h3>
+                  <p className="text-text-900/70 leading-relaxed text-sm">
+                    Sollten Ihre Kunden auch nach 10 Tagen nicht zahlen, führen wir nach Rücksprache 
+                    mit Ihnen das gerichtliche Mahnverfahren zur finalen Klärung durch. Dabei entstehen 
+                    transparente, gesetzlich festgelegte Gebühren, welche im Erfolgsfall nicht von Ihnen, 
+                    sondern vom säumigen Kunden zu zahlen sind.
+                  </p>
+                </div>
+
+                {/* Desktop: Empty left side */}
+                <div className="hidden md:block md:w-1/2" />
+                
+                {/* Desktop: Center circle */}
                 <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-brand-900 rounded-full items-center justify-center border-4 border-white shadow-lg">
                   <span className="text-white font-bold">2</span>
                 </div>
-                <div className="md:w-1/2 md:pl-12">
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3">
+                
+                {/* Desktop: Content on right */}
+                <div className="hidden md:block md:w-1/2 md:pl-12">
+                  <h3 className="text-xl md:text-2xl font-bold text-text-900 mb-3">
                     Gerichtliches Mahnverfahren
                   </h3>
                   <p className="text-text-900/70 leading-relaxed">
@@ -224,7 +271,7 @@ export default function Home() {
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Wahrung Ihrer Kundenbeziehung
               </h3>
-              <p className="text-text-900/70 leading-relaxed">
+              <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
                 Wir behandeln Ihren Kunden als Kunden und beschädigen nicht Ihre Kundenbeziehung. Ihre Kunden sollen Ihre Kunden bleiben.
               </p>
             </div>
@@ -237,7 +284,7 @@ export default function Home() {
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Keine Kosten
               </h3>
-              <p className="text-text-900/70 leading-relaxed">
+              <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
                 Für Sie als Auftraggeber ist das außergerichtliche Mahnverfahren im Erfolgsfall in 
                 der Regel kostenfrei. Die anfallenden Inkassokosten sind gesetzlich geregelt und werden 
                 von Ihrem säumigen Kunden (Schuldner) getragen. Sollte ein gerichtliches Mahnverfahren 
@@ -254,7 +301,7 @@ export default function Home() {
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Volle Rechnungsbegleichung
               </h3>
-              <p className="text-text-900/70 leading-relaxed">
+              <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
                 Im Erfolgsfall erhalten Sie 100% des Rechnungsbetrages Ihrer Ausgangsrechnung 
                 zuzüglich der Ihnen zustehenden, gesetzlich festgeschriebenen Kosten für Mahnungen 
                 und Verzugszinsen bei Zahlung durch Ihren Kunden.
