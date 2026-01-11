@@ -135,7 +135,7 @@ export default function Home() {
               href="/einreichen"
               className="inline-flex items-center gap-2 bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
-              Jetzt Fall einreichen
+              Fall einreichen
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>

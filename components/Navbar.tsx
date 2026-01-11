@@ -99,7 +99,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 glass" aria-label="Hauptnavigation">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass" aria-label="Hauptnavigation">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex items-center justify-between h-20">
             {/* Logo + Brand Name */}
@@ -187,6 +187,9 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
+      
+      {/* Spacer to prevent content from hiding under fixed navbar */}
+      <div className="h-20" aria-hidden="true" />
 
       {/* Mobile Menu - Rendered outside nav for proper z-index stacking */}
       {/* Overlay */}
