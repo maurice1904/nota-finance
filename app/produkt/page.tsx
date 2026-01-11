@@ -39,11 +39,11 @@ export default function ProduktPage() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
               Ausbleibende Zahlungen? Eine Herausforderung für jedes Unternehmen.
             </h2>
             <div className="prose prose-lg max-w-none text-text-900/70">
-              <p className="text-lg leading-relaxed">
+              <p className="text-base sm:text-lg leading-relaxed">
                 Sie haben Ihre Leistung erbracht, die Rechnung gestellt – doch die Zahlung bleibt aus. 
                 Unbezahlte Rechnungen binden Kapital, verursachen administrativen Aufwand und können die 
                 Liquidität Ihres Unternehmens empfindlich stören. Gerade für Selbstständige, kleine und 
@@ -59,10 +59,10 @@ export default function ProduktPage() {
       <section className="py-24 bg-gradient-to-br from-white to-surface-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
               Mit Nota Finance Ihr Geld einfach, sicher und schnell zurückerhalten.
             </h2>
-            <p className="text-lg text-text-900/70 leading-relaxed">
+            <p className="text-base sm:text-lg text-text-900/70 leading-relaxed">
               Nota Finance nimmt Ihnen den gesamten Prozess des Forderungseinzugs ab – von der ersten 
               Mahnung bis hin zur möglichen gerichtlichen Durchsetzung. Unser Ziel ist es, Ihre offenen 
               Forderungen ab 50€ Forderungshöhe effizient zu realisieren, während wir gleichzeitig darauf 
@@ -77,12 +77,12 @@ export default function ProduktPage() {
                 <Upload className="w-8 h-8 text-white" />
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-text-900 mb-6">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-text-900 mb-4 sm:mb-6">
                   Die einfache Falleinreichung
                 </h3>
                 <div className="space-y-4 text-text-900/70">
                   <div>
-                    <h4 className="font-bold text-lg text-text-900 mb-2">Einfach & Unkompliziert:</h4>
+                    <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">Einfach & Unkompliziert:</h4>
                     <p className="leading-relaxed">
                       Sie reichen Ihre offenen Rechnungen einfach per Upload (PDF, XRechnung, ZUGFeRD) 
                       oder Drag & Drop auf unserer Website ein. Alternativ können Sie uns die Unterlagen 
@@ -91,7 +91,7 @@ export default function ProduktPage() {
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg text-text-900 mb-2">Ohne Registrierungszwang:</h4>
+                    <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">Ohne Registrierungszwang:</h4>
                     <p className="leading-relaxed">
                       Für die Einreichung einzelner Fälle ist keine vorherige Registrierung notwendig. 
                       Sie können sofort loslegen. Wenn Sie möchten, können Sie sich natürlich gerne 
@@ -99,7 +99,7 @@ export default function ProduktPage() {
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg text-text-900 mb-2">Automatische Prüfung & Bestätigung:</h4>
+                    <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">Automatische Prüfung & Bestätigung:</h4>
                     <p className="leading-relaxed">
                       Nach dem Upload prüfen wir die Unterlagen umgehend. Sie erhalten automatisch eine 
                       Eingangsbestätigung inklusive Ihres Aktenzeichens per E-Mail.
@@ -117,18 +117,18 @@ export default function ProduktPage() {
                 <Target className="w-8 h-8 text-white" />
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-text-900 mb-6">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-text-900 mb-4 sm:mb-6">
                   Das Nota-Inkasso
                 </h3>
                 
                 {/* A) Außergerichtliches Mahnverfahren */}
                 <div className="mb-8">
-                  <h4 className="text-2xl font-bold text-text-900 mb-4">
+                  <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
                     A) Das außergerichtliche Mahnverfahren – konsequent und kundenorientiert
                   </h4>
                   <div className="space-y-4 text-text-900/70">
                     <div>
-                      <h5 className="font-bold text-lg text-text-900 mb-2">Professionelle Kommunikation:</h5>
+                      <h5 className="font-bold text-base sm:text-lg text-text-900 mb-2">Professionelle Kommunikation:</h5>
                       <p className="leading-relaxed">
                         Wir nehmen Kontakt zu Ihren säumigen Kunden auf und erinnern sie freundlich, 
                         aber bestimmt an die offene Zahlung. Unsere Kommunikation ist darauf ausgelegt, 
@@ -136,14 +136,14 @@ export default function ProduktPage() {
                       </p>
                     </div>
                     <div>
-                      <h5 className="font-bold text-lg text-text-900 mb-2">Individuelle Strategie:</h5>
+                      <h5 className="font-bold text-base sm:text-lg text-text-900 mb-2">Individuelle Strategie:</h5>
                       <p className="leading-relaxed">
                         Je nach Fall und Reaktion des Schuldners passen wir unsere Vorgehensweise an. 
                         Wir setzen auf Dialog und suchen nach gemeinsamen Lösungen.
                       </p>
                     </div>
                     <div>
-                      <h5 className="font-bold text-lg text-text-900 mb-2">Keine Kosten für Sie:</h5>
+                      <h5 className="font-bold text-base sm:text-lg text-text-900 mb-2">Keine Kosten für Sie:</h5>
                       <p className="leading-relaxed">
                         Im gesamten außergerichtlichen Mahnverfahren entstehen Ihnen als Auftraggeber 
                         keinerlei Kosten. Die gesetzlich festgelegten Mahngebühren trägt der Schuldner.
@@ -154,12 +154,12 @@ export default function ProduktPage() {
 
                 {/* B) Gerichtliches Mahnverfahren */}
                 <div>
-                  <h4 className="text-2xl font-bold text-text-900 mb-4">
+                  <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
                     B) Das gerichtliche Mahnverfahren – Wenn es nötig wird
                   </h4>
                   <div className="space-y-4 text-text-900/70">
                     <div>
-                      <h5 className="font-bold text-lg text-text-900 mb-2">Nur nach Rücksprache:</h5>
+                      <h5 className="font-bold text-base sm:text-lg text-text-900 mb-2">Nur nach Rücksprache:</h5>
                       <p className="leading-relaxed">
                         Sollte das außergerichtliche Verfahren nicht zum Erfolg führen, besprechen wir 
                         mit Ihnen das weitere Vorgehen. Erst nach Rücksprache leiten wir das gerichtliche 
@@ -167,7 +167,7 @@ export default function ProduktPage() {
                       </p>
                     </div>
                     <div>
-                      <h5 className="font-bold text-lg text-text-900 mb-2">Transparente Kosten:</h5>
+                      <h5 className="font-bold text-base sm:text-lg text-text-900 mb-2">Transparente Kosten:</h5>
                       <p className="leading-relaxed">
                         Für das gerichtliche Mahnverfahren fallen gesetzlich festgelegte Gebühren an. 
                         Im Erfolgsfall werden auch diese Kosten vom Schuldner getragen. Über alle eventuellen 
@@ -187,12 +187,12 @@ export default function ProduktPage() {
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-text-900 mb-6">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-text-900 mb-4 sm:mb-6">
                   Zahlungseingang & Auszahlung
                 </h3>
                 <div className="space-y-4 text-text-900/70">
                   <div>
-                    <h4 className="font-bold text-lg text-text-900 mb-2">100% für Sie:</h4>
+                    <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">100% für Sie:</h4>
                     <p className="leading-relaxed">
                       Sobald Ihr Kunde die Forderung (inklusive der gesetzlichen Mahngebühren und 
                       Verzugszinsen) begleicht, erhalten Sie 100% des ursprünglichen Rechnungsbetrages 
@@ -201,7 +201,7 @@ export default function ProduktPage() {
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg text-text-900 mb-2">Schnelle Abwicklung:</h4>
+                    <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">Schnelle Abwicklung:</h4>
                     <p className="leading-relaxed">
                       Wir sorgen für eine zügige Überweisung der eingegangenen Gelder auf Ihr Konto.
                     </p>
@@ -216,7 +216,7 @@ export default function ProduktPage() {
       {/* Die Vorteile Section */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-text-900 text-center mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 text-center mb-12 sm:mb-16">
             Warum Nota Finance
           </h2>
 
@@ -224,7 +224,7 @@ export default function ProduktPage() {
             {/* Vorteil 1 */}
             <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 transition-all duration-300">
               <Zap className="w-12 h-12 text-brand-900 mb-4" />
-              <h3 className="text-2xl font-bold text-text-900 mb-4">Maximale Einfachheit</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">Maximale Einfachheit</h3>
               <ul className="space-y-2 text-text-900/70">
                 <li>• Intuitive Online-Einreichung Ihrer Rechnungen in wenigen Minuten.</li>
                 <li>• Keine komplizierten Formulare, keine Registrierung für Einzelfälle.</li>
@@ -235,7 +235,7 @@ export default function ProduktPage() {
             {/* Vorteil 2 */}
             <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 transition-all duration-300">
               <Clock className="w-12 h-12 text-brand-900 mb-4" />
-              <h3 className="text-2xl font-bold text-text-900 mb-4">Digitale Effizienz</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">Digitale Effizienz</h3>
               <ul className="space-y-2 text-text-900/70">
                 <li>• Automatisierte Prozesse für schnelle Bearbeitung und kurze Reaktionszeiten.</li>
                 <li>• Weniger Papierkram, mehr Zeit für Ihr Kerngeschäft.</li>
@@ -246,7 +246,7 @@ export default function ProduktPage() {
             {/* Vorteil 3 */}
             <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 transition-all duration-300">
               <Users className="w-12 h-12 text-brand-900 mb-4" />
-              <h3 className="text-2xl font-bold text-text-900 mb-4">Absolute Kundenorientierung</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">Absolute Kundenorientierung</h3>
               <ul className="space-y-2 text-text-900/70">
                 <li>• Wir behandeln Ihre Kunden stets respektvoll und fair, um Ihre Geschäftsbeziehungen zu schützen.</li>
                 <li>• Persönliche Ansprechpartner bei Bedarf und individuelle Fallbearbeitung.</li>
@@ -256,7 +256,7 @@ export default function ProduktPage() {
             {/* Vorteil 4 */}
             <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 transition-all duration-300">
               <CheckCircle className="w-12 h-12 text-brand-900 mb-4" />
-              <h3 className="text-2xl font-bold text-text-900 mb-4">Volle Kostentransparenz & Fairness</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">Volle Kostentransparenz & Fairness</h3>
               <ul className="space-y-2 text-text-900/70">
                 <li>• Keine Kosten für Sie im außergerichtlichen Mahnverfahren.</li>
                 <li>• Im Erfolgsfall erhalten Sie 100% Ihrer Hauptforderung plus Nebenforderungen.</li>
@@ -267,7 +267,7 @@ export default function ProduktPage() {
             {/* Vorteil 5 */}
             <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 transition-all duration-300 md:col-span-2 lg:col-span-1">
               <Shield className="w-12 h-12 text-brand-900 mb-4" />
-              <h3 className="text-2xl font-bold text-text-900 mb-4">Zuverlässigkeit & Sicherheit</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">Zuverlässigkeit & Sicherheit</h3>
               <ul className="space-y-2 text-text-900/70">
                 <li>• Profitieren Sie von über 15 Jahren Erfahrung und der etablierten Infrastruktur von 24collect.de, einem etablierten und zertifizierten Inkasso-Unternehmen.</li>
                 <li>• Rechtssichere Abwicklung und Einhaltung aller Datenschutzrichtlinien (DSGVO-konform).</li>

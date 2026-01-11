@@ -26,13 +26,13 @@ export default function Home() {
         <div className="flex-1 flex flex-col justify-center py-12 sm:py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="text-center max-w-4xl mx-auto">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
                 Ihre Forderung.
                 <br />
                 <span className="text-brand-900">Unsere Mission.</span>
             </h1>
               
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-text-900/70 mb-8 sm:mb-12 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-text-900/70 mb-8 sm:mb-12 leading-relaxed">
                 Inkasso der neusten Generation: Einfach, digital, zuverlässig. 
                 Laden Sie einfach Ihre Rechnung hoch und wir kümmern uns um den Rest. Die effizienteste 
                 Inkasso-Lösung für Selbstständige sowie kleine und mittlere Unternehmen aller 
@@ -67,7 +67,7 @@ export default function Home() {
       {/* Erklärung Section - So einfach ist es */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-text-900 text-center mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 text-center mb-12 sm:mb-16">
             So einfach ist es
           </h2>
 
@@ -77,7 +77,7 @@ export default function Home() {
               <div className="w-20 h-20 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
                 <Upload className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-text-900 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Fall einreichen
               </h3>
               <p className="text-text-900/70 leading-relaxed">
@@ -92,7 +92,7 @@ export default function Home() {
               <div className="w-20 h-20 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
                 <CheckCircle className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-text-900 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Wir übernehmen
               </h3>
               <p className="text-text-900/70 leading-relaxed">
@@ -108,7 +108,7 @@ export default function Home() {
               <div className="w-20 h-20 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
                 <Euro className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-text-900 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Zahlung erhalten
               </h3>
               <p className="text-text-900/70 leading-relaxed">
@@ -134,10 +134,10 @@ export default function Home() {
       <section className="py-24 bg-gradient-to-br from-white to-surface-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
               Unser Service für Sie
             </h2>
-            <p className="text-xl text-text-900/70 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-text-900/70 max-w-3xl mx-auto">
               Wir geben alles, damit Sie Ihr verdientes Geld erhalten.
             </p>
           </div>
@@ -151,7 +151,7 @@ export default function Home() {
               {/* Punkt 1 */}
               <div className="relative flex items-center">
                 <div className="md:w-1/2 md:pr-12 text-right">
-                  <h3 className="text-2xl font-bold text-text-900 mb-3">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3">
                     Außergerichtliches Mahnverfahren
                   </h3>
                   <p className="text-text-900/70 leading-relaxed">
@@ -174,7 +174,7 @@ export default function Home() {
                   <span className="text-white font-bold">2</span>
                 </div>
                 <div className="md:w-1/2 md:pl-12">
-                  <h3 className="text-2xl font-bold text-text-900 mb-3">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3">
                     Gerichtliches Mahnverfahren
                   </h3>
                   <p className="text-text-900/70 leading-relaxed">
@@ -194,10 +194,10 @@ export default function Home() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
               Unser Versprechen
             </h2>
-            <p className="text-xl text-text-900/70 max-w-3xl mx-auto font-semibold">
+            <p className="text-base sm:text-lg md:text-xl text-text-900/70 max-w-3xl mx-auto font-semibold">
               Im Erfolgsfall erhalten Sie 100% Ihrer Forderung plus gesetzlich festgelegte 
               Mahnkosten und Verzugszinsen.
             </p>
@@ -209,7 +209,7 @@ export default function Home() {
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-text-900 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Wahrung Ihrer Kundenbeziehung
               </h3>
               <p className="text-text-900/70 leading-relaxed">
@@ -222,7 +222,7 @@ export default function Home() {
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <Euro className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-text-900 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Keine Kosten
               </h3>
               <p className="text-text-900/70 leading-relaxed">
@@ -239,7 +239,7 @@ export default function Home() {
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-text-900 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-4">
                 Volle Rechnungsbegleichung
               </h3>
               <p className="text-text-900/70 leading-relaxed">

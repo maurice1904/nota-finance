@@ -18,12 +18,12 @@ export default function CTASection({ title, subtitle, buttons }: CTASectionProps
       <div className="absolute inset-0 bg-gradient-to-br from-white via-surface-100/50 to-surface-100/30 opacity-50" />
       
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
           {title}
         </h2>
         
         {subtitle && (
-          <p className="text-lg text-text-900/70 mb-10 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-text-900/70 mb-8 sm:mb-10 max-w-2xl mx-auto">
             {subtitle}
           </p>
         )}

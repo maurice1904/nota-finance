@@ -129,7 +129,7 @@ export default function FAQPage() {
                       <div className="w-8 h-8 bg-gradient-to-br from-brand-900 to-brand-700 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                         <span className="text-white font-bold text-sm">{index + 1}</span>
                       </div>
-                      <h3 className="text-xl font-bold text-text-900 pr-4">
+                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-text-900 pr-4">
                         {faq.question}
                       </h3>
                     </div>
@@ -172,11 +172,11 @@ export default function FAQPage() {
       {/* Final CTA Section */}
       <section className="py-24 bg-gradient-to-br from-white to-surface-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
             Ihre Fragen blieben unbeantwortet?
           </h2>
           
-          <p className="text-lg text-text-900/70 mb-10">
+          <p className="text-base sm:text-lg text-text-900/70 mb-8 sm:mb-10">
             Das tut uns Leid. Nehmen Sie gerne mit uns Kontakt auf und wir beantworten Ihre Fragen 
             persönlich und individuell. Oder reichen Sie jetzt direkt und unkompliziert einen Fall 
             oder mehrere Fälle ein.

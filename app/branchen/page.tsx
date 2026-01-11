@@ -171,7 +171,7 @@ export default function BranchenPage() {
                       <div className="w-14 h-14 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center flex-shrink-0">
                         <Icon className="w-7 h-7 text-white" />
                       </div>
-                      <h3 className="text-2xl font-bold text-text-900">
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900">
                         {industry.title}
                       </h3>
                     </div>
@@ -200,7 +200,7 @@ export default function BranchenPage() {
 
                       {/* Challenge */}
                       <div className="bg-white rounded-xl p-6 border border-border-subtle">
-                        <h4 className="text-lg font-bold text-text-900 mb-3">
+                        <h4 className="text-base sm:text-lg font-bold text-text-900 mb-3">
                           Ihre Herausforderung:
                         </h4>
                         <p className="text-text-900/70 leading-relaxed">

@@ -47,7 +47,7 @@ export default function UnternehmenPage() {
       {/* Timeline Section */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-text-900 text-center mb-20">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 text-center mb-12 sm:mb-20">
             Unsere Geschichte
           </h2>
 
@@ -64,7 +64,7 @@ export default function UnternehmenPage() {
                     <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 py-2 rounded-full font-bold text-xl mb-4">
                       2008
                     </div>
-                    <h3 className="text-2xl font-bold text-text-900 mb-3">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3">
                       Die Gründung
                     </h3>
                     <p className="text-text-900/70 leading-relaxed">
@@ -85,7 +85,7 @@ export default function UnternehmenPage() {
                     <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 py-2 rounded-full font-bold text-xl mb-4">
                       2017
                     </div>
-                    <h3 className="text-2xl font-bold text-text-900 mb-3">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3">
                       IHK / DIHK Digital Award
                     </h3>
                     <p className="text-text-900/70 leading-relaxed">
@@ -103,7 +103,7 @@ export default function UnternehmenPage() {
                     <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 py-2 rounded-full font-bold text-xl mb-4">
                       2025
                     </div>
-                    <h3 className="text-2xl font-bold text-text-900 mb-3">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3">
                       Expansion: gerichtsmahnverfahren.de
                     </h3>
                     <p className="text-text-900/70 leading-relaxed">
@@ -145,11 +145,11 @@ export default function UnternehmenPage() {
       <section className="py-24 bg-gradient-to-br from-white to-surface-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-6 sm:mb-8">
               Unsere Mission
             </h2>
             
-            <p className="text-xl text-text-900/70 leading-relaxed mb-10">
+            <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed mb-8 sm:mb-10">
               Wir machen Inkasso so einfach wie möglich und revolutionieren das Forderungsmanagement 
               für Selbstständige, Freiberufler sowie kleine und mittlere Unternehmen. Unternehmen 
               jeder Größe können bei uns direkt offene Rechnungen ohne umständlichen Anmeldeprozess 
@@ -173,10 +173,10 @@ export default function UnternehmenPage() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
               Unsere Werte
             </h2>
-            <p className="text-xl text-text-900/70 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-text-900/70 max-w-3xl mx-auto">
               Unser Handeln bei Nota Finance wird von klaren Prinzipien geleitet, die darauf 
               ausgerichtet sind, Ihnen den bestmöglichen Inkasso-Service zu bieten:
             </p>
@@ -188,7 +188,7 @@ export default function UnternehmenPage() {
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <Zap className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-text-900 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
                 Maximale Einfachheit
               </h3>
               <p className="text-text-900/70 leading-relaxed">
@@ -202,7 +202,7 @@ export default function UnternehmenPage() {
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <Target className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-text-900 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
                 Digitale Intelligenz
               </h3>
               <p className="text-text-900/70 leading-relaxed">
@@ -216,7 +216,7 @@ export default function UnternehmenPage() {
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <Heart className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-text-900 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
                 Volle Kundenorientierung
               </h3>
               <p className="text-text-900/70 leading-relaxed">
@@ -230,7 +230,7 @@ export default function UnternehmenPage() {
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <Shield className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-text-900 mb-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
                 Absolute Verlässlichkeit
               </h3>
               <p className="text-text-900/70 leading-relaxed">

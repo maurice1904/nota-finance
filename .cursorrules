@@ -155,10 +155,10 @@ Jede Seite beginnt mit einem Hero, der die volle Viewport-Höhe abzüglich der N
 
 **Mobile-First Typography im Hero:**
 ```tsx
-// Headlines: 4 Breakpoints für smooth scaling
+// H1: text-3xl (30px) auf Mobile → max text-6xl (60px) auf lg
 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
 
-// Body Text: 3 Breakpoints
+// Body Lead: text-base (16px) auf Mobile → max text-xl (20px) auf md+
 <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
 
 // Icon Boxes: Responsive sizing
@@ -576,13 +576,33 @@ Dies verhindert horizontales Scrolling auf allen Viewports.
 | lg         | 1024px+ | Desktop                |
 | xl         | 1280px+ | Large Desktop          |
 
-### Responsive Typography Scale
-Headlines skalieren über 4 Breakpoints:
+### Responsive Typography Scale (Mobile-First)
+**WICHTIG:** Mobile-Schriften MÜSSEN kleiner sein als Desktop für optimale Lesbarkeit!
+
+| Element | Mobile (base) | sm (640px+) | md (768px+) | lg (1024px+) |
+|---------|---------------|-------------|-------------|--------------|
+| H1 Hero | `text-3xl` (30px) | `text-4xl` | `text-5xl` | `text-6xl` |
+| H2 Section | `text-2xl` (24px) | `text-3xl` | `text-4xl` | `text-5xl` |
+| H3 Card | `text-lg` (18px) | `text-xl` | `text-2xl` | – |
+| H4 Sub | `text-base` (16px) | `text-lg` | – | – |
+| Body Lead | `text-base` (16px) | `text-lg` | `text-xl` | – |
+| Body | `text-base` (16px) | – | – | – |
+
 ```tsx
-text-3xl sm:text-4xl md:text-5xl lg:text-6xl  // H1 Hero
-text-2xl sm:text-3xl md:text-4xl              // H2 Section
-text-xl sm:text-2xl                            // H3 Cards
-text-base sm:text-lg md:text-xl                // Body/Lead Text
+// H1 Hero
+<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
+
+// H2 Section
+<h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+
+// H3 Card
+<h3 className="text-lg sm:text-xl md:text-2xl font-bold">
+
+// Body Lead
+<p className="text-base sm:text-lg md:text-xl text-text-900/70">
+
+// Body Standard (16px auf allen Viewports)
+<p className="text-base text-text-900/70">
 ```
 
 ### Spacing auf Mobile

@@ -59,19 +59,19 @@ export default function PreisePage() {
             <div className="grid md:grid-cols-3 gap-6 mt-12">
               <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
                 <CheckCircle className="w-12 h-12 text-brand-900 mb-4" />
-                <h3 className="text-xl font-bold text-text-900 mb-2">Außergerichtlich</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Außergerichtlich</h3>
                 <p className="text-text-900/70">Im Erfolgsfall für Sie kostenfrei</p>
               </div>
 
               <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
                 <Euro className="w-12 h-12 text-brand-900 mb-4" />
-                <h3 className="text-xl font-bold text-text-900 mb-2">100% Auszahlung</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">100% Auszahlung</h3>
                 <p className="text-text-900/70">Sie erhalten Ihren vollen Rechnungsbetrag</p>
               </div>
 
               <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
                 <TrendingUp className="w-12 h-12 text-brand-900 mb-4" />
-                <h3 className="text-xl font-bold text-text-900 mb-2">Plus Nebenforderungen</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Plus Nebenforderungen</h3>
                 <p className="text-text-900/70">Mahnkosten & Verzugszinsen zusätzlich</p>
               </div>
             </div>
@@ -83,11 +83,11 @@ export default function PreisePage() {
       <section className="py-24 bg-gradient-to-br from-white to-surface-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-900 mb-6 text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6 text-center">
               Beispielrechnung
             </h2>
             
-            <p className="text-lg text-text-900/70 mb-12 text-center leading-relaxed">
+            <p className="text-base sm:text-lg text-text-900/70 mb-8 sm:mb-12 text-center leading-relaxed">
               Anhand eines Beispiels zeigen wir Ihnen, welchen Betrag Sie von Ihrer offenen und 
               angemahnten Ausgangsrechnung bei Zahlung durch Ihren Kunden überwiesen bekommen. 
               Unsere Gebühren werden von Ihrem Kunden bezahlt, da er sich im Verzug befindet und 
@@ -103,16 +103,16 @@ export default function PreisePage() {
                 <div className="pb-6 border-b border-border-subtle">
                   <div className="flex justify-between items-center">
                     <div>
-                      <h3 className="text-2xl font-bold text-text-900">Ihre Ausgangsrechnung</h3>
-                      <p className="text-neutral-500 mt-1">Ursprünglicher Rechnungsbetrag</p>
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900">Ihre Ausgangsrechnung</h3>
+                      <p className="text-sm sm:text-base text-neutral-500 mt-1">Ursprünglicher Rechnungsbetrag</p>
                     </div>
-                    <div className="text-3xl font-bold text-text-900">1.000,00 €</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-text-900">1.000,00 €</div>
                   </div>
                 </div>
 
                 {/* What Customer Pays */}
                 <div className="bg-gradient-to-br from-brand-900/10 to-surface-100/50 rounded-2xl p-6">
-                  <h4 className="text-xl font-bold text-text-900 mb-4">Ihr Kunde zahlt zusätzlich:</h4>
+                  <h4 className="text-lg sm:text-xl font-bold text-text-900 mb-4">Ihr Kunde zahlt zusätzlich:</h4>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-text-900/70">Inkassogebühren (nach RVG §13)</span>
@@ -124,7 +124,7 @@ export default function PreisePage() {
                     </div>
                     <div className="pt-3 border-t border-border-subtle flex justify-between items-center">
                       <span className="font-bold text-text-900">Gesamtzahlung Ihres Kunden</span>
-                      <span className="text-xl font-bold text-text-900">1.085,00 €</span>
+                      <span className="text-lg sm:text-xl font-bold text-text-900">1.085,00 €</span>
                     </div>
                   </div>
                 </div>
@@ -133,8 +133,8 @@ export default function PreisePage() {
                 <div className="bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl p-8 text-white">
                   <div className="flex justify-between items-center mb-4">
                     <div>
-                      <h3 className="text-3xl font-bold mb-2">Sie erhalten:</h3>
-                      <p className="text-white/80">100% Ihrer Forderung + Nebenforderungen</p>
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">Sie erhalten:</h3>
+                      <p className="text-sm sm:text-base text-white/80">100% Ihrer Forderung + Nebenforderungen</p>
                     </div>
                     <CheckCircle className="w-16 h-16" />
                   </div>
@@ -151,9 +151,9 @@ export default function PreisePage() {
                       <span>Verzugszinsen</span>
                       <span className="font-semibold">+ 15,00 €</span>
                     </div>
-                    <div className="pt-4 border-t border-white/30 flex justify-between items-center">
-                      <span className="text-2xl font-bold">Auszahlung an Sie</span>
-                      <span className="text-4xl font-bold">1.085,00 €</span>
+                    <div className="pt-4 border-t border-white/30 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                      <span className="text-lg sm:text-xl md:text-2xl font-bold">Auszahlung an Sie</span>
+                      <span className="text-2xl sm:text-3xl md:text-4xl font-bold">1.085,00 €</span>
                     </div>
                   </div>
                 </div>
