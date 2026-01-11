@@ -21,9 +21,18 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col">
+      <section className="relative overflow-hidden min-h-[calc(100dvh-5rem)] flex flex-col">
+        {/* Background Image with Slow Zoom Effect */}
+        {/* Mobile: Show left edge (more interesting), Desktop: Center */}
+        <div 
+          className="absolute inset-0 bg-cover bg-[left_25%_center] sm:bg-center bg-no-repeat animate-slow-zoom"
+          style={{ backgroundImage: "url('/hero-bg-2.jpeg')" }}
+        />
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.75),rgba(255,255,255,0.3)_50%,rgba(27,82,215,0.05)_100%)]" />
+        
         {/* Main Hero Content - Centered */}
-        <div className="flex-1 flex flex-col justify-center py-12 sm:py-8">
+        <div className="relative flex-1 flex flex-col justify-center py-12 sm:py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
