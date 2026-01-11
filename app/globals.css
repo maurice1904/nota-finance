@@ -246,3 +246,24 @@ button, a, input, textarea {
   opacity: 0;
   animation: fade-in-up 600ms ease-out 400ms forwards;
 }
+
+/* Infinite Marquee Animation for Mobile Partner Logos */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+  width: max-content;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
