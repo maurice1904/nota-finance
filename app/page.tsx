@@ -35,20 +35,23 @@ export default function Home() {
         <div className="relative flex-1 flex flex-col justify-center py-12 sm:py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="text-center max-w-4xl mx-auto">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
+              {/* Headline - immediate fade-in */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight animate-fade-in-up">
                 Ihre Forderung.
                 <br />
                 <span className="text-brand-900">Unsere Mission.</span>
-            </h1>
+              </h1>
               
-              <p className="text-base sm:text-lg md:text-xl text-text-900/70 mb-8 sm:mb-12 leading-relaxed">
+              {/* Description - delayed 200ms */}
+              <p className="text-base sm:text-lg md:text-xl text-text-900/70 mb-8 sm:mb-12 leading-relaxed animate-fade-in-up-delay-1">
                 Inkasso der neusten Generation: Einfach, digital, zuverlässig. 
                 Laden Sie einfach Ihre Rechnung hoch und wir kümmern uns um den Rest. Die effizienteste 
                 Inkasso-Lösung für Selbstständige sowie kleine und mittlere Unternehmen aller 
                 Branchen mit Forderungshöhen ab 50€.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              {/* CTA Buttons - delayed 400ms */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up-delay-2">
                 <Link
                   href="/kontakt"
                   className="group bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
