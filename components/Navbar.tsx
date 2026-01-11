@@ -100,52 +100,52 @@ export default function Navbar() {
   return (
     <>
       <nav className="sticky top-0 z-50 glass" aria-label="Hauptnavigation">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex items-center justify-between h-20">
             {/* Logo + Brand Name */}
-            <Link 
-              href="/" 
+          <Link 
+            href="/" 
               onClick={() => handleLinkClick("/")}
               className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity duration-300"
-            >
-              <Image
-                src="/logo.png"
-                alt="Nota Finance Logo"
-                width={40}
-                height={40}
-                className="object-contain"
-              />
+          >
+            <Image
+              src="/logo.png"
+              alt="Nota Finance Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
               {/* Mobile: Stacked brand name */}
               <span className="sm:hidden text-base font-bold text-text-900 leading-tight">
                 Nota<br />Finance
               </span>
               {/* Desktop/Tablet: Single line brand name */}
               <span className="hidden sm:block text-2xl font-bold text-text-900 leading-none">
-                Nota Finance
-              </span>
-            </Link>
+              Nota Finance
+            </span>
+          </Link>
 
             {/* Desktop Navigation Links - Centered, visible on lg+ */}
             <div className="hidden lg:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
                   onClick={() => handleLinkClick(link.href)}
-                  className={cn(
-                    "text-sm font-medium transition-all duration-300 hover:text-brand-900 relative leading-none",
-                    pathname === link.href 
-                      ? "text-brand-900" 
-                      : "text-text-900/70"
-                  )}
-                >
-                  {link.label}
-                  {pathname === link.href && (
-                    <span className="absolute -bottom-[1.6rem] left-0 right-0 h-0.5 bg-brand-900" />
-                  )}
-                </Link>
-              ))}
-            </div>
+                className={cn(
+                    "text-sm font-medium transition-all duration-300 hover:text-brand-700 relative leading-none",
+                  pathname === link.href 
+                    ? "text-brand-900" 
+                    : "text-text-900/70"
+                )}
+              >
+                {link.label}
+                {pathname === link.href && (
+                  <span className="absolute -bottom-[1.6rem] left-0 right-0 h-0.5 bg-brand-900" />
+                )}
+              </Link>
+            ))}
+          </div>
 
             {/* Right side: CTA + Hamburger */}
             <div className="flex items-center gap-2 sm:gap-3">
@@ -159,13 +159,13 @@ export default function Navbar() {
               </Link>
 
               {/* Desktop/Tablet CTA Button - Single line, visible on sm+ */}
-              <Link
-                href="/einreichen"
+          <Link
+            href="/einreichen"
                 onClick={() => handleLinkClick("/einreichen")}
                 className="hidden sm:inline-flex bg-brand-900 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-brand-700 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring leading-none items-center"
-              >
-                Fall einreichen
-              </Link>
+          >
+            Fall einreichen
+          </Link>
 
               {/* Hamburger Button - Only visible below lg breakpoint */}
               <button
@@ -267,7 +267,7 @@ export default function Navbar() {
             <Link
               href="/kontakt"
               onClick={() => handleLinkClick("/kontakt")}
-              className="flex items-center justify-center gap-2 w-full mt-3 bg-white text-text-900 px-6 py-4 rounded-xl font-semibold text-base border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="flex items-center justify-center gap-2 w-full mt-3 bg-white text-text-900 px-6 py-4 rounded-xl font-semibold text-base border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
               Kontakt
             </Link>

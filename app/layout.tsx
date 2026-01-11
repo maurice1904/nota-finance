@@ -98,10 +98,10 @@ export default function RootLayout({
         className={`${plusJakarta.variable} antialiased font-sans`}
       >
         <Providers>
-          <ScrollToTop />
-          <Navbar />
-          {children}
-          <Footer />
+        <ScrollToTop />
+        <Navbar />
+        {children}
+        <Footer />
         </Providers>
       </body>
     </html>

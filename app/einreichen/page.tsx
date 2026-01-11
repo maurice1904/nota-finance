@@ -19,7 +19,7 @@ export default function EinreichenPage() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl mb-6 sm:mb-8">
@@ -48,22 +48,22 @@ export default function EinreichenPage() {
       </section>
 
       {/* Bottom Links */}
-      <section className="py-16 bg-gradient-to-br from-white to-surface-100">
+      <section className="py-16 bg-gradient-to-br from-surface-100/30 via-white to-brand-700/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/produkt"
-              className="inline-flex items-center gap-2 bg-white text-text-900 px-6 py-3 rounded-lg font-semibold border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="group inline-flex items-center gap-2 bg-white text-text-900 px-6 py-3 rounded-lg font-semibold border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
-              <HelpCircle className="w-5 h-5" />
+              <HelpCircle className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 transition-colors duration-300" />
               Warum Nota Finance?
             </Link>
             
             <Link
               href="/kontakt"
-              className="inline-flex items-center gap-2 bg-white text-text-900 px-6 py-3 rounded-lg font-semibold border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="group inline-flex items-center gap-2 bg-white text-text-900 px-6 py-3 rounded-lg font-semibold border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
-              <Mail className="w-5 h-5" />
+              <Mail className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 transition-colors duration-300" />
               Kontakt aufnehmen
             </Link>
           </div>

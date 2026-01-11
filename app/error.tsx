@@ -26,7 +26,7 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <main className="min-h-[calc(100dvh-5rem)] flex flex-col items-center justify-center bg-gradient-to-br from-white via-white to-surface-100 px-4">
+    <main className="min-h-[calc(100dvh-5rem)] flex flex-col items-center justify-center bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 px-4">
       <div className="max-w-xl mx-auto text-center">
         {/* Error Icon */}
         <div className="inline-flex items-center justify-center w-24 h-24 bg-error/10 rounded-2xl mb-8">
@@ -63,9 +63,9 @@ export default function Error({ error, reset }: ErrorProps) {
 
           <Link
             href="/"
-            className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+            className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
           >
-            <Home className="w-5 h-5" />
+            <Home className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 transition-colors duration-300" />
             Zur Startseite
           </Link>
         </div>
@@ -77,9 +77,9 @@ export default function Error({ error, reset }: ErrorProps) {
           </p>
           <a
             href="mailto:service@notafinance.de"
-            className="inline-flex items-center gap-2 text-brand-900 hover:underline font-semibold"
+            className="inline-flex items-center gap-2 text-text-900 hover:text-brand-700 font-semibold transition-colors duration-300"
           >
-            <Mail className="w-5 h-5" />
+            <Mail className="w-5 h-5 text-neutral-500" />
             service@notafinance.de
           </a>
         </div>

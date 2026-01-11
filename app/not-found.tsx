@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main className="h-[calc(100dvh-5rem)] flex flex-col items-center justify-center bg-gradient-to-br from-white via-white to-surface-100 px-4">
+    <main className="h-[calc(100dvh-5rem)] flex flex-col items-center justify-center bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 px-4">
       <div className="max-w-xl mx-auto text-center">
         {/* Error Code */}
         <div className="inline-flex items-center justify-center w-32 h-32 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl mb-8">
@@ -43,9 +43,9 @@ export default function NotFound() {
 
           <Link
             href="/kontakt"
-            className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+            className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
           >
-            <HelpCircle className="w-5 h-5" />
+            <HelpCircle className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 transition-colors duration-300" />
             Hilfe erhalten
           </Link>
         </div>
@@ -56,21 +56,21 @@ export default function NotFound() {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/einreichen"
-              className="text-brand-900 hover:underline font-medium text-sm flex items-center gap-1"
+              className="text-text-900/70 hover:text-brand-700 font-medium text-sm flex items-center gap-1 transition-colors duration-300"
             >
               Fall einreichen
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/faq"
-              className="text-brand-900 hover:underline font-medium text-sm flex items-center gap-1"
+              className="text-text-900/70 hover:text-brand-700 font-medium text-sm flex items-center gap-1 transition-colors duration-300"
             >
               FAQ
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/preise"
-              className="text-brand-900 hover:underline font-medium text-sm flex items-center gap-1"
+              className="text-text-900/70 hover:text-brand-700 font-medium text-sm flex items-center gap-1 transition-colors duration-300"
             >
               Preise
               <ArrowRight className="w-4 h-4" />

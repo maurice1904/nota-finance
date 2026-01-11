@@ -90,7 +90,7 @@ export default function FAQPage() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl mb-6 sm:mb-8">
@@ -118,7 +118,7 @@ export default function FAQPage() {
               return (
                 <div
                   key={index}
-                  className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300"
+                  className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl overflow-hidden hover:shadow-lg hover:border-brand-700/30 transition-all duration-300"
                 >
                   {/* Question - Always Visible */}
                   <button
@@ -135,7 +135,7 @@ export default function FAQPage() {
                     </div>
                     <ChevronDown
                       className={cn(
-                        "w-6 h-6 text-brand-900 transition-transform duration-300 flex-shrink-0",
+                        "w-6 h-6 text-brand-700 transition-transform duration-300 flex-shrink-0",
                         isOpen && "rotate-180"
                       )}
                     />
@@ -185,10 +185,10 @@ export default function FAQPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/kontakt"
-              className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
               Kontakt aufnehmen
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+              <ArrowRight className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 group-hover:translate-x-1 transition-all duration-300" />
             </Link>
             
             <Link

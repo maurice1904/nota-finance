@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="min-h-[calc(100dvh-5rem)] flex flex-col items-center justify-center bg-gradient-to-br from-white via-white to-surface-100">
+    <div className="min-h-[calc(100dvh-5rem)] flex flex-col items-center justify-center bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8">
       {/* Spinner Container */}
       <div className="relative">
         {/* Outer Ring */}

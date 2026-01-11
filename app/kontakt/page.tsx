@@ -148,7 +148,7 @@ ${formData.message}
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl mb-6 sm:mb-8">
@@ -186,7 +186,7 @@ ${formData.message}
 
           {/* Contact Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 space-y-6">
+            <div className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 space-y-6 hover:border-brand-700/30 transition-all duration-300">
               {/* Name */}
               <div>
                 <label htmlFor="name" className="block text-sm font-semibold text-text-900 mb-2">
@@ -346,7 +346,7 @@ ${formData.message}
               <p className="text-neutral-500 mb-4">Oder kontaktieren Sie uns direkt per E-Mail:</p>
               <a 
                 href="mailto:service@notafinance.de" 
-                className="text-brand-900 hover:underline font-semibold text-lg"
+                className="text-brand-700 hover:text-brand-900 hover:underline font-semibold text-lg transition-colors duration-300"
               >
                 service@notafinance.de
               </a>
@@ -358,7 +358,7 @@ ${formData.message}
                 href="https://www.linkedin.com/company/nota-finance/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-brand-900 hover:underline font-semibold text-lg"
+                className="inline-flex items-center gap-2 text-brand-700 hover:text-brand-900 hover:underline font-semibold text-lg transition-colors duration-300"
               >
                 <Linkedin className="w-5 h-5" />
                 Nota Finance auf LinkedIn

@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col">
         {/* Main Hero Content - Centered */}
         <div className="flex-1 flex flex-col justify-center py-12 sm:py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -42,10 +42,10 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/kontakt"
-                  className="group bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                  className="group bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
                 >
                   Kontakt aufnehmen
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  <ArrowRight className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 group-hover:translate-x-1 transition-all duration-300" />
                 </Link>
                 
                 <Link
@@ -131,7 +131,7 @@ export default function Home() {
       </section>
 
       {/* Unser Service Section */}
-      <section className="py-24 bg-gradient-to-br from-white to-surface-100">
+      <section className="py-24 bg-gradient-to-br from-surface-100/50 via-white to-brand-700/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
@@ -144,7 +144,7 @@ export default function Home() {
 
           <div className="relative max-w-4xl mx-auto">
             {/* Timeline Line */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-900 to-surface-100 transform -translate-x-1/2" />
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-900 via-brand-700 to-surface-100 transform -translate-x-1/2" />
 
             {/* Timeline Items */}
             <div className="space-y-16">
@@ -205,7 +205,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {/* Kachel 1 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 transition-all duration-300">
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/30 transition-all duration-300">
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
@@ -218,7 +218,7 @@ export default function Home() {
             </div>
 
             {/* Kachel 2 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 transition-all duration-300">
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/30 transition-all duration-300">
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <Euro className="w-8 h-8 text-white" />
               </div>
@@ -235,7 +235,7 @@ export default function Home() {
             </div>
 
             {/* Kachel 3 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 transition-all duration-300">
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/30 transition-all duration-300">
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>

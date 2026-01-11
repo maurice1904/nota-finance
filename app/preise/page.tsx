@@ -18,7 +18,7 @@ export default function PreisePage() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-4xl sm:text-5xl md:text-6xl font-bold mb-6 sm:mb-8">
@@ -57,20 +57,20 @@ export default function PreisePage() {
 
             {/* Key Points */}
             <div className="grid md:grid-cols-3 gap-6 mt-12">
-              <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-                <CheckCircle className="w-12 h-12 text-brand-900 mb-4" />
+              <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
+                <CheckCircle className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
                 <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Außergerichtlich</h3>
                 <p className="text-text-900/70">Im Erfolgsfall für Sie kostenfrei</p>
               </div>
 
-              <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-                <Euro className="w-12 h-12 text-brand-900 mb-4" />
+              <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
+                <Euro className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
                 <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">100% Auszahlung</h3>
                 <p className="text-text-900/70">Sie erhalten Ihren vollen Rechnungsbetrag</p>
               </div>
 
-              <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-                <TrendingUp className="w-12 h-12 text-brand-900 mb-4" />
+              <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
+                <TrendingUp className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
                 <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Plus Nebenforderungen</h3>
                 <p className="text-text-900/70">Mahnkosten & Verzugszinsen zusätzlich</p>
               </div>
@@ -80,7 +80,7 @@ export default function PreisePage() {
       </section>
 
       {/* Beispielrechnung Section */}
-      <section className="py-24 bg-gradient-to-br from-white to-surface-100">
+      <section className="py-24 bg-gradient-to-br from-surface-100/50 via-white to-brand-700/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6 text-center">

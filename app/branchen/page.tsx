@@ -129,7 +129,7 @@ export default function BranchenPage() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
@@ -160,7 +160,7 @@ export default function BranchenPage() {
               return (
                 <div
                   key={industry.id}
-                  className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300"
+                  className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl overflow-hidden hover:shadow-lg hover:border-brand-700/30 transition-all duration-300"
                 >
                   {/* Header - Always Visible */}
                   <button
@@ -177,7 +177,7 @@ export default function BranchenPage() {
                     </div>
                     <ChevronDown
                       className={cn(
-                        "w-6 h-6 text-brand-900 transition-transform duration-300",
+                        "w-6 h-6 text-brand-700 transition-transform duration-300",
                         isOpen && "rotate-180"
                       )}
                     />

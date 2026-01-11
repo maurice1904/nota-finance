@@ -18,7 +18,7 @@ export default function ProduktPage() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
@@ -56,7 +56,7 @@ export default function ProduktPage() {
       </section>
 
       {/* Unsere Lösung Section */}
-      <section className="py-24 bg-gradient-to-br from-white to-surface-100">
+      <section className="py-24 bg-gradient-to-br from-surface-100/50 via-white to-brand-700/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
@@ -222,8 +222,8 @@ export default function ProduktPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Vorteil 1 */}
-            <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 transition-all duration-300">
-              <Zap className="w-12 h-12 text-brand-900 mb-4" />
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 hover:border-brand-700/30 transition-all duration-300">
+              <Zap className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">Maximale Einfachheit</h3>
               <ul className="space-y-2 text-text-900/70">
                 <li>• Intuitive Online-Einreichung Ihrer Rechnungen in wenigen Minuten.</li>
@@ -233,8 +233,8 @@ export default function ProduktPage() {
             </div>
 
             {/* Vorteil 2 */}
-            <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 transition-all duration-300">
-              <Clock className="w-12 h-12 text-brand-900 mb-4" />
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 hover:border-brand-700/30 transition-all duration-300">
+              <Clock className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">Digitale Effizienz</h3>
               <ul className="space-y-2 text-text-900/70">
                 <li>• Automatisierte Prozesse für schnelle Bearbeitung und kurze Reaktionszeiten.</li>
@@ -244,8 +244,8 @@ export default function ProduktPage() {
             </div>
 
             {/* Vorteil 3 */}
-            <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 transition-all duration-300">
-              <Users className="w-12 h-12 text-brand-900 mb-4" />
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 hover:border-brand-700/30 transition-all duration-300">
+              <Users className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">Absolute Kundenorientierung</h3>
               <ul className="space-y-2 text-text-900/70">
                 <li>• Wir behandeln Ihre Kunden stets respektvoll und fair, um Ihre Geschäftsbeziehungen zu schützen.</li>
@@ -254,8 +254,8 @@ export default function ProduktPage() {
             </div>
 
             {/* Vorteil 4 */}
-            <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 transition-all duration-300">
-              <CheckCircle className="w-12 h-12 text-brand-900 mb-4" />
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 hover:border-brand-700/30 transition-all duration-300">
+              <CheckCircle className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">Volle Kostentransparenz & Fairness</h3>
               <ul className="space-y-2 text-text-900/70">
                 <li>• Keine Kosten für Sie im außergerichtlichen Mahnverfahren.</li>
@@ -265,8 +265,8 @@ export default function ProduktPage() {
             </div>
 
             {/* Vorteil 5 */}
-            <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 transition-all duration-300 md:col-span-2 lg:col-span-1">
-              <Shield className="w-12 h-12 text-brand-900 mb-4" />
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-8 hover:shadow-xl hover:scale-105 hover:border-brand-700/30 transition-all duration-300 md:col-span-2 lg:col-span-1">
+              <Shield className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">Zuverlässigkeit & Sicherheit</h3>
               <ul className="space-y-2 text-text-900/70">
                 <li>• Profitieren Sie von über 15 Jahren Erfahrung und der etablierten Infrastruktur von 24collect.de, einem etablierten und zertifizierten Inkasso-Unternehmen.</li>

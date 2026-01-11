@@ -554,8 +554,8 @@ export default function UploadForm() {
             className={`
               relative border-3 border-dashed rounded-2xl p-12 text-center transition-all duration-300
               ${isDragging 
-                ? "border-brand-900 bg-brand-900/10" 
-                : "border-border-subtle hover:border-brand-900 hover:bg-surface-100/30"
+                ? "border-brand-700/70 bg-brand-700/8" 
+                : "border-border-subtle hover:border-brand-700/50"
               }
             `}
           >
@@ -569,7 +569,7 @@ export default function UploadForm() {
               disabled={!email || !isValidEmail(email)}
             />
 
-            <Upload className="w-16 h-16 text-neutral-500 mx-auto mb-4" />
+            <Upload className="w-16 h-16 text-brand-700 mx-auto mb-4" />
             
             <h4 className="text-xl font-bold text-text-900 mb-2">
               Dateien hier ablegen oder auswählen

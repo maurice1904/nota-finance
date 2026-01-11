@@ -19,7 +19,7 @@ export default function UnternehmenPage() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight text-center">
@@ -184,7 +184,7 @@ export default function UnternehmenPage() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Wert 1 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-900 transition-all duration-300">
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/50 transition-all duration-300">
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <Zap className="w-8 h-8 text-white" />
               </div>
@@ -198,7 +198,7 @@ export default function UnternehmenPage() {
             </div>
 
             {/* Wert 2 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-900 transition-all duration-300">
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/50 transition-all duration-300">
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <Target className="w-8 h-8 text-white" />
               </div>
@@ -212,7 +212,7 @@ export default function UnternehmenPage() {
             </div>
 
             {/* Wert 3 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-900 transition-all duration-300">
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/50 transition-all duration-300">
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <Heart className="w-8 h-8 text-white" />
               </div>
@@ -226,7 +226,7 @@ export default function UnternehmenPage() {
             </div>
 
             {/* Wert 4 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-900 transition-all duration-300">
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/50 transition-all duration-300">
               <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                 <Shield className="w-8 h-8 text-white" />
               </div>
