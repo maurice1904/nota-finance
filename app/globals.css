@@ -62,6 +62,15 @@
   --font-sans: var(--font-jakarta);
 }
 
+/* 
+ * GLOBALER OVERFLOW-SCHUTZ
+ * Verhindert horizontales Scrolling auf allen Viewports
+ * Kritisch für Mobile/Tablet UX
+ */
+html {
+  overflow-x: hidden;
+}
+
 body {
   /* High-End Gradient Background */
   /* Uses Ghost White to White for a subtle, clean depth */
@@ -73,6 +82,10 @@ body {
   /* Font smoothing for crisp text on high-res screens */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* OVERFLOW-SCHUTZ: Verhindert horizontales Scrolling */
+  overflow-x: hidden;
+  width: 100%;
   
   /* 
    * TYPOGRAFIE-OPTIMIERUNG: Plus Jakarta Sans

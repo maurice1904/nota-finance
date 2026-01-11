@@ -145,9 +145,26 @@ Verwende die semantischen Klassen aus dem @theme Block:
 ```
 
 ### Hero Sections
-Jede Seite beginnt mit einem Hero, der die volle Viewport-Höhe abzüglich der Navbar einnimmt:
+Jede Seite beginnt mit einem Hero, der die volle Viewport-Höhe abzüglich der Navbar einnimmt.
+**WICHTIG:** Verwende `min-h-` statt `h-` für Content, der auf Mobile ggf. länger als 100vh wird!
+
 ```tsx
-<section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col justify-center py-8">
+<section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+```
+
+**Mobile-First Typography im Hero:**
+```tsx
+// Headlines: 4 Breakpoints für smooth scaling
+<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
+
+// Body Text: 3 Breakpoints
+<p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
+
+// Icon Boxes: Responsive sizing
+<div className="w-16 h-16 sm:w-20 sm:h-20 ...">
+  <Icon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+</div>
 ```
 
 ### Navbar (Responsive)
@@ -543,6 +560,50 @@ export default function PageName() {
 }
 ```
 
+## MOBILE-RESPONSIVE GUIDELINES
+# ==============================
+
+### Globaler Overflow-Schutz
+In `globals.css` ist `overflow-x: hidden` auf `html` und `body` gesetzt.
+Dies verhindert horizontales Scrolling auf allen Viewports.
+
+### Breakpoint-System (Tailwind Defaults)
+| Breakpoint | Width   | Typisches Gerät        |
+|------------|---------|------------------------|
+| (base)     | < 640px | Mobile                 |
+| sm         | 640px+  | Tablet Portrait        |
+| md         | 768px+  | Tablet Landscape       |
+| lg         | 1024px+ | Desktop                |
+| xl         | 1280px+ | Large Desktop          |
+
+### Responsive Typography Scale
+Headlines skalieren über 4 Breakpoints:
+```tsx
+text-3xl sm:text-4xl md:text-5xl lg:text-6xl  // H1 Hero
+text-2xl sm:text-3xl md:text-4xl              // H2 Section
+text-xl sm:text-2xl                            // H3 Cards
+text-base sm:text-lg md:text-xl                // Body/Lead Text
+```
+
+### Spacing auf Mobile
+- Buttons: `px-6 sm:px-8 py-3 sm:py-4`
+- Margins: `mb-6 sm:mb-8` statt fixer Werte
+- Padding in Sections: `py-12 sm:py-8` (mehr Padding auf Mobile für Breathing Room)
+
+### Container-Anpassung
+Immer `w-full` zum Container hinzufügen um Overflow zu verhindern:
+```tsx
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+```
+
+### Hero Height auf Mobile
+`min-h-[calc(100dvh-5rem)]` statt `h-[calc(100dvh-5rem)]`
+→ Erlaubt Content zu wachsen wenn nötig
+
+### Touch Targets
+Minimale Touch-Größe: 44x44px (`w-11 h-11`)
+Gilt für: Buttons, Links, Hamburger Menu, Checkboxes
+
 ## PERFORMANCE
 # ============
 
@@ -775,8 +836,5 @@ Diese Vorschläge sind NICHT im aktuellen Code implementiert:
    # decision: sobald website final und kurz vor go-live ist
 
 6. **Mobile NavBar**
-   - Reduced CTA Button sollte immer sichtbar sein (dafür brand name raus ggfs)
-
-7. **Mobile View**
-- Hero Seiten falsch dargestellt
-- Schriften zu groß (was ist optimum / best practice?)
+   - ✅ GELÖST: CTA Button mit Zeilenumbruch ("Fall/einreichen") ist auf Mobile sichtbar
+   - Brand Name ebenfalls mit Zeilenumbruch ("Nota/Finance") für kompaktes Layout

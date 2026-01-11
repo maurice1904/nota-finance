@@ -148,17 +148,17 @@ ${formData.message}
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col justify-center py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl mb-8">
-              <Mail className="w-10 h-10 text-white" />
+            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl mb-6 sm:mb-8">
+              <Mail className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-text-900 mb-8 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
               Ihre Kontaktanfrage
             </h1>
             
-            <p className="text-xl text-text-900/70 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
               Vielen Dank für Ihr Interesse an unserem Service. Bitte füllen Sie die Informationen 
               aus und wir werden uns binnen 24h per Mail bei Ihnen melden.
             </p>

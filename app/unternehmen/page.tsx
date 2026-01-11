@@ -19,22 +19,22 @@ export default function UnternehmenPage() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col justify-center py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold text-text-900 mb-8 leading-tight text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight text-center">
               Über <span className="text-brand-900">Nota Finance</span>
             </h1>
             
             <div className="prose prose-lg max-w-none text-text-900/70">
-              <p className="text-xl text-text-900/70 leading-relaxed mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed mb-6 sm:mb-8">
                 Nota Finance ist die innovative Digital-Marke der twenty4collect GmbH, einem digitalen 
                 Vorreiter und BDIU-zertifizierten Inkassounternehmen mit über 15 Jahren Erfahrung im 
                 Forderungsmanagement in Deutschland. Bereits 2017 konnte das Unternehmen mit Deutschlands 
                 erster Mobile-Lösung im Forderungsmanagement überzeugen und auf dem G20 Young Entrepreneurs' 
                 Alliance Summit in Berlin den IHK / DIHK Digital Award gewinnen.
               </p>
-              <p className="text-xl text-text-900/70 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
                 Als klarer Vorreiter im digitalen Forderungsmanagement in Deutschland folgt nun die 
                 Weiterentwicklung durch Nota Finance: noch einfacher, noch schneller, noch effizienter - 
                 für Ihre Forderungen.

@@ -18,17 +18,17 @@ export default function PreisePage() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col justify-center py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-8 py-3 rounded-full text-6xl font-bold mb-8">
+            <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-4xl sm:text-5xl md:text-6xl font-bold mb-6 sm:mb-8">
               0€
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-text-900 mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-4 sm:mb-6 leading-tight">
               Kosten für Sie als Auftraggeber: <span className="text-brand-900">0€</span>
             </h1>
             
-            <p className="text-2xl text-text-900/70 font-semibold leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-text-900/70 font-semibold leading-relaxed">
               Unser Service ist für Sie als Auftraggeber in der Regel kostenfrei, entstehende 
               Kosten und Gebühren sind gesetzlich geregelt und vom Schuldner zu tragen.
             </p>

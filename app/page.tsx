@@ -21,18 +21,18 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col">
         {/* Main Hero Content - Centered */}
-        <div className="flex-1 flex flex-col justify-center py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex-1 flex flex-col justify-center py-12 sm:py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="text-center max-w-4xl mx-auto">
-              <h1 className="text-5xl md:text-7xl font-bold text-text-900 mb-8 leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
                 Ihre Forderung.
                 <br />
                 <span className="text-brand-900">Unsere Mission.</span>
             </h1>
               
-              <p className="text-xl md:text-2xl text-text-900/70 mb-12 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-text-900/70 mb-8 sm:mb-12 leading-relaxed">
                 Inkasso der neusten Generation: Einfach, digital, zuverlässig. 
                 Laden Sie einfach Ihre Rechnung hoch und wir kümmern uns um den Rest. Die effizienteste 
                 Inkasso-Lösung für Selbstständige sowie kleine und mittlere Unternehmen aller 
@@ -42,7 +42,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/kontakt"
-                  className="group bg-white text-text-900 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                  className="group bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-900 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
                 >
                   Kontakt aufnehmen
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -50,7 +50,7 @@ export default function Home() {
                 
                 <Link
                   href="/einreichen"
-                  className="group bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                  className="group bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
                 >
                   Fall einreichen
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />

@@ -129,15 +129,15 @@ export default function BranchenPage() {
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 h-[calc(100dvh-5rem)] flex flex-col justify-center py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-surface-100 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-text-900 mb-8 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
               Für jede Branche die passende Lösung:{" "}
               <span className="text-brand-900">Nota Finance versteht Ihre Bedürfnisse.</span>
             </h1>
             
-            <p className="text-xl text-text-900/70 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
               Ob Freiberufler, kleines Handwerksunternehmen, moderne Agentur oder etablierte Arztpraxis – 
               jede Branche hat ihre eigenen Abläufe und Herausforderungen, besonders wenn es um offene 
               Forderungen geht. Bei Nota Finance haben wir es uns zur Aufgabe gemacht, Ihnen ein 
