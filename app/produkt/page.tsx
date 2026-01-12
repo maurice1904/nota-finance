@@ -1,4 +1,4 @@
-import { Upload, CheckCircle, Users, Shield, Zap, Target, Clock } from "lucide-react";
+import { Upload, CheckCircle, Users, Shield, Zap, Target, Clock, ChevronDown, AlertCircle } from "lucide-react";
 import CTASection from "@/components/CTASection";
 import type { Metadata } from "next";
 
@@ -19,18 +19,30 @@ export default function ProduktPage() {
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
       <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-65"
+          style={{ backgroundImage: "url('/Hero-SubSites3.png')" }}
+        />
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
-              Nota Finance: Ihr Forderungsmanagement –{" "}
-              <span className="text-brand-900">Einfach. Effektiv. Fair.</span>
+              Digitales Inkasso<br />
+              <span className="text-brand-900">Schnell. Einfach. Effektiv.</span>
             </h1>
             
             <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
-              Erfahren Sie im Detail, wie Nota Finance Ihnen hilft, offene Forderungen schnell 
-              und unkompliziert zu realisieren. Wir kombinieren digitale Effizienz mit individueller 
-              Betreuung und der Sicherheit von über 20 Jahren Inkasso-Erfahrung durch 24collect.
+              Jetzt Ihre offene Rechnung direkt als PDF, XRechnung oder ZUGFeRD hochladen und wir kümmern uns um den Rest.
             </p>
+          </div>
+        </div>
+        
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+          <div className="flex flex-col items-center gap-2 animate-bounce-gentle">
+            <ChevronDown className="w-6 h-6 text-brand-900" strokeWidth={2.5} />
           </div>
         </div>
       </section>
@@ -39,17 +51,31 @@ export default function ProduktPage() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
-              Ausbleibende Zahlungen? Eine Herausforderung für jedes Unternehmen.
-            </h2>
-            <div className="prose prose-lg max-w-none text-text-900/70">
-              <p className="text-base sm:text-lg leading-relaxed">
-                Sie haben Ihre Leistung erbracht, die Rechnung gestellt – doch die Zahlung bleibt aus. 
-                Unbezahlte Rechnungen binden Kapital, verursachen administrativen Aufwand und können die 
-                Liquidität Ihres Unternehmens empfindlich stören. Gerade für Selbstständige, kleine und 
-                mittlere Unternehmen ist ein zuverlässiger Zahlungseingang existenziell. Die manuelle 
-                Verfolgung offener Posten kostet wertvolle Zeit, die Ihnen für Ihr Kerngeschäft fehlt.
-              </p>
+            <div className="flex items-start gap-6">
+              {/* Icon */}
+              <div className="flex-shrink-0 relative">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-brand-900/5 flex items-center justify-center">
+                  <AlertCircle className="w-8 h-8 sm:w-10 sm:h-10 text-brand-900" strokeWidth={2} />
+                </div>
+                <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-brand-700 flex items-center justify-center">
+                  <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" strokeWidth={2.5} />
+                </div>
+              </div>
+              
+              {/* Content */}
+              <div className="flex-1">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
+                  Ausbleibende Zahlungen?
+                </h2>
+                <div className="prose prose-lg max-w-none text-text-900/70">
+                  <p className="text-base sm:text-lg leading-relaxed">
+                    Sie haben Ihre Leistung erbracht, die Rechnung gestellt – doch die Zahlung bleibt aus. 
+                    Unbezahlte Rechnungen binden Kapital, verursachen administrativen Aufwand und können die 
+                    Liquidität Ihres Unternehmens empfindlich stören. Die manuelle 
+                    Verfolgung offener Posten kostet wertvolle Zeit, die Ihnen für Ihr Kerngeschäft fehlt.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -60,12 +86,12 @@ export default function ProduktPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
-              Mit Nota Finance Ihr Geld einfach, sicher und schnell zurückerhalten.
+              Mit Nota Finance erhalten Sie Ihr Geld einfach, sicher und schnell zurück.
             </h2>
             <p className="text-base sm:text-lg text-text-900/70 leading-relaxed">
               Nota Finance nimmt Ihnen den gesamten Prozess des Forderungseinzugs ab – von der ersten 
               Mahnung bis hin zur möglichen gerichtlichen Durchsetzung. Unser Ziel ist es, Ihre offenen 
-              Forderungen ab 50€ Forderungshöhe effizient zu realisieren, während wir gleichzeitig darauf 
+              Forderungen effizient zu realisieren, während wir gleichzeitig darauf 
               achten, Ihre Kundenbeziehungen zu schonen.
             </p>
           </div>
@@ -94,8 +120,7 @@ export default function ProduktPage() {
                     <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">Ohne Registrierungszwang:</h4>
                     <p className="leading-relaxed">
                       Für die Einreichung einzelner Fälle ist keine vorherige Registrierung notwendig. 
-                      Sie können sofort loslegen. Wenn Sie möchten, können Sie sich natürlich gerne 
-                      registrieren und sparen bei der Einreichung weiterer Fälle wertvolle Zeit.
+                      Sie können sofort loslegen. 
                     </p>
                   </div>
                   <div>
@@ -118,13 +143,13 @@ export default function ProduktPage() {
               </div>
               <div className="flex-1">
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-text-900 mb-4 sm:mb-6">
-                  Das Nota-Inkasso
+                  Das Nota-Inkasso: wir übernehmen.
                 </h3>
                 
                 {/* A) Außergerichtliches Mahnverfahren */}
                 <div className="mb-8">
                   <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
-                    A) Das außergerichtliche Mahnverfahren – konsequent und kundenorientiert
+                    Das außergerichtliche Mahnverfahren – konsequent und kundenorientiert
                   </h4>
                   <div className="space-y-4 text-text-900/70">
                     <div>
@@ -132,7 +157,7 @@ export default function ProduktPage() {
                       <p className="leading-relaxed">
                         Wir nehmen Kontakt zu Ihren säumigen Kunden auf und erinnern sie freundlich, 
                         aber bestimmt an die offene Zahlung. Unsere Kommunikation ist darauf ausgelegt, 
-                        eine schnelle Zahlung zu erwirken und gleichzeitig die Kundenbeziehung nicht zu belasten.
+                        eine schnelle Zahlung zu erwirken und gleichzeitig Ihre Kundenbeziehung nicht zu belasten.
                       </p>
                     </div>
                     <div>
@@ -155,7 +180,7 @@ export default function ProduktPage() {
                 {/* B) Gerichtliches Mahnverfahren */}
                 <div>
                   <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
-                    B) Das gerichtliche Mahnverfahren – Wenn es nötig wird
+                    Das gerichtliche Mahnverfahren – Wenn es nötig wird
                   </h4>
                   <div className="space-y-4 text-text-900/70">
                     <div>
@@ -188,14 +213,13 @@ export default function ProduktPage() {
               </div>
               <div className="flex-1">
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-text-900 mb-4 sm:mb-6">
-                  Zahlungseingang & Auszahlung
+                  Zahlung erhalten
                 </h3>
                 <div className="space-y-4 text-text-900/70">
                   <div>
                     <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">100% für Sie:</h4>
                     <p className="leading-relaxed">
-                      Sobald Ihr Kunde die Forderung (inklusive der gesetzlichen Mahngebühren und 
-                      Verzugszinsen) begleicht, erhalten Sie 100% des ursprünglichen Rechnungsbetrages 
+                      Sobald Ihr Kunde die Forderung begleicht, erhalten Sie 100% des ursprünglichen Rechnungsbetrages 
                       Ihrer Ausgangsrechnung. Die Ihnen zustehenden Nebenforderungen wie Mahnkosten und 
                       Verzugszinsen leiten wir ebenfalls an Sie weiter.
                     </p>

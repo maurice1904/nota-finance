@@ -1,4 +1,4 @@
-import { Euro, CheckCircle, TrendingUp } from "lucide-react";
+import { Euro, CheckCircle, TrendingUp, ChevronDown } from "lucide-react";
 import CTASection from "@/components/CTASection";
 import type { Metadata } from "next";
 
@@ -19,7 +19,14 @@ export default function PreisePage() {
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
       <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-65"
+          style={{ backgroundImage: "url('/Hero-SubSites.png')" }}
+        />
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-4xl sm:text-5xl md:text-6xl font-bold mb-6 sm:mb-8">
               0€
@@ -32,6 +39,13 @@ export default function PreisePage() {
               Unser Service ist für Sie als Auftraggeber in der Regel kostenfrei, entstehende 
               Kosten und Gebühren sind gesetzlich geregelt und vom Schuldner zu tragen.
             </p>
+          </div>
+        </div>
+        
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+          <div className="flex flex-col items-center gap-2 animate-bounce-gentle">
+            <ChevronDown className="w-6 h-6 text-brand-900" strokeWidth={2.5} />
           </div>
         </div>
       </section>

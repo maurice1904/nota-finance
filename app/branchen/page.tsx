@@ -130,7 +130,14 @@ export default function BranchenPage() {
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
       <section className="relative overflow-hidden bg-gradient-to-br from-white via-surface-100/30 to-brand-700/8 min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-12 sm:py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-65"
+          style={{ backgroundImage: "url('/Hero-SubSites.png')" }}
+        />
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
               Für jede Branche die passende Lösung:{" "}
@@ -145,6 +152,13 @@ export default function BranchenPage() {
               auf Ihre spezifischen Anforderungen zugeschnitten ist. Wir helfen Ihnen, Ihre Liquidität 
               zu sichern, sodass Sie sich wieder voll auf Ihr Kerngeschäft konzentrieren können.
             </p>
+          </div>
+        </div>
+        
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+          <div className="flex flex-col items-center gap-2 animate-bounce-gentle">
+            <ChevronDown className="w-6 h-6 text-brand-900" strokeWidth={2.5} />
           </div>
         </div>
       </section>
