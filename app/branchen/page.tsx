@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Laptop, Wrench, Heart, MessageSquare, ShoppingCart, Hotel, Server, Cog } from "lucide-react";
+import { ChevronDown, Calculator, Laptop, Wrench, Heart, MessageSquare, ShoppingCart, Hotel, Server, Cog, Check } from "lucide-react";
 import CTASection from "@/components/CTASection";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +15,20 @@ interface Industry {
 }
 
 const industries: Industry[] = [
+  {
+    id: "steuerberater",
+    title: "Steuerberater & Steuerkanzleien",
+    icon: Calculator,
+    subtitle: "Nota Finance ist Partner von Steuerberatern und Steuerkanzleien – wir verstehen Ihre besonderen Anforderungen an Diskretion und Professionalität.",
+    challenge: "Sie sehen sofort, wenn die Liquidität Ihrer Mandanten durch Außenstände leidet. Doch das aktive Eintreiben dieser Forderungen ist zeitintensiv, bindet wertvolle Kanzlei-Ressourcen und gehört nicht zu Ihrem Kerngeschäft der steuerlichen Beratung.",
+    solutions: [
+      "Keine Kosten im außergerichtlichen Verfahren: Als Steuerberater tragen Sie kein Kostenrisiko für die erste Mahnstufe. Die gesetzlichen Inkassokosten zahlt der säumige Mandant.",
+      "Service-Erweiterung ohne Aufwand: Bieten Sie Ihren Mandanten aktives Liquiditätsmanagement an, ohne selbst Mahnungen schreiben zu müssen.",
+      "Mandantenbindung: Sichern Sie die Liquidität Ihrer Mandanten und stärken Sie Ihre Position als unverzichtbarer Partner.",
+      "Kein Kostenrisiko: Das außergerichtliche Verfahren ist für Ihre Mandanten im Erfolgsfall kostenfrei.",
+      "Fokus auf Ihre Kernkompetenz: Konzentrieren Sie sich auf die steuerliche Beratung Ihrer Mandanten – wir kümmern uns um die Realisierung der offenen Forderungen."
+    ]
+  },
   {
     id: "freiberufler",
     title: "Freiberufler",
@@ -120,10 +134,19 @@ const industries: Industry[] = [
 ];
 
 export default function BranchenPage() {
-  const [openIndustry, setOpenIndustry] = useState<string | null>(null);
+  // Multiple boxes can be open at the same time
+  const [openIndustries, setOpenIndustries] = useState<Set<string>>(new Set());
 
   const toggleIndustry = (id: string) => {
-    setOpenIndustry(openIndustry === id ? null : id);
+    setOpenIndustries(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
   };
 
   return (
@@ -169,7 +192,7 @@ export default function BranchenPage() {
           <div className="space-y-4">
             {industries.map((industry) => {
               const Icon = industry.icon;
-              const isOpen = openIndustry === industry.id;
+              const isOpen = openIndustries.has(industry.id);
 
               return (
                 <div
@@ -229,8 +252,8 @@ export default function BranchenPage() {
                         </h4>
                         <ul className="space-y-3">
                           {industry.solutions.map((solution, idx) => (
-                            <li key={idx} className="flex items-start gap-3">
-                              <div className="w-2 h-2 bg-brand-900 rounded-full mt-2 flex-shrink-0" />
+                            <li key={idx} className="flex items-start gap-2.5">
+                              <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-1" strokeWidth={2.5} />
                               <p className="text-text-900/70 leading-relaxed">
                                 {solution}
                               </p>
