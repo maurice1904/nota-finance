@@ -155,19 +155,19 @@ export default function Home() {
           </div>
 
           <div className="relative max-w-4xl mx-auto">
-            {/* Desktop Timeline Line (center) */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-900 via-brand-700 to-surface-100 transform -translate-x-1/2" />
+            {/* Desktop Timeline Line (center) - 2x thickness, solid corporate blue */}
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-brand-700 transform -translate-x-1/2 rounded-full" />
 
-            {/* Mobile Timeline Line (left side) */}
-            <div className="md:hidden absolute left-6 top-6 bottom-6 w-0.5 bg-gradient-to-b from-brand-900 via-brand-700 to-surface-100" />
+            {/* Mobile Timeline Line (left side) - 2x thickness, solid corporate blue */}
+            <div className="md:hidden absolute left-6 top-6 bottom-6 w-1 bg-brand-700 rounded-full" />
 
             {/* Timeline Items */}
             <div className="space-y-12 md:space-y-16">
-              {/* Punkt 1 */}
+              {/* Punkt I - Außergerichtlich */}
               <div className="relative flex items-start md:items-center">
                 {/* Mobile: Number circle on left */}
-                <div className="md:hidden flex-shrink-0 w-12 h-12 bg-brand-900 rounded-full flex items-center justify-center border-4 border-white shadow-lg z-10">
-                  <span className="text-white font-bold">1</span>
+                <div className="md:hidden flex-shrink-0 w-12 h-12 bg-brand-700 rounded-full flex items-center justify-center border-4 border-white shadow-lg z-10">
+                  <span className="text-white font-bold">I</span>
                 </div>
                 
                 {/* Mobile: Content on right */}
@@ -197,17 +197,17 @@ export default function Home() {
                 </div>
                 
                 {/* Desktop: Center circle */}
-                <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-brand-900 rounded-full items-center justify-center border-4 border-white shadow-lg">
-                  <span className="text-white font-bold">1</span>
+                <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-brand-700 rounded-full items-center justify-center border-4 border-white shadow-lg">
+                  <span className="text-white font-bold">I</span>
                 </div>
                 <div className="hidden md:block md:w-1/2" />
               </div>
 
-              {/* Punkt 2 */}
+              {/* Punkt II - Gerichtlich */}
               <div className="relative flex items-start md:items-center">
                 {/* Mobile: Number circle on left */}
-                <div className="md:hidden flex-shrink-0 w-12 h-12 bg-brand-900 rounded-full flex items-center justify-center border-4 border-white shadow-lg z-10">
-                  <span className="text-white font-bold">2</span>
+                <div className="md:hidden flex-shrink-0 w-12 h-12 bg-brand-700 rounded-full flex items-center justify-center border-4 border-white shadow-lg z-10">
+                  <span className="text-white font-bold">II</span>
                 </div>
                 
                 {/* Mobile: Content on right */}
@@ -227,8 +227,8 @@ export default function Home() {
                 <div className="hidden md:block md:w-1/2" />
                 
                 {/* Desktop: Center circle */}
-                <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-brand-900 rounded-full items-center justify-center border-4 border-white shadow-lg">
-                  <span className="text-white font-bold">2</span>
+                <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-brand-700 rounded-full items-center justify-center border-4 border-white shadow-lg">
+                  <span className="text-white font-bold">II</span>
                 </div>
                 
                 {/* Desktop: Content on right */}
@@ -285,8 +285,8 @@ export default function Home() {
                 Keine Kosten
               </h3>
               <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
-                Für Sie als Auftraggeber ist das außergerichtliche Mahnverfahren im Erfolgsfall in 
-                der Regel kostenfrei. Die anfallenden Inkassokosten sind gesetzlich geregelt und werden 
+                Für Sie  ist das außergerichtliche Mahnverfahren im Erfolgsfall in 
+                der Regel kostenfrei. Inkassokosten sind gesetzlich geregelt und werden 
                 von Ihrem säumigen Kunden (Schuldner) getragen. Sollte ein gerichtliches Mahnverfahren 
                 notwendig werden, informieren wir Sie im Vorfeld transparent über eventuell anfallende 
                 Gerichtskosten. Auch diese sind im Erfolgsfall von Ihrem Schuldner zu tragen.
