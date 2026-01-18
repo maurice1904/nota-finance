@@ -130,10 +130,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="text-center mt-16">
+          <div className="text-center mt-16 px-4 sm:px-0">
             <Link
               href="/einreichen"
-              className="inline-flex items-center gap-2 bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
               Fall einreichen
               <ArrowRight className="w-5 h-5" />

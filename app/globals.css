@@ -206,18 +206,18 @@ button, a, input, textarea {
   box-shadow: 0 0 0 4px var(--focus-ring);
 }
 
-/* Very Slow Zoom Animation for Hero Background */
+/* Smooth Breathing Zoom Animation for Hero Background, change scale in 100% and animation speed */ 
 @keyframes slow-zoom {
   0% {
     transform: scale(1);
   }
   100% {
-    transform: scale(1.08);
+    transform: scale(1.4);
   }
 }
 
 .animate-slow-zoom {
-  animation: slow-zoom 25s ease-out forwards;
+  animation: slow-zoom 10s ease-in-out infinite alternate;
   will-change: transform;
 }
 
@@ -231,6 +231,20 @@ button, a, input, textarea {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Simple Fade-In Animation for Tooltips */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out forwards;
 }
 
 .animate-fade-in-up {

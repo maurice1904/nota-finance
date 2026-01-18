@@ -28,19 +28,19 @@ export default function CTASection({ title, subtitle, buttons }: CTASectionProps
           </p>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
           {buttons.map((button) => (
             <Link
               key={button.href}
               href={button.href}
               className={
                 button.primary
-                  ? "group bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-brand-900 hover:bg-brand-700 hover:border-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring flex-1 sm:flex-initial sm:min-w-[240px]"
-                  : "group bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring flex-1 sm:flex-initial sm:min-w-[240px]"
+                  ? "group bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-brand-900 hover:bg-brand-700 hover:border-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring w-full sm:w-[260px] whitespace-nowrap"
+                  : "group bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring w-full sm:w-[260px] whitespace-nowrap"
               }
             >
               {button.text}
-              <ArrowRight className={`w-5 h-5 group-hover:translate-x-1 transition-all duration-300 ${button.primary ? "" : "text-neutral-500 group-hover:text-brand-700"}`} />
+              <ArrowRight className={`w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-all duration-300 ${button.primary ? "" : "text-neutral-500 group-hover:text-brand-700"}`} />
             </Link>
           ))}
         </div>
