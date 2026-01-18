@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, HelpCircle, ArrowRight } from "lucide-react";
+import { ChevronDown, HelpCircle, ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -81,10 +81,18 @@ const faqs: FAQItem[] = [
 ];
 
 export default function FAQPage() {
-  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [openFAQs, setOpenFAQs] = useState<Set<number>>(new Set());
 
   const toggleFAQ = (index: number) => {
-    setOpenFAQ(openFAQ === index ? null : index);
+    setOpenFAQs((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
   };
 
   return (
@@ -125,31 +133,26 @@ export default function FAQPage() {
       {/* FAQ Section */}
       <section className="py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((faq, index) => {
-              const isOpen = openFAQ === index;
+              const isOpen = openFAQs.has(index);
 
               return (
                 <div
                   key={index}
-                  className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl overflow-hidden hover:shadow-lg hover:border-brand-700/30 transition-all duration-300"
+                  className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-xl overflow-hidden hover:shadow-md hover:border-brand-700/30 transition-all duration-300"
                 >
                   {/* Question - Always Visible */}
                   <button
                     onClick={() => toggleFAQ(index)}
-                    className="w-full flex items-center justify-between p-6 text-left hover:bg-surface-100/30 transition-colors duration-300"
+                    className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-100/30 transition-colors duration-300"
                   >
-                    <div className="flex items-start gap-4 flex-1">
-                      <div className="w-8 h-8 bg-gradient-to-br from-brand-900 to-brand-700 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                        <span className="text-white font-bold text-sm">{index + 1}</span>
-                      </div>
-                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-text-900 pr-4">
-                        {faq.question}
-                      </h3>
-                    </div>
+                    <h3 className="text-sm sm:text-base font-semibold text-text-900 pr-4 flex-1">
+                      {faq.question}
+                    </h3>
                     <ChevronDown
                       className={cn(
-                        "w-6 h-6 text-brand-700 transition-transform duration-300 flex-shrink-0",
+                        "w-5 h-5 text-brand-700 transition-transform duration-300 flex-shrink-0",
                         isOpen && "rotate-180"
                       )}
                     />
@@ -162,14 +165,26 @@ export default function FAQPage() {
                       isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
                     )}
                   >
-                    <div className="px-6 pb-6 pl-[72px]">
+                    <div className="px-5 pb-5 pt-1">
                       {Array.isArray(faq.answer) ? (
                         <div className="space-y-3">
-                          {faq.answer.map((paragraph, pIndex) => (
-                            <p key={pIndex} className="text-text-900/70 leading-relaxed">
-                              {paragraph}
-                            </p>
-                          ))}
+                          {faq.answer.map((paragraph, pIndex) => {
+                            // Check if paragraph starts with bullet point
+                            if (paragraph.startsWith("• ")) {
+                              const text = paragraph.slice(2);
+                              return (
+                                <div key={pIndex} className="flex items-start gap-2.5">
+                                  <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-0.5" strokeWidth={2.5} />
+                                  <p className="text-text-900/70 leading-relaxed">{text}</p>
+                                </div>
+                              );
+                            }
+                            return (
+                              <p key={pIndex} className="text-text-900/70 leading-relaxed">
+                                {paragraph}
+                              </p>
+                            );
+                          })}
                         </div>
                       ) : (
                         <p className="text-text-900/70 leading-relaxed">{faq.answer}</p>

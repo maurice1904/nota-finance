@@ -180,17 +180,17 @@ export default function PreisePage() {
         {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
-              Kosten für Sie als Auftraggeber:
-            </h1>
-            
             <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-4xl sm:text-5xl md:text-6xl font-bold mb-6 sm:mb-8">
               0€
             </div>
             
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-900 mb-6 sm:mb-8 leading-tight">
+              Kosten für Sie als Auftraggeber
+            </h1>
+            
             <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
               Unser Service ist für Sie als Auftraggeber in der Regel kostenfrei, entstehende 
-              Kosten und Gebühren sind gesetzlich geregelt und vom Schuldner zu tragen. 
+              Kosten und Gebühren sind gesetzlich geregelt und vom Schuldner zu tragen.
             </p>
           </div>
         </div>
@@ -301,8 +301,8 @@ export default function PreisePage() {
               {/* Footer Note */}
               <div className="bg-surface-100/50 px-4 sm:px-6 py-4 border-t border-border-subtle">
                 <p className="text-xs sm:text-sm text-neutral-500 text-center leading-relaxed">
-                  * Alle Gebühren entsprechen der Gebührentabelle nach §13 RVG. Verzugszinsen werden 
-                  nach den gesetzlichen Bestimmungen berechnet. Änderungen vorbehalten.
+                  * Gebühren entsprechen der Gebührentabelle nach §13 RVG. Verzugszinsen werden 
+                  nach den gesetzlichen Bestimmungen berechnet. Gebühren variieren je nach Größe der Forderung. Änderungen vorbehalten.
                 </p>
               </div>
             </div>

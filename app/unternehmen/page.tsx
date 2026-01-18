@@ -1,21 +1,51 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { Target, Heart, Zap, Shield, ArrowRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import CTASection from "@/components/CTASection";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Über uns - Powered by 24collect",
-  description:
-    "Nota Finance verbindet 15 Jahre Inkasso-Erfahrung von 24collect mit modernster Technologie. Seriös, empathisch und effizient. Schnell, digital, kosteneffizient.",
-  openGraph: {
-    title: "Über uns - Powered by 24collect | Nota Finance",
-    description:
-      "Nota Finance verbindet 15 Jahre Inkasso-Erfahrung von 24collect mit modernster Technologie. Seriös, empathisch und effizient. Schnell, digital, kosteneffizient.",
-    url: "https://www.notafinance.de/unternehmen",
-  },
-};
 
 export default function UnternehmenPage() {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const desktopLineRef = useRef<HTMLDivElement>(null);
+  const mobileLineRef = useRef<HTMLDivElement>(null);
+  const [desktopLineHeight, setDesktopLineHeight] = useState(0);
+  const [mobileLineHeight, setMobileLineHeight] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const viewportCenter = window.innerHeight / 2;
+      
+      // Desktop line calculation
+      if (desktopLineRef.current) {
+        const lineRect = desktopLineRef.current.getBoundingClientRect();
+        const lineTopInViewport = lineRect.top;
+        const heightToCenter = viewportCenter - lineTopInViewport;
+        const maxHeight = lineRect.height;
+        const clampedHeight = Math.min(Math.max(heightToCenter, 0), maxHeight);
+        setDesktopLineHeight(clampedHeight);
+      }
+      
+      // Mobile line calculation
+      if (mobileLineRef.current) {
+        const lineRect = mobileLineRef.current.getBoundingClientRect();
+        const lineTopInViewport = lineRect.top;
+        const heightToCenter = viewportCenter - lineTopInViewport;
+        const maxHeight = lineRect.height;
+        const clampedHeight = Math.min(Math.max(heightToCenter, 0), maxHeight);
+        setMobileLineHeight(clampedHeight);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    handleScroll();
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
@@ -65,44 +95,76 @@ export default function UnternehmenPage() {
             Unsere Geschichte
           </h2>
 
-          <div className="relative max-w-5xl mx-auto">
-            {/* Vertical Timeline Line */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-900 via-brand-700 to-surface-100 transform -translate-x-1/2" />
+          <div ref={timelineRef} className="relative max-w-5xl mx-auto">
+            {/* Desktop: Vertical Timeline Line with Scroll Animation (center) */}
+            <div 
+              ref={desktopLineRef}
+              className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 transform -translate-x-1/2 overflow-hidden"
+            >
+              {/* Background line (subtle) */}
+              <div className="absolute inset-0 bg-border-subtle rounded-full" />
+              {/* Animated line (brand gradient) */}
+              <div 
+                className="absolute top-0 left-0 right-0 bg-gradient-to-b from-brand-900 via-brand-700 to-brand-900 rounded-full"
+                style={{ height: `${desktopLineHeight}px` }}
+              />
+            </div>
+            
+            {/* Mobile: Vertical Timeline Line with Scroll Animation (left side) */}
+            <div 
+              ref={mobileLineRef}
+              className="md:hidden absolute left-2 top-4 bottom-4 w-0.5 overflow-hidden"
+            >
+              {/* Background line (subtle) */}
+              <div className="absolute inset-0 bg-border-subtle rounded-full" />
+              {/* Animated line (brand gradient) */}
+              <div 
+                className="absolute top-0 left-0 right-0 bg-gradient-to-b from-brand-900 via-brand-700 to-brand-900 rounded-full"
+                style={{ height: `${mobileLineHeight}px` }}
+              />
+            </div>
 
             {/* Timeline Items */}
-            <div className="space-y-16">
+            {/* Circle top position: Year badge (~40px) + mb-4 (16px) + half of h3 line height (~16px) - half circle (12px) = ~60px */}
+            <div className="space-y-12 md:space-y-16">
               {/* 2008 */}
-              <div className="relative">
-                <div className="md:flex md:items-center">
+              <div className="relative pl-6 md:pl-0">
+                {/* Mobile circle - centered on line (left-2 + w-0.5/2 = 8px + 1px = 9px, minus half circle width) */}
+                <div className="md:hidden absolute top-2 w-4 h-4 bg-brand-900 rounded-full border-2 border-white shadow-sm" style={{ left: '1px' }} />
+                <div className="md:flex">
                   <div className="md:w-1/2 md:pr-12 md:text-right">
-                    <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 py-2 rounded-full font-bold text-xl mb-4">
+                    <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-4 py-1.5 md:px-6 md:py-2 rounded-full font-bold text-base md:text-xl mb-3 md:mb-4">
                       2008
                     </div>
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-2 md:mb-3">
                       Die Gründung
                     </h3>
-                    <p className="text-text-900/70 leading-relaxed">
+                    <p className="text-text-900/70 leading-relaxed text-sm md:text-base">
                       Gründung der twenty4collect GmbH als kundenorientiertes, digitales Inkasso-Unternehmen
                     </p>
                   </div>
-                  <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-brand-900 rounded-full border-4 border-white shadow-lg" />
+                  {/* Desktop circle aligned with h3 heading */}
+                  <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-brand-900 rounded-full border-4 border-white shadow-lg" style={{ top: '66px' }} />
                   <div className="md:w-1/2" />
                 </div>
               </div>
 
               {/* 2017 */}
-              <div className="relative">
-                <div className="md:flex md:items-center">
+              <div className="relative pl-6 md:pl-0">
+                {/* Mobile circle - centered on line */}
+                <div className="md:hidden absolute top-2 w-4 h-4 bg-brand-900 rounded-full border-2 border-white shadow-sm" style={{ left: '1px' }} />
+                <div className="md:flex">
                   <div className="md:w-1/2" />
-                  <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-brand-900 rounded-full border-4 border-white shadow-lg" />
+                  {/* Desktop circle aligned with h3 heading */}
+                  <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-brand-900 rounded-full border-4 border-white shadow-lg" style={{ top: '66px' }} />
                   <div className="md:w-1/2 md:pl-12">
-                    <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 py-2 rounded-full font-bold text-xl mb-4">
+                    <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-4 py-1.5 md:px-6 md:py-2 rounded-full font-bold text-base md:text-xl mb-3 md:mb-4">
                       2017
                     </div>
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-2 md:mb-3">
                       IHK / DIHK Digital Award
                     </h3>
-                    <p className="text-text-900/70 leading-relaxed">
+                    <p className="text-text-900/70 leading-relaxed text-sm md:text-base">
                       Gewinn des IHK / DIHK Digital Award 2017 mit Deutschlands erster Mobile Lösung 
                       im Forderungsmanagement (24collect.de)
                     </p>
@@ -111,38 +173,44 @@ export default function UnternehmenPage() {
               </div>
 
               {/* 2025 - gerichtsmahnverfahren.de */}
-              <div className="relative">
-                <div className="md:flex md:items-center">
+              <div className="relative pl-6 md:pl-0">
+                {/* Mobile circle - centered on line */}
+                <div className="md:hidden absolute top-2 w-4 h-4 bg-brand-900 rounded-full border-2 border-white shadow-sm" style={{ left: '1px' }} />
+                <div className="md:flex">
                   <div className="md:w-1/2 md:pr-12 md:text-right">
-                    <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 py-2 rounded-full font-bold text-xl mb-4">
+                    <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-4 py-1.5 md:px-6 md:py-2 rounded-full font-bold text-base md:text-xl mb-3 md:mb-4">
                       2025
                     </div>
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-2 md:mb-3">
                       Expansion: gerichtsmahnverfahren.de
                     </h3>
-                    <p className="text-text-900/70 leading-relaxed">
+                    <p className="text-text-900/70 leading-relaxed text-sm md:text-base">
                       Expansion mit der ersten zentralen, medienbruchfreien Plattform gerichtsmahnverfahren.de 
                       als All-in-One Lösung im Mahnverfahren mit Deutschlands zentralen Mahngerichten
                     </p>
                   </div>
-                  <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-brand-900 rounded-full border-4 border-white shadow-lg" />
+                  {/* Desktop circle aligned with h3 heading */}
+                  <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-brand-900 rounded-full border-4 border-white shadow-lg" style={{ top: '66px' }} />
                   <div className="md:w-1/2" />
                 </div>
               </div>
 
-              {/* 2025 - Nota Finance Launch */}
-              <div className="relative">
-                <div className="md:flex md:items-center">
+              {/* 2026 - Nota Finance Launch */}
+              <div className="relative pl-6 md:pl-0">
+                {/* Mobile circle - slightly larger, centered on line */}
+                <div className="md:hidden absolute top-2 w-5 h-5 bg-gradient-to-br from-brand-900 to-brand-700 rounded-full border-2 border-white shadow-md" style={{ left: '-1px' }} />
+                <div className="md:flex">
                   <div className="md:w-1/2" />
-                  <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-brand-900 to-brand-700 rounded-full border-4 border-white shadow-2xl animate-pulse" />
+                  {/* Desktop circle aligned with h3 heading - no animate-pulse, slightly larger */}
+                  <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-brand-900 to-brand-700 rounded-full border-4 border-white shadow-2xl" style={{ top: '62px' }} />
                   <div className="md:w-1/2 md:pl-12">
-                    <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-6 py-2 rounded-full font-bold text-xl mb-4">
+                    <div className="inline-block bg-gradient-to-br from-brand-900 to-brand-700 text-white px-4 py-1.5 md:px-6 md:py-2 rounded-full font-bold text-base md:text-xl mb-3 md:mb-4">
                       2026
                     </div>
-                    <h3 className="text-2xl font-bold text-brand-900 mb-3">
+                    <h3 className="text-xl md:text-2xl font-bold text-brand-900 mb-2 md:mb-3">
                       Launch von Nota Finance
                     </h3>
-                    <p className="text-text-900/70 leading-relaxed font-semibold">
+                    <p className="text-text-900/70 leading-relaxed font-semibold text-sm md:text-base">
                       Launch von Nota Finance als moderne Weiterentwicklung der langjährigen Inkasso-Erfahrung, 
                       um Selbstständigen sowie kleinen und mittleren Unternehmen aller Branchen die bestmögliche 
                       Lösung zu bieten
@@ -174,10 +242,10 @@ export default function UnternehmenPage() {
 
             <Link
               href="/produkt"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-brand-900 hover:bg-brand-700 hover:border-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
               So funktioniert es
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 group-hover:translate-x-1 transition-all duration-300" />
             </Link>
           </div>
         </div>
@@ -198,10 +266,8 @@ export default function UnternehmenPage() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Wert 1 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/50 transition-all duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
-                <Zap className="w-8 h-8 text-white" />
-              </div>
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
+              <Zap className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
                 Maximale Einfachheit
               </h3>
@@ -212,10 +278,8 @@ export default function UnternehmenPage() {
             </div>
 
             {/* Wert 2 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/50 transition-all duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
-                <Target className="w-8 h-8 text-white" />
-              </div>
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
+              <Target className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
                 Digitale Intelligenz
               </h3>
@@ -226,10 +290,8 @@ export default function UnternehmenPage() {
             </div>
 
             {/* Wert 3 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/50 transition-all duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
-                <Heart className="w-8 h-8 text-white" />
-              </div>
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
+              <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
                 Volle Kundenorientierung
               </h3>
@@ -240,10 +302,8 @@ export default function UnternehmenPage() {
             </div>
 
             {/* Wert 4 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 hover:shadow-2xl hover:scale-105 hover:border-brand-700/50 transition-all duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-brand-900 to-brand-700 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
-                <Shield className="w-8 h-8 text-white" />
-              </div>
+            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
+              <Shield className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
                 Absolute Verlässlichkeit
               </h3>

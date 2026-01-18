@@ -149,6 +149,22 @@ export default function BranchenPage() {
     });
   };
 
+  // Helper function to format solution text (bold before colon)
+  const formatSolutionText = (text: string) => {
+    const colonIndex = text.indexOf(':');
+    if (colonIndex !== -1) {
+      const beforeColon = text.slice(0, colonIndex);
+      const afterColon = text.slice(colonIndex);
+      return (
+        <>
+          <span className="font-bold text-text-900">{beforeColon}</span>
+          <span>{afterColon}</span>
+        </>
+      );
+    }
+    return text;
+  };
+
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
@@ -255,7 +271,7 @@ export default function BranchenPage() {
                             <li key={idx} className="flex items-start gap-2.5">
                               <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-1" strokeWidth={2.5} />
                               <p className="text-text-900/70 leading-relaxed">
-                                {solution}
+                                {formatSolutionText(solution)}
                               </p>
                             </li>
                           ))}

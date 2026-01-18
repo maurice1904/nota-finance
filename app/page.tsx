@@ -1,23 +1,40 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Upload, CheckCircle, Euro, ArrowRight } from "lucide-react";
 import CTASection from "@/components/CTASection";
 import TrustSlider from "@/components/TrustSlider";
-import Image from "next/image";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Digitales Inkasso ohne Registrierung",
-  description:
-    "Fordern Sie offene Rechnungen einfach online ein. Sofortiger Start per Upload, ohne Vertragsbindung, ab 50€. Die Lösung für Freelancer & KMU.",
-  openGraph: {
-    title: "Digitales Inkasso ohne Registrierung | Nota Finance",
-    description:
-      "Fordern Sie offene Rechnungen einfach online ein. Sofortiger Start per Upload, ohne Vertragsbindung, ab 50€. Die Lösung für Freelancer & KMU.",
-    url: "https://www.notafinance.de",
-  },
-};
 
 export default function Home() {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const [lineHeight, setLineHeight] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!timelineRef.current || !lineRef.current) return;
+
+      const lineRect = lineRef.current.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      
+      const lineTopInViewport = lineRect.top;
+      const heightToCenter = viewportCenter - lineTopInViewport;
+      const maxHeight = lineRect.height;
+      const clampedHeight = Math.min(Math.max(heightToCenter, 0), maxHeight);
+      
+      setLineHeight(clampedHeight);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    handleScroll();
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
   return (
     <main>
       {/* Hero Section - Exact Viewport Height (minus sticky navbar) */}
@@ -154,12 +171,29 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="relative max-w-4xl mx-auto">
-            {/* Desktop Timeline Line (center) - 2x thickness, solid corporate blue */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-brand-700 transform -translate-x-1/2 rounded-full" />
+          <div ref={timelineRef} className="relative max-w-4xl mx-auto">
+            {/* Desktop Timeline Line (center) - with Scroll Animation */}
+            <div 
+              ref={lineRef}
+              className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 transform -translate-x-1/2 overflow-hidden"
+            >
+              {/* Background line (subtle) */}
+              <div className="absolute inset-0 bg-border-subtle rounded-full" />
+              {/* Animated line (brand gradient) */}
+              <div 
+                className="absolute top-0 left-0 right-0 bg-gradient-to-b from-brand-900 via-brand-700 to-brand-900 rounded-full"
+                style={{ height: `${lineHeight}px` }}
+              />
+            </div>
 
-            {/* Mobile Timeline Line (left side) - 2x thickness, solid corporate blue */}
-            <div className="md:hidden absolute left-6 top-6 bottom-6 w-1 bg-brand-700 rounded-full" />
+            {/* Mobile Timeline Line (left side) - with Scroll Animation */}
+            <div className="md:hidden absolute left-6 top-6 bottom-6 w-1 overflow-hidden">
+              <div className="absolute inset-0 bg-border-subtle rounded-full" />
+              <div 
+                className="absolute top-0 left-0 right-0 bg-gradient-to-b from-brand-900 via-brand-700 to-brand-900 rounded-full"
+                style={{ height: `${lineHeight}px` }}
+              />
+            </div>
 
             {/* Timeline Items */}
             <div className="space-y-12 md:space-y-16">

@@ -3,7 +3,7 @@ import { Linkedin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-text-900 via-text-900/95 to-brand-900/80 text-white mt-24">
+    <footer className="bg-gradient-to-br from-brand-900 to-text-900 text-white mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left Side - Copyright & Social */}
