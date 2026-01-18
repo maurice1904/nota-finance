@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Euro, CheckCircle, TrendingUp, ChevronDown, Info, X, ArrowRight } from "lucide-react";
 import CTASection from "@/components/CTASection";
 import RevealOnScroll from "@/components/RevealOnScroll";
@@ -282,9 +282,8 @@ export default function PreisePage() {
               {/* Rows */}
               <div className="p-4 sm:p-6 space-y-1">
                 {calculationRows.map((row, index) => (
-                  <>
+                  <React.Fragment key={index}>
                     <TooltipRow
-                      key={index}
                       index={index}
                       label={row.label}
                       amount={row.amount}
@@ -305,7 +304,7 @@ export default function PreisePage() {
                         </div>
                       </div>
                     )}
-                  </>
+                  </React.Fragment>
                 ))}
               </div>
               
@@ -319,31 +318,33 @@ export default function PreisePage() {
             </div>
             
             {/* Visual Summary */}
-            <div className="mt-10">
-              <p className="text-center text-sm font-semibold text-text-900/60 uppercase tracking-wider mb-4">
-                Zusammenfassung
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {/* Ihre Forderung */}
-                <div className="bg-white rounded-2xl p-5 sm:p-6 border border-border-subtle shadow-md text-center">
-                  <p className="text-base font-bold text-text-900 mb-2">Ihre Forderung</p>
-                  <p className="text-xl sm:text-2xl font-bold font-mono text-text-900">199,18 €</p>
-                  <p className="text-xs text-text-900/60 mt-1">Ursprünglicher Rechnungsbetrag</p>
-                </div>
-                {/* Sie erhalten */}
-                <div className="bg-gradient-to-br from-brand-700/10 to-brand-700/5 rounded-2xl p-5 sm:p-6 border border-brand-700/20 shadow-md text-center">
-                  <p className="text-base font-bold text-brand-900 mb-2">Sie erhalten</p>
-                  <p className="text-xl sm:text-2xl font-bold font-mono text-brand-900">+221,74 €</p>
-                  <p className="text-xs text-text-900/60 mt-1">+ Mahnkosten + Verzugszinsen</p>
-                </div>
-                {/* Ihre Kosten */}
-                <div className="bg-gradient-to-br from-success/10 to-success/5 rounded-2xl p-5 sm:p-6 border-2 border-success/30 shadow-md text-center">
-                  <p className="text-base font-bold text-success mb-2">Ihre Kosten</p>
-                  <p className="text-xl sm:text-2xl font-bold font-mono text-success">0,00 €</p>
-                  <p className="text-xs text-text-900/60 mt-1">Gebühren zahlt der Schuldner</p>
+            <RevealOnScroll>
+              <div className="mt-10">
+                <p className="text-center text-sm font-semibold text-text-900/60 uppercase tracking-wider mb-4">
+                  Zusammenfassung
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {/* Ihre Forderung */}
+                  <div className="bg-white rounded-2xl p-5 sm:p-6 border border-border-subtle shadow-md text-center">
+                    <p className="text-base font-bold text-text-900 mb-2">Ihre Forderung</p>
+                    <p className="text-xl sm:text-2xl font-bold font-mono text-text-900">199,18 €</p>
+                    <p className="text-xs text-text-900/60 mt-1">Ursprünglicher Rechnungsbetrag</p>
+                  </div>
+                  {/* Sie erhalten */}
+                  <div className="bg-gradient-to-br from-brand-700/10 to-brand-700/5 rounded-2xl p-5 sm:p-6 border border-brand-700/20 shadow-md text-center">
+                    <p className="text-base font-bold text-brand-900 mb-2">Sie erhalten</p>
+                    <p className="text-xl sm:text-2xl font-bold font-mono text-brand-900">+221,74 €</p>
+                    <p className="text-xs text-text-900/60 mt-1">+ Mahnkosten + Verzugszinsen</p>
+                  </div>
+                  {/* Ihre Kosten */}
+                  <div className="bg-gradient-to-br from-success/10 to-success/5 rounded-2xl p-5 sm:p-6 border-2 border-success/30 shadow-md text-center">
+                    <p className="text-base font-bold text-success mb-2">Ihre Kosten</p>
+                    <p className="text-xl sm:text-2xl font-bold font-mono text-success">0,00 €</p>
+                    <p className="text-xs text-text-900/60 mt-1">Gebühren zahlt der Schuldner</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>

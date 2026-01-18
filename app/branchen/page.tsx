@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown, Calculator, Laptop, Wrench, Heart, MessageSquare, ShoppingCart, Hotel, Server, Cog, Check } from "lucide-react";
 import CTASection from "@/components/CTASection";
+import RevealOnScroll from "@/components/RevealOnScroll";
 import { cn } from "@/lib/utils";
 
 interface Industry {
@@ -206,80 +207,79 @@ export default function BranchenPage() {
       <section className="py-24 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-4">
-            {industries.map((industry) => {
+            {industries.map((industry, index) => {
               const Icon = industry.icon;
               const isOpen = openIndustries.has(industry.id);
 
               return (
-                <div
-                  key={industry.id}
-                  className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl overflow-hidden hover:shadow-lg hover:border-brand-700/30 transition-all duration-300"
-                >
-                  {/* Header - Always Visible */}
-                  <button
-                    onClick={() => toggleIndustry(industry.id)}
-                    className="w-full flex items-center justify-between p-6 text-left hover:bg-surface-100/30 transition-colors duration-300"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-7 h-7 text-white" />
+                <RevealOnScroll key={industry.id} delay={index * 50}>
+                  <div className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl overflow-hidden hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
+                    {/* Header - Always Visible */}
+                    <button
+                      onClick={() => toggleIndustry(industry.id)}
+                      className="w-full flex items-center justify-between p-6 text-left hover:bg-surface-100/30 transition-colors duration-300"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Icon className="w-7 h-7 text-white" />
+                        </div>
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900">
+                          {industry.title}
+                        </h3>
                       </div>
-                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900">
-                        {industry.title}
-                      </h3>
-                    </div>
-                    <ChevronDown
+                      <ChevronDown
+                        className={cn(
+                          "w-6 h-6 text-brand-700 transition-transform duration-300",
+                          isOpen && "rotate-180"
+                        )}
+                      />
+                    </button>
+
+                    {/* Expandable Content */}
+                    <div
                       className={cn(
-                        "w-6 h-6 text-brand-700 transition-transform duration-300",
-                        isOpen && "rotate-180"
+                        "overflow-hidden transition-all duration-500",
+                        isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
                       )}
-                    />
-                  </button>
+                    >
+                      <div className="px-6 pb-6 space-y-6">
+                        {/* Subtitle */}
+                        <div className="pl-[72px]">
+                          <p className="text-text-900/70 leading-relaxed font-medium">
+                            {industry.subtitle}
+                          </p>
+                        </div>
 
-                  {/* Expandable Content */}
-                  <div
-                    className={cn(
-                      "overflow-hidden transition-all duration-500",
-                      isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-                    )}
-                  >
-                    <div className="px-6 pb-6 space-y-6">
-                      {/* Subtitle */}
-                      <div className="pl-[72px]">
-                        <p className="text-text-900/70 leading-relaxed font-medium">
-                          {industry.subtitle}
-                        </p>
-                      </div>
+                        {/* Challenge */}
+                        <div className="bg-white rounded-xl p-6 border border-border-subtle">
+                          <h4 className="text-base sm:text-lg font-bold text-text-900 mb-3">
+                            Ihre Herausforderung:
+                          </h4>
+                          <p className="text-text-900/70 leading-relaxed">
+                            {industry.challenge}
+                          </p>
+                        </div>
 
-                      {/* Challenge */}
-                      <div className="bg-white rounded-xl p-6 border border-border-subtle">
-                        <h4 className="text-base sm:text-lg font-bold text-text-900 mb-3">
-                          Ihre Herausforderung:
-                        </h4>
-                        <p className="text-text-900/70 leading-relaxed">
-                          {industry.challenge}
-                        </p>
-                      </div>
-
-                      {/* Solutions */}
-                      <div className="bg-white rounded-xl p-6 border border-border-subtle">
-                        <h4 className="text-lg font-bold text-text-900 mb-4">
-                          Unsere Lösung für Sie:
-                        </h4>
-                        <ul className="space-y-3">
-                          {industry.solutions.map((solution, idx) => (
-                            <li key={idx} className="flex items-start gap-2.5">
-                              <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-1" strokeWidth={2.5} />
-                              <p className="text-text-900/70 leading-relaxed">
-                                {formatSolutionText(solution)}
-                              </p>
-                            </li>
-                          ))}
-                        </ul>
+                        {/* Solutions */}
+                        <div className="bg-white rounded-xl p-6 border border-border-subtle">
+                          <h4 className="text-lg font-bold text-text-900 mb-4">
+                            Unsere Lösung für Sie:
+                          </h4>
+                          <ul className="space-y-3">
+                            {industry.solutions.map((solution, idx) => (
+                              <li key={idx} className="flex items-start gap-2.5">
+                                <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-1" strokeWidth={2.5} />
+                                <p className="text-text-900/70 leading-relaxed">
+                                  {formatSolutionText(solution)}
+                                </p>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </RevealOnScroll>
               );
             })}
           </div>
@@ -287,14 +287,16 @@ export default function BranchenPage() {
       </section>
 
       {/* Final CTA */}
-      <CTASection
-        title="Jetzt digitales Inkasso beauftragen"
-        subtitle="Reichen Sie jetzt direkt einen Fall oder mehrere Fälle ein. Oder nehmen Sie mit uns Kontakt auf, wenn Sie Fragen haben oder eine individuelle Beratung wünschen."
-        buttons={[
-          { text: "Kontakt aufnehmen", href: "/kontakt" },
-          { text: "Fall einreichen", href: "/einreichen", primary: true },
-        ]}
-      />
+      <RevealOnScroll>
+        <CTASection
+          title="Jetzt digitales Inkasso beauftragen"
+          subtitle="Reichen Sie jetzt direkt einen Fall oder mehrere Fälle ein. Oder nehmen Sie mit uns Kontakt auf, wenn Sie Fragen haben oder eine individuelle Beratung wünschen."
+          buttons={[
+            { text: "Kontakt aufnehmen", href: "/kontakt" },
+            { text: "Fall einreichen", href: "/einreichen", primary: true },
+          ]}
+        />
+      </RevealOnScroll>
     </main>
   );
 }

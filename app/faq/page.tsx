@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown, HelpCircle, ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import RevealOnScroll from "@/components/RevealOnScroll";
 
 interface FAQItem {
   question: string;
@@ -138,60 +139,59 @@ export default function FAQPage() {
               const isOpen = openFAQs.has(index);
 
               return (
-                <div
-                  key={index}
-                  className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-xl overflow-hidden hover:shadow-md hover:border-brand-700/30 transition-all duration-300"
-                >
-                  {/* Question - Always Visible */}
-                  <button
-                    onClick={() => toggleFAQ(index)}
-                    className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-100/30 transition-colors duration-300"
-                  >
-                    <h3 className="text-sm sm:text-base font-semibold text-text-900 pr-4 flex-1">
-                      {faq.question}
-                    </h3>
-                    <ChevronDown
-                      className={cn(
-                        "w-5 h-5 text-brand-700 transition-transform duration-300 flex-shrink-0",
-                        isOpen && "rotate-180"
-                      )}
-                    />
-                  </button>
+                <RevealOnScroll key={index} delay={index * 50}>
+                  <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-xl overflow-hidden hover:shadow-md hover:border-brand-700/30 transition-all duration-300">
+                    {/* Question - Always Visible */}
+                    <button
+                      onClick={() => toggleFAQ(index)}
+                      className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-100/30 transition-colors duration-300"
+                    >
+                      <h3 className="text-sm sm:text-base font-semibold text-text-900 pr-4 flex-1">
+                        {faq.question}
+                      </h3>
+                      <ChevronDown
+                        className={cn(
+                          "w-5 h-5 text-brand-700 transition-transform duration-300 flex-shrink-0",
+                          isOpen && "rotate-180"
+                        )}
+                      />
+                    </button>
 
-                  {/* Answer - Expandable */}
-                  <div
-                    className={cn(
-                      "overflow-hidden transition-all duration-500",
-                      isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-                    )}
-                  >
-                    <div className="px-5 pb-5 pt-1">
-                      {Array.isArray(faq.answer) ? (
-                        <div className="space-y-3">
-                          {faq.answer.map((paragraph, pIndex) => {
-                            // Check if paragraph starts with bullet point
-                            if (paragraph.startsWith("• ")) {
-                              const text = paragraph.slice(2);
-                              return (
-                                <div key={pIndex} className="flex items-start gap-2.5">
-                                  <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-0.5" strokeWidth={2.5} />
-                                  <p className="text-text-900/70 leading-relaxed">{text}</p>
-                                </div>
-                              );
-                            }
-                            return (
-                              <p key={pIndex} className="text-text-900/70 leading-relaxed">
-                                {paragraph}
-                              </p>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        <p className="text-text-900/70 leading-relaxed">{faq.answer}</p>
+                    {/* Answer - Expandable */}
+                    <div
+                      className={cn(
+                        "overflow-hidden transition-all duration-500",
+                        isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
                       )}
+                    >
+                      <div className="px-5 pb-5 pt-1">
+                        {Array.isArray(faq.answer) ? (
+                          <div className="space-y-3">
+                            {faq.answer.map((paragraph, pIndex) => {
+                              // Check if paragraph starts with bullet point
+                              if (paragraph.startsWith("• ")) {
+                                const text = paragraph.slice(2);
+                                return (
+                                  <div key={pIndex} className="flex items-start gap-2.5">
+                                    <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-0.5" strokeWidth={2.5} />
+                                    <p className="text-text-900/70 leading-relaxed">{text}</p>
+                                  </div>
+                                );
+                              }
+                              return (
+                                <p key={pIndex} className="text-text-900/70 leading-relaxed">
+                                  {paragraph}
+                                </p>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <p className="text-text-900/70 leading-relaxed">{faq.answer}</p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </RevealOnScroll>
               );
             })}
           </div>
@@ -199,37 +199,39 @@ export default function FAQPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-24 bg-gradient-to-br from-white to-surface-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
-            Ihre Fragen blieben unbeantwortet?
-          </h2>
-          
-          <p className="text-base sm:text-lg text-text-900/70 mb-8 sm:mb-10">
-            Das tut uns Leid. Nehmen Sie gerne mit uns Kontakt auf und wir beantworten Ihre Fragen 
-            persönlich und individuell. Oder reichen Sie jetzt direkt und unkompliziert einen Fall 
-            oder mehrere Fälle ein.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/kontakt"
-              className="w-full sm:w-auto group bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
-            >
-              Kontakt aufnehmen
-              <ArrowRight className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 group-hover:translate-x-1 transition-all duration-300" />
-            </Link>
+      <RevealOnScroll>
+        <section className="py-24 bg-gradient-to-br from-white to-surface-100">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
+              Ihre Fragen blieben unbeantwortet?
+            </h2>
             
-            <Link
-              href="/einreichen"
-              className="w-full sm:w-auto group bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-brand-900 hover:bg-brand-700 hover:border-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
-            >
-              Fall einreichen
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
+            <p className="text-base sm:text-lg text-text-900/70 mb-8 sm:mb-10">
+              Das tut uns Leid. Nehmen Sie gerne mit uns Kontakt auf und wir beantworten Ihre Fragen 
+              persönlich und individuell. Oder reichen Sie jetzt direkt und unkompliziert einen Fall 
+              oder mehrere Fälle ein.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/kontakt"
+                className="w-full sm:w-auto group bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              >
+                Kontakt aufnehmen
+                <ArrowRight className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 group-hover:translate-x-1 transition-all duration-300" />
+              </Link>
+              
+              <Link
+                href="/einreichen"
+                className="w-full sm:w-auto group bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-brand-900 hover:bg-brand-700 hover:border-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              >
+                Fall einreichen
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </RevealOnScroll>
     </main>
   );
 }
