@@ -258,11 +258,10 @@ export default function UnternehmenPage() {
 
       {/* Final CTA */}
       <CTASection
-        title="Bereit für digitales Forderungsmanagement mit Nota Finance?"
-        subtitle="Erleben Sie den Unterschied und reichen Sie Ihre erste Forderung noch heute ein. Unser Team steht Ihnen bei Fragen jederzeit gerne zur Verfügung."
+        title="Jetzt digitales Inkasso beauftragen"
+        subtitle="Reichen Sie jetzt direkt einen Fall oder mehrere Fälle ein. Oder nehmen Sie mit uns Kontakt auf, wenn Sie Fragen haben oder eine individuelle Beratung wünschen."
         buttons={[
           { text: "Kontakt aufnehmen", href: "/kontakt" },
-          { text: "Häufig gestellte Fragen", href: "/faq" },
           { text: "Fall einreichen", href: "/einreichen", primary: true },
         ]}
       />
