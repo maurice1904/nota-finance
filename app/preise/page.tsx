@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Euro, CheckCircle, TrendingUp, ChevronDown, Info, X, ArrowRight } from "lucide-react";
 import CTASection from "@/components/CTASection";
+import RevealOnScroll from "@/components/RevealOnScroll";
 
 // Beispielrechnung data
 const calculationRows = [
@@ -207,40 +208,48 @@ export default function PreisePage() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="prose prose-lg max-w-none text-text-900/70">
-              <p className="text-lg text-text-900/70 leading-relaxed mb-8">
-                Für Sie als Auftraggeber ist das <span className="font-bold text-text-900">außergerichtliche Mahnverfahren</span> bei Nota Finance 
-                in der Regel kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen 
-                sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. 
-                Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung.
-              </p>
-              <p className="text-lg text-text-900/70 leading-relaxed">
-                Sollte ein <span className="font-bold text-text-900">gerichtliches Mahnverfahren</span> notwendig werden, informieren wir Sie im Vorfeld 
-                transparent über eventuell anfallende Gerichtskosten. Auch diese sind im Erfolgsfall von 
-                Ihrem Schuldner zu tragen. Unser Ziel ist es, Ihre Kostenrisiken stets so gering wie 
-                möglich zu halten.
-              </p>
-            </div>
+            <RevealOnScroll>
+              <div className="prose prose-lg max-w-none text-text-900/70">
+                <p className="text-lg text-text-900/70 leading-relaxed mb-8">
+                  Für Sie als Auftraggeber ist das <span className="font-bold text-text-900">außergerichtliche Mahnverfahren</span> bei Nota Finance 
+                  in der Regel kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen 
+                  sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. 
+                  Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung.
+                </p>
+                <p className="text-lg text-text-900/70 leading-relaxed">
+                  Sollte ein <span className="font-bold text-text-900">gerichtliches Mahnverfahren</span> notwendig werden, informieren wir Sie im Vorfeld 
+                  transparent über eventuell anfallende Gerichtskosten. Auch diese sind im Erfolgsfall von 
+                  Ihrem Schuldner zu tragen. Unser Ziel ist es, Ihre Kostenrisiken stets so gering wie 
+                  möglich zu halten.
+                </p>
+              </div>
+            </RevealOnScroll>
 
             {/* Key Points */}
             <div className="grid md:grid-cols-3 gap-6 mt-12">
-              <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
-                <CheckCircle className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-                <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Außergerichtlich</h3>
-                <p className="text-text-900/70">Für Sie als Auftraggeber kostenfrei</p>
-              </div>
+              <RevealOnScroll delay={0}>
+                <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
+                  <CheckCircle className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
+                  <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Außergerichtlich</h3>
+                  <p className="text-text-900/70">Für Sie als Auftraggeber kostenfrei</p>
+                </div>
+              </RevealOnScroll>
 
-              <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
-                <Euro className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-                <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">100% Auszahlung</h3>
-                <p className="text-text-900/70">Sie erhalten Ihren vollen Rechnungsbetrag</p>
-              </div>
+              <RevealOnScroll delay={100}>
+                <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
+                  <Euro className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
+                  <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">100% Auszahlung</h3>
+                  <p className="text-text-900/70">Sie erhalten Ihren vollen Rechnungsbetrag</p>
+                </div>
+              </RevealOnScroll>
 
-              <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
-                <TrendingUp className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-                <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Plus Nebenforderungen</h3>
-                <p className="text-text-900/70">Mahnkosten & Verzugszinsen zusätzlich</p>
-              </div>
+              <RevealOnScroll delay={200}>
+                <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
+                  <TrendingUp className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
+                  <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Plus Nebenforderungen</h3>
+                  <p className="text-text-900/70">Mahnkosten & Verzugszinsen zusätzlich</p>
+                </div>
+              </RevealOnScroll>
             </div>
           </div>
         </div>
@@ -250,14 +259,16 @@ export default function PreisePage() {
       <section className="py-24 bg-gradient-to-br from-surface-100/50 via-white to-brand-700/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6 text-center">
-              Beispielrechnung
-            </h2>
-            
-            <p className="text-base sm:text-lg text-text-900/70 mb-8 sm:mb-12 text-center leading-relaxed">
-              Anhand eines konkreten Beispiels zeigen wir Ihnen transparent, wie sich die Zahlungsströme 
-              im außergerichtlichen Mahnverfahren zusammensetzen. Klicken Sie auf die Info-Icons für Details.
-            </p>
+            <RevealOnScroll>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6 text-center">
+                Beispielrechnung
+              </h2>
+              
+              <p className="text-base sm:text-lg text-text-900/70 mb-8 sm:mb-12 text-center leading-relaxed">
+                Anhand eines konkreten Beispiels zeigen wir Ihnen transparent, wie sich die Zahlungsströme 
+                im außergerichtlichen Mahnverfahren zusammensetzen. Klicken Sie auf die Info-Icons für Details.
+              </p>
+            </RevealOnScroll>
 
             {/* Calculation Card */}
             <div className="bg-white rounded-3xl shadow-xl border border-border-subtle overflow-hidden">
@@ -338,14 +349,16 @@ export default function PreisePage() {
       </section>
 
       {/* CTA Section */}
-      <CTASection
-        title="Jetzt digitales Inkasso beauftragen"
-        subtitle="Reichen Sie jetzt direkt einen Fall oder mehrere Fälle ein. Oder nehmen Sie mit uns Kontakt auf, wenn Sie Fragen haben oder eine individuelle Beratung wünschen."
-        buttons={[
-          { text: "Kontakt aufnehmen", href: "/kontakt" },
-          { text: "Fall einreichen", href: "/einreichen", primary: true },
-        ]}
-      />
+      <RevealOnScroll>
+        <CTASection
+          title="Jetzt digitales Inkasso beauftragen"
+          subtitle="Reichen Sie jetzt direkt einen Fall oder mehrere Fälle ein. Oder nehmen Sie mit uns Kontakt auf, wenn Sie Fragen haben oder eine individuelle Beratung wünschen."
+          buttons={[
+            { text: "Kontakt aufnehmen", href: "/kontakt" },
+            { text: "Fall einreichen", href: "/einreichen", primary: true },
+          ]}
+        />
+      </RevealOnScroll>
     </main>
   );
 }

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Target, Heart, Zap, Shield, ArrowRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import CTASection from "@/components/CTASection";
+import RevealOnScroll from "@/components/RevealOnScroll";
 
 export default function UnternehmenPage() {
   const timelineRef = useRef<HTMLDivElement>(null);
@@ -91,9 +92,11 @@ export default function UnternehmenPage() {
       {/* Timeline Section */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RevealOnScroll>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 text-center mb-12 sm:mb-20">
-            Unsere Geschichte
-          </h2>
+              Unsere Geschichte
+            </h2>
+          </RevealOnScroll>
 
           <div ref={timelineRef} className="relative max-w-5xl mx-auto">
             {/* Desktop: Vertical Timeline Line with Scroll Animation (center) */}
@@ -226,105 +229,119 @@ export default function UnternehmenPage() {
       {/* Unsere Mission Section */}
       <section className="py-24 bg-gradient-to-br from-white to-surface-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-6 sm:mb-8">
-              Unsere Mission
-            </h2>
-            
-            <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed mb-8 sm:mb-10">
-              Wir machen Inkasso so einfach wie möglich und revolutionieren das Forderungsmanagement 
-              für Selbstständige, Freiberufler sowie kleine und mittlere Unternehmen. Unternehmen 
-              jeder Größe können bei uns direkt offene Rechnungen ohne umständlichen Anmeldeprozess 
-              einreichen. Unser Ziel ist es, Ihnen eine einfache, digitale und kundenorientierte 
-              Lösung zu bieten, damit Sie schnell und unkompliziert an Ihr verdientes Geld kommen 
-              und sich wieder voll auf Ihr Geschäft konzentrieren können.
-            </p>
+          <RevealOnScroll>
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-6 sm:mb-8">
+                Unsere Mission
+              </h2>
+              
+              <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed mb-8 sm:mb-10">
+                Wir machen Inkasso so einfach wie möglich und revolutionieren das Forderungsmanagement 
+                für Selbstständige, Freiberufler sowie kleine und mittlere Unternehmen. Unternehmen 
+                jeder Größe können bei uns direkt offene Rechnungen ohne umständlichen Anmeldeprozess 
+                einreichen. Unser Ziel ist es, Ihnen eine einfache, digitale und kundenorientierte 
+                Lösung zu bieten, damit Sie schnell und unkompliziert an Ihr verdientes Geld kommen 
+                und sich wieder voll auf Ihr Geschäft konzentrieren können.
+              </p>
 
-            <Link
-              href="/produkt"
-              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
-            >
-              So funktioniert es
-              <ArrowRight className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 group-hover:translate-x-1 transition-all duration-300" />
-            </Link>
-          </div>
+              <Link
+                href="/produkt"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              >
+                So funktioniert es
+                <ArrowRight className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 group-hover:translate-x-1 transition-all duration-300" />
+              </Link>
+            </div>
+          </RevealOnScroll>
         </div>
       </section>
 
       {/* Unsere Werte Section */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
-              Unsere Werte
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-text-900/70 max-w-3xl mx-auto">
-              Unser Handeln bei Nota Finance wird von klaren Prinzipien geleitet, die darauf 
-              ausgerichtet sind, Ihnen den bestmöglichen Inkasso-Service zu bieten:
-            </p>
-          </div>
+          <RevealOnScroll>
+            <div className="text-center mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-900 mb-4 sm:mb-6">
+                Unsere Werte
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-text-900/70 max-w-3xl mx-auto">
+                Unser Handeln bei Nota Finance wird von klaren Prinzipien geleitet, die darauf 
+                ausgerichtet sind, Ihnen den bestmöglichen Inkasso-Service zu bieten:
+              </p>
+            </div>
+          </RevealOnScroll>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Wert 1 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
-              <Zap className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
-                Maximale Einfachheit
-              </h3>
-              <p className="text-text-900/70 leading-relaxed">
-                Von der unkomplizierten Einreichung Ihrer Forderung – auch ohne Registrierung – 
-                bis hin zu einer klaren und verständlichen Kommunikation. Wir machen es Ihnen leicht.
-              </p>
-            </div>
+            <RevealOnScroll delay={0}>
+              <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
+                <Zap className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
+                  Maximale Einfachheit
+                </h3>
+                <p className="text-text-900/70 leading-relaxed">
+                  Von der unkomplizierten Einreichung Ihrer Forderung – auch ohne Registrierung – 
+                  bis hin zu einer klaren und verständlichen Kommunikation. Wir machen es Ihnen leicht.
+                </p>
+              </div>
+            </RevealOnScroll>
 
             {/* Wert 2 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
-              <Target className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
-                Digitale Intelligenz
-              </h3>
-              <p className="text-text-900/70 leading-relaxed">
-                Wir setzen auf innovative Technologien und smarte Automatisierung, um an sinnvollen 
-                Stellen Prozesse zu beschleunigen, die Effizienz zu steigern und Ihnen wertvolle Zeit zu sparen.
-              </p>
-            </div>
+            <RevealOnScroll delay={100}>
+              <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
+                <Target className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
+                  Digitale Intelligenz
+                </h3>
+                <p className="text-text-900/70 leading-relaxed">
+                  Wir setzen auf innovative Technologien und smarte Automatisierung, um an sinnvollen 
+                  Stellen Prozesse zu beschleunigen, die Effizienz zu steigern und Ihnen wertvolle Zeit zu sparen.
+                </p>
+              </div>
+            </RevealOnScroll>
 
             {/* Wert 3 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
-              <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
-                Volle Kundenorientierung
-              </h3>
-              <p className="text-text-900/70 leading-relaxed">
-                Der Erhalt Ihrer Geschäftsbeziehungen liegt uns am Herzen. Wir agieren stets professionell, 
-                fair und lösungsorientiert im Umgang mit Ihren Kunden.
-              </p>
-            </div>
+            <RevealOnScroll delay={200}>
+              <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
+                <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
+                  Volle Kundenorientierung
+                </h3>
+                <p className="text-text-900/70 leading-relaxed">
+                  Der Erhalt Ihrer Geschäftsbeziehungen liegt uns am Herzen. Wir agieren stets professionell, 
+                  fair und lösungsorientiert im Umgang mit Ihren Kunden.
+                </p>
+              </div>
+            </RevealOnScroll>
 
             {/* Wert 4 */}
-            <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
-              <Shield className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
-                Absolute Verlässlichkeit
-              </h3>
-              <p className="text-text-900/70 leading-relaxed">
-                Wir arbeiten sorgfältig, rechtssicher und mit höchstem Anspruch an die Qualität unserer 
-                Dienstleistung, um Ihre Interessen optimal zu vertreten.
-              </p>
-            </div>
+            <RevealOnScroll delay={300}>
+              <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:border-brand-700/30 transition-all duration-300">
+                <Shield className="w-10 h-10 sm:w-12 sm:h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900 mb-3 sm:mb-4">
+                  Absolute Verlässlichkeit
+                </h3>
+                <p className="text-text-900/70 leading-relaxed">
+                  Wir arbeiten sorgfältig, rechtssicher und mit höchstem Anspruch an die Qualität unserer 
+                  Dienstleistung, um Ihre Interessen optimal zu vertreten.
+                </p>
+              </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <CTASection
-        title="Jetzt digitales Inkasso beauftragen"
-        subtitle="Reichen Sie jetzt direkt einen Fall oder mehrere Fälle ein. Oder nehmen Sie mit uns Kontakt auf, wenn Sie Fragen haben oder eine individuelle Beratung wünschen."
-        buttons={[
-          { text: "Kontakt aufnehmen", href: "/kontakt" },
-          { text: "Fall einreichen", href: "/einreichen", primary: true },
-        ]}
-      />
+      <RevealOnScroll>
+        <CTASection
+          title="Jetzt digitales Inkasso beauftragen"
+          subtitle="Reichen Sie jetzt direkt einen Fall oder mehrere Fälle ein. Oder nehmen Sie mit uns Kontakt auf, wenn Sie Fragen haben oder eine individuelle Beratung wünschen."
+          buttons={[
+            { text: "Kontakt aufnehmen", href: "/kontakt" },
+            { text: "Fall einreichen", href: "/einreichen", primary: true },
+          ]}
+        />
+      </RevealOnScroll>
     </main>
   );
 }
