@@ -65,6 +65,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Nota Finance" }],
   creator: "twenty4collect GmbH",
   publisher: "twenty4collect GmbH",
+  // Apple Web App Title (für "Zum Home-Bildschirm hinzufügen")
+  appleWebApp: {
+    title: "Nota Finance",
+  },
   openGraph: {
     type: "website",
     locale: "de_DE",
