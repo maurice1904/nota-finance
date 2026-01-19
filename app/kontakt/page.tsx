@@ -92,7 +92,7 @@ ${formData.message}
     `.trim();
 
     // Create mailto link
-    const mailtoLink = `mailto:admin@notafinance.de?subject=Kontaktanfrage von ${formData.name}&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:service@notafinance.de?subject=Kontaktanfrage von ${formData.name}&body=${encodeURIComponent(emailBody)}`;
     
     // Open email client
     window.location.href = mailtoLink;

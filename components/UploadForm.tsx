@@ -498,61 +498,62 @@ export default function UploadForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {/* Error Summary */}
         {errors.submit && (
           <FormErrorSummary errors={[errors.submit]} />
         )}
 
-        {/* Email Input */}
-        <div className={`bg-gradient-to-br from-white to-surface-100/50 border-2 rounded-2xl p-8 ${
+        {/* Email Input - Compact Inline Layout */}
+        <div className={`bg-gradient-to-br from-white to-surface-100/50 border-2 rounded-xl p-4 sm:p-5 ${
           errors.email ? "border-error/30" : "border-border-subtle"
         }`}>
-          <label htmlFor="email" className="block text-lg font-semibold text-text-900 mb-3">
-            Ihre E-Mail-Adresse *
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => handleEmailChange(e.target.value)}
-            onBlur={handleEmailBlur}
-            className={`w-full px-4 py-4 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 text-lg ${
-              errors.email ? "border-error" : "border-border-subtle"
-            }`}
-            placeholder="ihre.email@beispiel.de"
-          />
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <label htmlFor="email" className="text-sm font-semibold text-text-900 whitespace-nowrap flex-shrink-0">
+              Ihre E-Mail-Adresse
+            </label>
+            <div className="flex-1 relative">
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => handleEmailChange(e.target.value)}
+                onBlur={handleEmailBlur}
+                className={`w-full px-4 py-2.5 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 text-base ${
+                  errors.email ? "border-error" : "border-border-subtle"
+                } ${!errors.email && email && isValidEmail(email) ? "pr-10" : ""}`}
+                placeholder="ihre.email@beispiel.de"
+              />
+              {!errors.email && email && isValidEmail(email) && (
+                <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-success" />
+              )}
+            </div>
+          </div>
           <FormError message={errors.email} />
-          {!errors.email && email && isValidEmail(email) && (
-            <p className="flex items-center text-sm text-success mt-2">
-              <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ marginRight: "8px" }} />
-              <span>E-Mail-Adresse ist gültig</span>
-            </p>
-          )}
           {!errors.email && !email && (
-            <p className="text-sm text-neutral-500 mt-2">
-              Ohne gültige E-Mail-Adresse ist kein Upload möglich. Sie erhalten die Bestätigung an diese Adresse.
+            <p className="text-xs text-neutral-500 mt-2 sm:ml-[calc(theme(spacing.4)+140px)]">
+              Sie erhalten die Bestätigung an diese Adresse.
             </p>
           )}
         </div>
 
-        {/* File Upload Area */}
-        <div className={`bg-gradient-to-br from-white to-surface-100/50 border-2 rounded-2xl p-8 ${
+        {/* File Upload Area - Compact */}
+        <div className={`bg-gradient-to-br from-white to-surface-100/50 border-2 rounded-xl p-5 sm:p-6 ${
           errors.files ? "border-error/50" : "border-border-subtle"
         }`}>
-          <h3 className="text-lg font-semibold text-text-900 mb-4">
-            Dateien hochladen *
+          <h3 className="text-sm font-semibold text-text-900 mb-3">
+            Dateien hochladen
           </h3>
           <FormError message={errors.files} />
 
-          {/* Drag & Drop Zone */}
+          {/* Drag & Drop Zone - Compact */}
           <div
             onDragEnter={handleDragEnter}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             className={`
-              relative border-3 border-dashed rounded-2xl p-12 text-center transition-all duration-300
+              relative border-2 border-dashed rounded-xl p-6 sm:p-8 text-center transition-all duration-300
               ${isDragging 
                 ? "border-brand-700/70 bg-brand-700/8" 
                 : "border-border-subtle hover:border-brand-700/50"
@@ -569,47 +570,45 @@ export default function UploadForm() {
               disabled={!email || !isValidEmail(email)}
             />
 
-            <Upload className="w-16 h-16 text-brand-700 mx-auto mb-4" />
+            <Upload className="w-10 h-10 text-brand-700 mx-auto mb-3" />
             
-            <h4 className="text-xl font-bold text-text-900 mb-2">
-              Dateien hier ablegen oder auswählen
+            <h4 className="text-base sm:text-lg font-bold text-text-900 mb-1">
+              Dateien hier ablegen
             </h4>
             
-            <p className="text-neutral-500 mb-6">
-              Unterstützte Formate: PDF, XRechnung (XML), ZUGFeRD (XML/PDF)
-              <br />
-              Maximale Dateigröße: 10 MB pro Datei
+            <p className="text-sm text-neutral-500 mb-4">
+              Formate: PDF, XRechnung, oder ZUGFeRD · Max. 10 MB pro Datei
             </p>
 
             <label
               htmlFor="fileInput"
               className={`
-                inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300
+                inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300
                 ${email && isValidEmail(email)
                   ? "bg-brand-900 text-white hover:bg-brand-700 hover:shadow-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-focus-ring"
                   : "bg-surface-100 text-neutral-500 cursor-not-allowed"
                 }
               `}
             >
-              <Upload className="w-5 h-5" />
+              <Upload className="w-4 h-4" />
               Dateien auswählen
             </label>
 
             {!email && (
-              <p className="text-sm text-neutral-500 mt-4">
-                Bitte geben Sie zuerst Ihre E-Mail-Adresse ein
+              <p className="text-xs text-neutral-500 mt-3">
+                Bitte zuerst E-Mail-Adresse eingeben
               </p>
             )}
           </div>
 
-          {/* Uploaded Files List */}
+          {/* Uploaded Files List - Compact */}
           {files.length > 0 && (
-            <div className="mt-6 space-y-3">
-              <h4 className="font-semibold text-text-900">Hochgeladene Dateien:</h4>
+            <div className="mt-4 space-y-2">
+              <h4 className="text-sm font-semibold text-text-900">Hochgeladene Dateien:</h4>
               {files.map((uploadedFile) => (
                 <div
                   key={uploadedFile.id}
-                  className={`flex items-center gap-3 p-4 bg-white border rounded-lg transition-all duration-300 ${
+                  className={`flex items-center gap-2.5 p-3 bg-white border rounded-lg transition-all duration-300 ${
                     uploadedFile.status === "error"
                       ? "border-error/50 bg-error/5"
                       : uploadedFile.status === "success"
@@ -617,13 +616,13 @@ export default function UploadForm() {
                       : "border-border-subtle"
                   }`}
                 >
-                  <FileText className="w-8 h-8 text-brand-900 flex-shrink-0" />
+                  <FileText className="w-6 h-6 text-brand-900 flex-shrink-0" />
                   
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-text-900 truncate">
+                    <p className="text-sm font-medium text-text-900 truncate">
                       {uploadedFile.file.name}
                     </p>
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-xs text-neutral-500">
                       {(uploadedFile.file.size / 1024 / 1024).toFixed(2)} MB
                       {uploadedFile.status === "retrying" && uploadedFile.retryCount && (
                         <span className="ml-2 text-warning">
@@ -632,37 +631,37 @@ export default function UploadForm() {
                       )}
                     </p>
                     {uploadedFile.error && (
-                      <p className="text-sm text-error mt-1">{uploadedFile.error}</p>
+                      <p className="text-xs text-error mt-0.5">{uploadedFile.error}</p>
                     )}
                   </div>
 
                   {/* Status Icon */}
                   <div className="flex-shrink-0">
                     {uploadedFile.status === "pending" && (
-                      <div className="w-6 h-6 border-2 border-border-subtle rounded-full" />
+                      <div className="w-5 h-5 border-2 border-border-subtle rounded-full" />
                     )}
                     {(uploadedFile.status === "uploading" || uploadedFile.status === "retrying") && (
-                      <div className="w-6 h-6 border-2 border-brand-900 border-t-transparent rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-brand-900 border-t-transparent rounded-full animate-spin" />
                     )}
                     {uploadedFile.status === "success" && (
-                      <CheckCircle className="w-6 h-6 text-success" />
+                      <CheckCircle className="w-5 h-5 text-success" />
                     )}
                     {uploadedFile.status === "error" && (
-                      <AlertCircle className="w-6 h-6 text-error" />
+                      <AlertCircle className="w-5 h-5 text-error" />
                     )}
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex-shrink-0 flex items-center gap-1">
+                  <div className="flex-shrink-0 flex items-center gap-0.5">
                     {/* Retry Button for failed uploads */}
                     {uploadedFile.status === "error" && (
                       <button
                         type="button"
                         onClick={() => retryUpload(uploadedFile.id)}
-                        className="p-1.5 hover:bg-surface-100 rounded transition-colors duration-300 text-brand-900"
+                        className="p-1 hover:bg-surface-100 rounded transition-colors duration-300 text-brand-900"
                         title="Erneut versuchen"
                       >
-                        <RefreshCcw className="w-5 h-5" />
+                        <RefreshCcw className="w-4 h-4" />
                       </button>
                     )}
                     
@@ -671,10 +670,10 @@ export default function UploadForm() {
                       <button
                         type="button"
                         onClick={() => removeFile(uploadedFile.id)}
-                        className="p-1.5 hover:bg-surface-100 rounded transition-colors duration-300"
+                        className="p-1 hover:bg-surface-100 rounded transition-colors duration-300"
                         title="Entfernen"
                       >
-                        <X className="w-5 h-5 text-neutral-500" />
+                        <X className="w-4 h-4 text-neutral-500" />
                       </button>
                     )}
                   </div>
@@ -683,9 +682,9 @@ export default function UploadForm() {
             </div>
           )}
 
-          {/* AGB Checkbox */}
-          <div className="mt-6 pt-6 border-t border-border-subtle">
-            <div className="flex items-center gap-3">
+          {/* AGB Checkbox - Compact */}
+          <div className="mt-4 pt-4 border-t border-border-subtle">
+            <div className="flex items-start gap-2.5">
               <input
                 type="checkbox"
                 id="acceptAGB"
@@ -694,26 +693,26 @@ export default function UploadForm() {
                   setAcceptAGB(e.target.checked);
                   clearError("agb");
                 }}
-                className={`w-5 h-5 text-brand-900 border-2 rounded focus:ring-2 focus:ring-focus-ring transition-all duration-300 flex-shrink-0 ${
+                className={`mt-0.5 w-4 h-4 text-brand-900 border-2 rounded focus:ring-2 focus:ring-focus-ring transition-all duration-300 flex-shrink-0 ${
                   errors.agb ? "border-error" : "border-border-subtle"
                 }`}
               />
-              <label htmlFor="acceptAGB" className="text-sm text-text-900/70 leading-normal">
+              <label htmlFor="acceptAGB" className="text-xs text-text-900/70 leading-relaxed">
                 Ich akzeptiere die{" "}
                 <a
                   href="/agb.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-brand-900 hover:underline font-semibold"
+                  className="text-brand-900 hover:underline font-medium"
                 >
                   Allgemeinen Geschäftsbedingungen (AGB)
                 </a>{" "}
-                und die{" "}
+                inkl. der Vereinbarung zur Auftragsverarbeitung und die {" "}
                 <a
                   href="/datenschutz.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-brand-900 hover:underline font-semibold"
+                  className="text-brand-900 hover:underline font-medium"
                 >
                   Datenschutzerklärung
                 </a>
@@ -723,8 +722,8 @@ export default function UploadForm() {
             <FormError message={errors.agb} />
           </div>
 
-          {/* Submit Button */}
-          <div className="mt-6">
+          {/* Submit Button - Compact */}
+          <div className="mt-4">
             <button
               type="submit"
               disabled={
@@ -734,16 +733,16 @@ export default function UploadForm() {
                 files.length === 0 ||
                 !acceptAGB
               }
-              className="w-full bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full bg-brand-900 text-white px-6 py-3 rounded-lg font-semibold text-base hover:bg-brand-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 focus:outline-none focus:ring-2 focus:ring-focus-ring"
             >
               {isSubmitting ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   Wird eingereicht...
                 </>
               ) : (
                 <>
-                  <Upload className="w-5 h-5" />
+                  <Upload className="w-4 h-4" />
                   Jetzt einreichen
                 </>
               )}
@@ -752,19 +751,15 @@ export default function UploadForm() {
         </div>
       </form>
 
-      {/* Alternative Email Option */}
-      <div className="mt-8 p-6 bg-surface-100 rounded-xl text-center border border-border-subtle">
-        <Mail className="w-8 h-8 text-neutral-500 mx-auto mb-3" />
-        <p className="text-sm text-text-900/70 mb-2">
-          Sie können Ihre Fälle natürlich auch per Mail einreichen.
-        </p>
-        <p className="text-sm">
-          Senden Sie dazu einfach eine Mail an{" "}
+      {/* Alternative Email Option - Compact */}
+      <div className="mt-5 p-4 bg-surface-100/70 rounded-lg text-center border border-border-subtle">
+        <p className="text-xs text-text-900/70">
+          Alternativ können Sie Ihre Fälle auch per Mail einreichen: {" "}
           <a
             href="mailto:fall@notafinance.de"
-            className="text-brand-900 hover:underline font-semibold"
+            className="text-brand-900 hover:underline font-medium"
           >
-            fall@notafinance.de
+            fall@notafinance.de 
           </a>
         </p>
       </div>

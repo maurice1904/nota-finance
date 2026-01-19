@@ -173,7 +173,7 @@ npm run start
 ## 🤝 Support
 
 Bei Fragen oder Problemen:
-- Email: admin@notafinance.de
+- Email: service@notafinance.de
 - Website: [notafinance.de](https://notafinance.de)
 
 ---
