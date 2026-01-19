@@ -87,6 +87,97 @@ export const metadata: Metadata = {
   },
 };
 
+// JSON-LD Structured Data for SEO
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": ["Organization", "FinancialService"],
+  "@id": "https://www.notafinance.de/#organization",
+  name: "Nota Finance",
+  alternateName: "Nota Finance by twenty4collect",
+  url: "https://www.notafinance.de",
+  logo: {
+    "@type": "ImageObject",
+    url: "https://www.notafinance.de/logo.png",
+    width: 512,
+    height: 512,
+  },
+  image: "https://www.notafinance.de/logo.png",
+  description:
+    "Digitales Inkasso und Forderungsmanagement für Freelancer, Selbstständige und KMU. Ohne Registrierung, ohne Vertragsbindung, ab 50€.",
+  foundingDate: "2024",
+  areaServed: {
+    "@type": "Country",
+    name: "Germany",
+  },
+  serviceType: [
+    "Inkasso",
+    "Forderungsmanagement",
+    "Mahnwesen",
+    "Digitales Inkasso",
+  ],
+  slogan: "Digitales Inkasso. Schnell. Einfach. Effektiv.",
+  knowsLanguage: "de",
+  email: "service@notafinance.de",
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer service",
+    email: "service@notafinance.de",
+    availableLanguage: "German",
+  },
+  parentOrganization: {
+    "@type": "Organization",
+    "@id": "https://www.notafinance.de/#parent-organization",
+    name: "twenty4collect GmbH",
+    description:
+      "BDIU-zertifiziertes Inkassounternehmen mit über 15 Jahren Erfahrung im Forderungsmanagement in Deutschland.",
+  },
+  sameAs: ["https://www.linkedin.com/company/notafinance"],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Inkasso-Dienstleistungen",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Außergerichtliches Mahnverfahren",
+          description:
+            "Professionelles Mahnwesen ohne Gerichtskosten. Im Erfolgsfall für den Gläubiger kostenfrei.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Gerichtliches Mahnverfahren",
+          description:
+            "Rechtssichere Durchsetzung Ihrer Forderungen mit vollstreckbarem Titel.",
+        },
+      },
+    ],
+  },
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://www.notafinance.de/#website",
+  name: "Nota Finance",
+  url: "https://www.notafinance.de",
+  publisher: {
+    "@id": "https://www.notafinance.de/#organization",
+  },
+  inLanguage: "de-DE",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: "https://www.notafinance.de/faq?q={search_term_string}",
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -94,6 +185,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" className="scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
+          }}
+        />
+      </head>
       <body
         className={`${plusJakarta.variable} antialiased font-sans`}
       >
