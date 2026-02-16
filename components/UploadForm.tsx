@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import { Upload, X, FileText, CheckCircle, AlertCircle, RefreshCcw } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { uploadInvoice } from "@/lib/storage";
 import { v4 as uuidv4 } from "uuid";
 import { FormError, FormErrorSummary } from "@/components/FormError";
 import { useToast } from "@/components/Toast";
@@ -18,6 +19,7 @@ interface UploadedFile {
 
 interface FormErrors {
   email?: string;
+  emailConfirm?: string;
   files?: string;
   agb?: string;
   submit?: string;
@@ -25,6 +27,7 @@ interface FormErrors {
 
 export default function UploadForm() {
   const [email, setEmail] = useState("");
+  const [emailConfirm, setEmailConfirm] = useState("");
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [acceptAGB, setAcceptAGB] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -121,6 +124,37 @@ export default function UploadForm() {
     }
   };
 
+  // Handle email confirmation change
+  const handleEmailConfirmChange = (value: string) => {
+    setEmailConfirm(value);
+    clearError("emailConfirm");
+    
+    // Show mismatch error after user has typed something
+    if (value.length > 0 && email.length > 0 && value !== email) {
+      // Only show error if confirm field has enough characters to be a meaningful comparison
+      if (value.length >= email.length * 0.5) {
+        setErrors((prev) => ({ ...prev, emailConfirm: "Die E-Mail-Adressen stimmen nicht überein." }));
+      }
+    }
+  };
+
+  // Validate email confirmation on blur
+  const handleEmailConfirmBlur = () => {
+    if (emailConfirm.length > 0 && email !== emailConfirm) {
+      setErrors((prev) => ({ ...prev, emailConfirm: "Die E-Mail-Adressen stimmen nicht überein." }));
+    } else if (emailConfirm.length > 0 && email === emailConfirm) {
+      clearError("emailConfirm");
+    }
+  };
+
+  // Check if both emails are valid and matching
+  const isEmailValid = () => {
+    return email.length > 0 && 
+           emailConfirm.length > 0 && 
+           email === emailConfirm && 
+           validateEmail(email).valid;
+  };
+
   // File validation
   const isValidFile = (file: File): { valid: boolean; error?: string } => {
     const validTypes = ["application/pdf", "application/xml", "text/xml"];
@@ -195,24 +229,17 @@ export default function UploadForm() {
   // Upload a single file to Supabase with retry logic
   // Returns the generated filename on success, null on failure
   const uploadSingleFile = async (uploadedFile: UploadedFile, userEmail: string): Promise<string | null> => {
-    const fileExt = uploadedFile.file.name.split(".").pop();
-    const fileName = `${uuidv4()}.${fileExt}`;
-    const filePath = `${fileName}`;
-
     try {
-      // Step 1: Upload file to Storage
-      await withRetry(
+      // Step 1: Upload file to Storage (mit zeitbasierter Ordnerstruktur: YYYY/MM/filename.ext)
+      const uploadResult = await withRetry(
         async () => {
-          const { error: uploadError } = await supabase.storage
-            .from("invoices")
-            .upload(filePath, uploadedFile.file, {
-              cacheControl: "3600",
-              upsert: false,
-            });
-
-          if (uploadError) {
-            throw uploadError;
+          const result = await uploadInvoice(uploadedFile.file);
+          
+          if (!result.success) {
+            throw new Error(result.error || "Upload fehlgeschlagen");
           }
+          
+          return result;
         },
         {
           maxAttempts: 3,
@@ -235,24 +262,31 @@ export default function UploadForm() {
       );
 
       // Step 2: Save metadata to database (only if storage upload succeeded)
+      // Datum im Format YYYY/MM/DD generieren
+      const now = new Date();
+      const uploadDate = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}/${String(now.getDate()).padStart(2, "0")}`;
+      
       const { error: dbError } = await supabase
         .from("uploads")
         .insert({
           email: userEmail,
-          filename: fileName,
+          filename: uploadResult.filename, // Nur Dateiname (z.B. "abc123.pdf")
+          filepath: uploadResult.path,     // Vollständiger Pfad im Bucket (z.B. "2026/02/abc123.pdf")
+          upload_date: uploadDate,         // Datum im Format YYYY/MM/DD (z.B. "2026/02/16")
         });
 
       if (dbError) {
         // Log database error but don't fail the upload
         // The file is already in storage, so we consider this a partial success
         logError("UploadForm.uploadSingleFile.dbInsert", dbError, {
-          fileName,
+          filename: uploadResult.filename,
+          filepath: uploadResult.path,
           email: userEmail,
         });
         // Note: In production, you might want to implement a cleanup or retry mechanism
       }
 
-      return fileName;
+      return uploadResult.path;
     } catch (error) {
       const errorDetails = analyzeError(error);
       logError("UploadForm.uploadSingleFile", error, {
@@ -337,6 +371,13 @@ export default function UploadForm() {
       newErrors.email = emailValidation.error;
     }
 
+    // Email confirmation validation
+    if (!emailConfirm || emailConfirm.trim() === "") {
+      newErrors.emailConfirm = "Bitte bestätigen Sie Ihre E-Mail-Adresse.";
+    } else if (email !== emailConfirm) {
+      newErrors.emailConfirm = "Die E-Mail-Adressen stimmen nicht überein.";
+    }
+
     if (files.length === 0) {
       newErrors.files = "Bitte laden Sie mindestens eine Datei hoch.";
     } else if (files.every((f) => f.status === "error")) {
@@ -377,6 +418,7 @@ export default function UploadForm() {
         
         // Reset form fields but keep success message visible
         setEmail("");
+        setEmailConfirm("");
         setFiles([]);
         setAcceptAGB(false);
         
@@ -480,15 +522,15 @@ export default function UploadForm() {
               <div className="grid gap-2">
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
-                  <span className="text-sm text-text-900/70">Wir prüfen Ihre Unterlagen und melden uns bei Rückfragen</span>
+                  <span className="text-sm text-text-900/70">Wir senden Ihnen eine Eingangsbestätigung und melden uns bei Rückfragen</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
-                  <span className="text-sm text-text-900/70">Wir senden Ihnen eine Bestätigungs-E-Mail mit eindeutigem Aktenzeichen</span>
+                  <span className="text-sm text-text-900/70">Wir senden Ihnen nach Auftragsprüfung eine Bestätigung mit eindeutigem Aktenzeichen</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
-                  <span className="text-sm text-text-900/70">Wir starten den Inkassoprozess automatisch nach Prüfung</span>
+                  <span className="text-sm text-text-900/70">Wir starten den Inkassoprozess automatisch</span>
                 </div>
               </div>
             </div>
@@ -502,13 +544,14 @@ export default function UploadForm() {
           <FormErrorSummary errors={[errors.submit]} />
         )}
 
-        {/* Email Input - Compact Inline Layout */}
+        {/* Email Input - Two Fields for Confirmation */}
         <div className={`bg-gradient-to-br from-white to-surface-100/50 border-2 rounded-xl p-4 sm:p-5 ${
-          errors.email ? "border-error/30" : "border-border-subtle"
+          errors.email || errors.emailConfirm ? "border-error/30" : "border-border-subtle"
         }`}>
+          {/* First Email Field */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-            <label htmlFor="email" className="text-sm font-semibold text-text-900 whitespace-nowrap flex-shrink-0">
-              Ihre E-Mail-Adresse
+            <label htmlFor="email" className="text-sm font-semibold text-text-900 whitespace-nowrap flex-shrink-0 sm:w-40">
+              E-Mail-Adresse
             </label>
             <div className="flex-1 relative">
               <input
@@ -528,9 +571,34 @@ export default function UploadForm() {
             </div>
           </div>
           <FormError message={errors.email} />
-          {!errors.email && !email && (
-            <p className="text-xs text-neutral-500 mt-2 sm:ml-[calc(theme(spacing.4)+140px)]">
-              Sie erhalten die Bestätigung an diese Adresse.
+
+          {/* Second Email Field - Confirmation */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mt-4">
+            <label htmlFor="emailConfirm" className="text-sm font-semibold text-text-900 whitespace-nowrap flex-shrink-0 sm:w-40">
+              E-Mail bestätigen
+            </label>
+            <div className="flex-1 relative">
+              <input
+                type="email"
+                id="emailConfirm"
+                value={emailConfirm}
+                onChange={(e) => handleEmailConfirmChange(e.target.value)}
+                onBlur={handleEmailConfirmBlur}
+                className={`w-full px-4 py-2.5 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 text-base ${
+                  errors.emailConfirm ? "border-error" : "border-border-subtle"
+                } ${!errors.emailConfirm && emailConfirm && email === emailConfirm && isValidEmail(email) ? "pr-10" : ""}`}
+                placeholder="ihre.email@beispiel.de"
+              />
+              {!errors.emailConfirm && emailConfirm && email === emailConfirm && isValidEmail(email) && (
+                <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-success" />
+              )}
+            </div>
+          </div>
+          <FormError message={errors.emailConfirm} />
+          
+          {!errors.email && !errors.emailConfirm && !email && (
+            <p className="text-xs text-neutral-500 mt-3">
+              Sie erhalten die Bestätigung an diese Adresse. Bitte geben Sie die Adresse zweimal ein.
             </p>
           )}
         </div>
@@ -565,7 +633,7 @@ export default function UploadForm() {
               accept=".pdf,.xml"
               onChange={(e) => handleFileSelect(e.target.files)}
               className="hidden"
-              disabled={!email || !isValidEmail(email)}
+              disabled={!isEmailValid()}
             />
 
             <Upload className="w-10 h-10 text-brand-700 mx-auto mb-3" />
@@ -582,7 +650,7 @@ export default function UploadForm() {
               htmlFor="fileInput"
               className={`
                 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300
-                ${email && isValidEmail(email)
+                ${isEmailValid()
                   ? "bg-brand-900 text-white hover:bg-brand-700 hover:shadow-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-focus-ring"
                   : "bg-surface-100 text-neutral-500 cursor-not-allowed"
                 }
@@ -592,9 +660,9 @@ export default function UploadForm() {
               Dateien auswählen
             </label>
 
-            {!email && (
+            {!isEmailValid() && (
               <p className="text-xs text-neutral-500 mt-3">
-                Bitte zuerst E-Mail-Adresse eingeben
+                Bitte zuerst E-Mail-Adresse eingeben und bestätigen
               </p>
             )}
           </div>
@@ -726,8 +794,7 @@ export default function UploadForm() {
               type="submit"
               disabled={
                 isSubmitting ||
-                !email ||
-                !isValidEmail(email) ||
+                !isEmailValid() ||
                 files.length === 0 ||
                 !acceptAGB
               }
