@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, ReactNode } from "react";
+import React, { useEffect, useRef, useState, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface RevealOnScrollProps {
@@ -17,7 +17,7 @@ interface RevealOnScrollProps {
   /** Whether to animate only once or every time element enters viewport */
   once?: boolean;
   /** HTML tag to render */
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
 }
 
 export default function RevealOnScroll({
