@@ -21,9 +21,17 @@ export default function Navbar() {
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Close menu on route change
+  // Close menu on route change (e.g., browser back/forward navigation)
+  // This effect synchronizes the menu state with the external navigation system.
+  // The setState call is intentional and necessary to close the mobile menu
+  // when the user navigates using browser back/forward buttons.
+  const prevPathnameRef = useRef(pathname);
   useEffect(() => {
-    setIsMenuOpen(false);
+    if (prevPathnameRef.current !== pathname) {
+      prevPathnameRef.current = pathname;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsMenuOpen(false);
+    }
   }, [pathname]);
 
   // Handle scroll lock when menu is open

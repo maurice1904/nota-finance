@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import { Upload, X, FileText, CheckCircle, AlertCircle, Mail, RefreshCcw } from "lucide-react";
+import { Upload, X, FileText, CheckCircle, AlertCircle, RefreshCcw } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
 import { FormError, FormErrorSummary } from "@/components/FormError";
@@ -34,6 +34,11 @@ export default function UploadForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const toast = useToast();
   const successRef = useRef<HTMLDivElement>(null);
+
+  // Clear specific error when user starts typing/interacting
+  const clearError = useCallback((field: keyof FormErrors) => {
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
+  }, []);
 
   // Email validation - comprehensive check
   const validateEmail = (email: string): { valid: boolean; error?: string } => {
@@ -133,13 +138,11 @@ export default function UploadForm() {
   };
 
   // Handle file selection
-  const handleFileSelect = (selectedFiles: FileList | null) => {
+  const handleFileSelect = useCallback((selectedFiles: FileList | null) => {
     if (!selectedFiles) return;
 
     // Reset success state when user starts new upload
-    if (submitSuccess) {
-      setSubmitSuccess(false);
-    }
+    setSubmitSuccess(false);
 
     const newFiles: UploadedFile[] = [];
     
@@ -155,7 +158,7 @@ export default function UploadForm() {
 
     setFiles((prev) => [...prev, ...newFiles]);
     clearError("files");
-  };
+  }, [clearError]);
 
   // Handle drag and drop
   const handleDragEnter = useCallback((e: React.DragEvent) => {
@@ -182,7 +185,7 @@ export default function UploadForm() {
 
     const droppedFiles = e.dataTransfer.files;
     handleFileSelect(droppedFiles);
-  }, []);
+  }, [handleFileSelect]);
 
   // Remove file
   const removeFile = (fileId: string) => {
@@ -324,11 +327,6 @@ export default function UploadForm() {
     return { success: successCount, failed: failedCount, filenames: uploadedFilenames };
   };
 
-  // Clear specific error when user starts typing/interacting
-  const clearError = (field: keyof FormErrors) => {
-    setErrors((prev) => ({ ...prev, [field]: undefined }));
-  };
-
   // Validate form and return errors
   const validateForm = (): FormErrors => {
     const newErrors: FormErrors = {};
@@ -411,7 +409,7 @@ export default function UploadForm() {
         );
       } else if (result.failed > 0 && result.success === 0) {
         // All failed
-        const errorDetails = analyzeError(new Error("All uploads failed"));
+        analyzeError(new Error("All uploads failed"));
         toast.error(
           "Upload fehlgeschlagen",
           `Alle Dateien konnten nicht hochgeladen werden. ${getSupportMessage()}`,

@@ -11,6 +11,17 @@ interface FormErrors {
   agb?: string;
 }
 
+// Error display component - defined outside to avoid recreation on each render
+function FormError({ message }: { message: string | undefined }) {
+  if (!message) return null;
+  return (
+    <p className="flex items-center gap-1.5 text-sm text-error mt-2 animate-in fade-in slide-in-from-top-1 duration-200">
+      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+      {message}
+    </p>
+  );
+}
+
 export default function KontaktPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -132,17 +143,6 @@ ${formData.message}
     if (name in errors) {
       clearError(name as keyof FormErrors);
     }
-  };
-
-  // Inline error component
-  const FormError = ({ message }: { message: string | undefined }) => {
-    if (!message) return null;
-    return (
-      <p className="flex items-center gap-1.5 text-sm text-error mt-2 animate-in fade-in slide-in-from-top-1 duration-200">
-        <AlertCircle className="w-4 h-4 flex-shrink-0" />
-        {message}
-      </p>
-    );
   };
 
   return (

@@ -69,7 +69,7 @@ export default function UnternehmenPage() {
                 Nota Finance ist die innovative Digital-Marke der twenty4collect GmbH, einem digitalen 
                 Vorreiter und BDIU-zertifizierten Inkassounternehmen mit über 15 Jahren Erfahrung im 
                 Forderungsmanagement in Deutschland. Bereits 2017 konnte das Unternehmen mit Deutschlands 
-                erster Mobile-Lösung im Forderungsmanagement überzeugen und auf dem G20 Young Entrepreneurs' 
+                erster Mobile-Lösung im Forderungsmanagement überzeugen und auf dem G20 Young Entrepreneurs&apos; 
                 Alliance Summit in Berlin den IHK / DIHK Digital Award gewinnen.
               </p>
               <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
