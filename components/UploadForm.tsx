@@ -416,11 +416,29 @@ export default function UploadForm() {
         setSuccessCount(result.success);
         setErrors({});
         
+        // E-Mail-Adresse speichern bevor Form zurückgesetzt wird
+        const customerEmail = email;
+        const uploadedFilepaths = result.filenames;
+        
         // Reset form fields but keep success message visible
         setEmail("");
         setEmailConfirm("");
         setFiles([]);
         setAcceptAGB(false);
+        
+        // E-Mail-Benachrichtigungen senden (async, blockiert nicht UI)
+        // Fehler werden serverseitig geloggt, beeinflussen aber nicht den Erfolg
+        fetch("/api/send-notification", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: customerEmail,
+            filepaths: uploadedFilepaths,
+          }),
+        }).catch((err) => {
+          // Netzwerkfehler loggen, aber nicht dem User zeigen
+          console.error("[UploadForm] Failed to send notification:", err);
+        });
         
         // Scroll to success message (with offset for navbar)
         setTimeout(() => {
