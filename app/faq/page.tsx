@@ -15,15 +15,13 @@ const faqs: FAQItem[] = [
   {
     question: "Was kostet mich die Beauftragung von Nota Finance?",
     answer: [
-      "Für Sie als Auftraggeber ist das außergerichtliche Mahnverfahren bei Nota Finance im Erfolgsfall in der Regel kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung.",
-      "Sollte ein gerichtliches Mahnverfahren notwendig werden, informieren wir Sie im Vorfeld transparent über eventuell anfallende Gerichtskosten. Auch diese sind im Erfolgsfall von Ihrem Schuldner zu tragen. Unser Ziel ist es, Ihre Kostenrisiken stets so gering wie möglich zu halten."
+      "Für Sie als Auftraggeber ist das außergerichtliche und das gerichtliche Mahnverfahren bei Nota Finance kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen und etwaige Gerichtskosten sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung zuzüglich den Ihnen zustehenden Mahngebühren und Verzugszinsen.",
     ]
   },
   {
     question: "Muss ich mich registrieren, um eine Forderung einzureichen?",
     answer: [
       "Nein, für die Einreichung einzelner Forderungen ist bei Nota Finance keine vorherige Registrierung notwendig. Sie können Ihre Rechnung(en) direkt und unkompliziert per Drag & Drop oder Upload auf unserer Website einreichen oder uns per E-Mail zukommen lassen.",
-      "Eine freiwillige Registrierung ist jedoch möglich und das Nota Konto bietet weitere Zeitersparnisse, wenn Sie regelmäßig Forderungen einreichen."
     ]
   },
   {
@@ -32,7 +30,6 @@ const faqs: FAQItem[] = [
       "Die Einreichung Ihrer Forderung ist denkbar einfach:",
       "• Online-Upload: Nutzen Sie den Upload-Bereich auf unserer Website. Sie können Ihre Rechnung als PDF-Datei, als E-Rechnung im XRechnungs-Format oder als E-Rechnung im ZUGFeRD-Format hochladen.",
       "• E-Mail: Sie können uns Ihre Unterlagen auch per E-Mail zusenden.",
-      "• API-Schnittstelle: Für Unternehmen mit vielen Fällen bieten wir eine sichere API-Schnittstelle zur direkten Anbindung Ihrer Systeme.",
       "Wichtig ist, dass die Rechnung alle notwendigen Angaben (Ihre Daten, Daten des Schuldners, Rechnungsnummer, Datum, Leistungsbeschreibung, Forderungsbetrag) enthält."
     ]
   },
@@ -43,22 +40,21 @@ const faqs: FAQItem[] = [
       "• Prüfung & Bestätigung: Wir prüfen Ihre Unterlagen umgehend. Sie erhalten automatisch eine Eingangsbestätigung inklusive Ihres Aktenzeichens per E-Mail.",
       "• Außergerichtliches Mahnverfahren: Wir nehmen Kontakt zu Ihrem Schuldner auf und starten das professionelle Mahnverfahren. Unser Ziel ist eine schnelle und gütliche Einigung.",
       "• Kommunikation: Wir halten Sie über wesentliche Entwicklungen auf dem Laufenden.",
-      "• Zahlungseingang: Bei erfolgreichem Einzug leiten wir Ihnen 100% Ihrer Hauptforderung umgehend weiter.",
-      "• Gerichtliches Mahnverfahren (optional): Sollte das außergerichtliche Verfahren nicht erfolgreich sein, besprechen wir mit Ihnen das weitere Vorgehen und leiten nur nach Ihrer Zustimmung das gerichtliche Mahnverfahren ein."
+      "• Zahlungseingang: Bei erfolgreichem Einzug leiten wir Ihnen 100% Ihrer Hauptforderung zuzüglich den Ihnen zustehenden Mahngebühren und Verzugszinsen umgehend weiter.",
     ]
   },
   {
     question: "Wie lange dauert es, bis ich mein Geld erhalte?",
     answer: [
       "Die Dauer bis zum Zahlungseingang kann variieren und hängt von verschiedenen Faktoren ab, wie der Zahlungsbereitschaft des Schuldners und der Komplexität des Falls.",
-      "Dank unserer digitalen Prozesse und der umgehenden Bearbeitung nach Forderungseinreichung setzen wir alles daran, Ihr Geld so schnell wie möglich zu realisieren. Im außergerichtlichen Verfahren erzielen wir oft innerhalb weniger Wochen Ergebnisse. Über Ihr optionales Kundenkonto können Sie den Fortschritt transparent verfolgen."
+      "Dank unserer digitalen Prozesse und der umgehenden Bearbeitung nach Forderungseinreichung setzen wir alles daran, Ihr Geld so schnell wie möglich zu realisieren. Im außergerichtlichen Verfahren erzielen wir oft innerhalb weniger Wochen Ergebnisse."
     ]
   },
   {
     question: "Was passiert, wenn der Schuldner trotz Mahnung nicht zahlt?",
     answer: [
-      "Sollte Ihr Kunde im außergerichtlichen Mahnverfahren nicht zahlen, lassen wir Sie nicht allein. Wir analysieren den Fall und besprechen mit Ihnen die weiteren Optionen.",
-      "Mit Ihrer Zustimmung leiten wir das gerichtliche Mahnverfahren ein, um einen vollstreckbaren Titel (z.B. Vollstreckungsbescheid) zu erwirken. Auch in dieser Phase stehen wir Ihnen zur Seite, um Ihre Ansprüche konsequent und rechtssicher durchzusetzen. Über alle Schritte und eventuelle Kostenrisiken informieren wir Sie stets transparent."
+      "Sollte Ihr Kunde im außergerichtlichen Mahnverfahren nicht zahlen, lassen wir Sie nicht allein.",
+      "Wir leiten das gerichtliche Mahnverfahren (Beantragung Mahnbescheid, Vollstreckungsbescheid) ein, um einen vollstreckbaren Titel (z.B. Vollstreckungsbescheid) zu erwirken. Falls nötig wird ein Gerichtsvollzieher eingesetzt oder der Fall geht in die Langzeitüberwachung."
     ]
   },
   {
@@ -67,7 +63,6 @@ const faqs: FAQItem[] = [
       "Der Erhalt Ihrer guten Kundenbeziehungen ist uns sehr wichtig. Unser Ansatz ist daher konsequent kundenorientiert:",
       "• Wir kommunizieren professionell, respektvoll und fair mit Ihren Schuldnern.",
       "• Unser Ziel ist es, eine Lösung zu finden und die Zahlung zu realisieren, ohne die Beziehung unnötig zu belasten.",
-      "• Wir verstehen uns als Vermittler und versuchen, auch in schwierigen Situationen einen konstruktiven Dialog zu führen.",
       "• Nota Finance agiert als externe, neutrale Stelle, was oft hilft, die direkte Konfrontation zwischen Ihnen und Ihrem Kunden zu vermeiden."
     ]
   },
@@ -77,7 +72,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: "Wer ist Nota Finance? Wie sicher sind meine Daten?",
-    answer: "Nota Finance ist die innovative digitale Marke der twenty4collect GmbH, einem etablierten und BDIU-zertifizierten Inkassounternehmen mit über 15 Jahren Erfahrung im Forderungsmanagement in Deutschland. Mit Nota Finance profitieren Sie von dieser langjährigen Expertise, kombiniert mit einer modernen, schnellen und unkomplizierten Online-Lösung. Der Schutz Ihrer Daten und der Daten Ihrer Kunden hat für uns höchste Priorität. Wir arbeiten streng nach den Richtlinien der DSGVO. Unsere Systeme sind sicher, und wir gewährleisten einen vertraulichen Umgang mit allen Informationen."
+    answer: "Nota Finance ist die innovative digitale Inkasso-Plattform der twenty4collect GmbH, einem BDIU-Mitglied und etablierten Inkassounternehmen mit über 15 Jahren Erfahrung im Forderungsmanagement in Deutschland. Mit Nota Finance profitieren Sie von dieser langjährigen Expertise, kombiniert mit einer modernen, schnellen und unkomplizierten Online-Lösung. Der Schutz Ihrer Daten und der Daten Ihrer Kunden hat für uns höchste Priorität. Wir arbeiten streng nach den Richtlinien der DSGVO. Unsere Systeme sind sicher, und wir gewährleisten einen vertraulichen Umgang mit allen Informationen."
   }
 ];
 

@@ -17,12 +17,12 @@ const faqItems = [
   {
     question: "Was kostet mich die Beauftragung von Nota Finance?",
     answer:
-      "Für Sie als Auftraggeber ist das außergerichtliche Mahnverfahren bei Nota Finance im Erfolgsfall in der Regel kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung.",
+      "Für Sie als Auftraggeber ist das außergerichtliche und das gerichtliche Mahnverfahren bei Nota Finance im Erfolgsfall kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen und etwaige Gerichtskosten sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung zuzüglich den Ihnen zustehenden Mahngebühren und Verzugszinsen.",
   },
   {
     question: "Muss ich mich registrieren, um eine Forderung einzureichen?",
     answer:
-      "Nein, für die Einreichung einzelner Forderungen ist bei Nota Finance keine vorherige Registrierung notwendig. Sie können Ihre Rechnung(en) direkt und unkompliziert per Drag & Drop oder Upload auf unserer Website einreichen oder uns per E-Mail zukommen lassen.",
+      "Nein, für die Einreichung einzelner Forderungen auf unserer Plattform Nota Finance ist keine vorherige Registrierung notwendig. Sie können Ihre Rechnung(en) direkt und unkompliziert per Drag & Drop oder Upload auf unserer Website einreichen oder uns per E-Mail zukommen lassen.",
   },
   {
     question: "Wie reiche ich eine Forderung ein? Welche Formate werden unterstützt?",
@@ -42,7 +42,7 @@ const faqItems = [
   {
     question: "Was passiert, wenn der Schuldner trotz Mahnung nicht zahlt?",
     answer:
-      "Sollte Ihr Kunde im außergerichtlichen Mahnverfahren nicht zahlen, analysieren wir den Fall und besprechen mit Ihnen die weiteren Optionen. Mit Ihrer Zustimmung leiten wir das gerichtliche Mahnverfahren ein, um einen vollstreckbaren Titel zu erwirken.",
+      "Sollte Ihr Kunde im außergerichtlichen Mahnverfahren nicht zahlen, starten wir das gerichtliche Mahnverfahren (Beantragung Mahnbescheid und Vollstreckungsbescheid) nach Bonitätsprüfung. Sollte auch das gerichtliche Mahnverfahren nicht zum Erfolg führen, schicken wir einen Gerichtsvollzieher oder der Fall geht in die Langzeitüberwachung.",
   },
   {
     question: "Wie wirkt sich das Inkassoverfahren auf meine Kundenbeziehung aus?",
@@ -57,7 +57,7 @@ const faqItems = [
   {
     question: "Wer ist Nota Finance? Wie sicher sind meine Daten?",
     answer:
-      "Nota Finance ist die digitale Marke der twenty4collect GmbH, einem BDIU-zertifizierten Inkassounternehmen mit über 15 Jahren Erfahrung. Der Schutz Ihrer Daten hat höchste Priorität. Wir arbeiten streng nach den Richtlinien der DSGVO.",
+      "Nota Finance ist die digitale Plattform der twenty4collect GmbH, einem BDIU-Mitglied und Inkassounternehmen mit über 15 Jahren Erfahrung. Der Schutz Ihrer Daten hat höchste Priorität. Wir arbeiten streng nach den Richtlinien der DSGVO.",
   },
 ];
 
