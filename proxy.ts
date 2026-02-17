@@ -68,8 +68,9 @@ export const config = {
      * Alle Pfade AUSSER:
      * - api (API-Routen)
      * - _next (Next.js Internals: static, image, etc.)
-     * - Statische Dateien mit Dateiendungen (.ico, .png, .jpg, .svg, .css, .js, etc.)
+     * - Statische Dateien mit Dateiendungen (.ico, .png, .jpg, .svg, .css, .js, .pdf, etc.)
+     * - favicon.ico
      */
-    "/((?!api|_next|.*\\.[\\w]+$).*)",
+    "/((?!api|_next/static|_next/image|favicon\\.ico|.*\\.(?:ico|png|jpg|jpeg|gif|svg|webp|css|js|pdf|woff|woff2|ttf|eot)$).*)",
   ],
 };
