@@ -66,15 +66,15 @@ export default function UnternehmenPage() {
             
             <div className="prose prose-lg max-w-none text-text-900/70">
               <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed mb-6 sm:mb-8">
-                Nota Finance ist die innovative Digital-Marke der twenty4collect GmbH, einem digitalen 
-                Vorreiter und BDIU-zertifizierten Inkassounternehmen mit über 15 Jahren Erfahrung im 
+                Nota Finance ist die innovative Digital-Plattform der twenty4collect GmbH, einem digitalen 
+                Vorreiter im Inkasso und BDIU-Mitglied mit über 15 Jahren Erfahrung im 
                 Forderungsmanagement in Deutschland. Bereits 2017 konnte das Unternehmen mit Deutschlands 
                 erster Mobile-Lösung im Forderungsmanagement überzeugen und auf dem G20 Young Entrepreneurs&apos; 
                 Alliance Summit in Berlin den IHK / DIHK Digital Award gewinnen.
               </p>
               <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
                 Als klarer Vorreiter im digitalen Forderungsmanagement in Deutschland folgt nun die 
-                Weiterentwicklung durch Nota Finance: noch einfacher, noch schneller, noch effizienter - 
+                Weiterentwicklung durch die Plattform Nota Finance: noch einfacher, noch schneller, noch effizienter - 
                 für Ihre Forderungen.
               </p>
             </div>
@@ -214,7 +214,7 @@ export default function UnternehmenPage() {
                       Launch von Nota Finance
                     </h3>
                     <p className="text-text-900/70 leading-relaxed font-semibold text-sm md:text-base">
-                      Launch von Nota Finance als moderne Weiterentwicklung der langjährigen Inkasso-Erfahrung, 
+                      Launch von Nota Finance als moderne Plattform-Weiterentwicklung der langjährigen Inkasso-Erfahrung, 
                       um Selbstständigen sowie kleinen und mittleren Unternehmen aller Branchen die bestmögliche 
                       Lösung zu bieten
                     </p>

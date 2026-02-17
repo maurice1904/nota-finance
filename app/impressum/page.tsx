@@ -171,26 +171,8 @@ export default function ImpressumPage() {
 
           <section>
             <h2 className="text-3xl font-bold text-text-900 mb-4">
-              Hinweis auf Online-Streitbeilegung
+              Allgemeine Informationspflicht nach § 36 Verbraucherstreitbeilegungsgesetz (VSBG)
             </h2>
-            <p className="mb-4">
-              Hinweis auf Online-Streitbeilegung gemäß Art. 14 der ODR – Verordnung:
-              <br />
-              Plattform der EU-Kommission zur Online-Streitbeilegung:{" "}
-              <a 
-                href="https://www.ec.europa.eu/consumers/odr" 
-                className="text-brand-900 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                www.ec.europa.eu/consumers/odr
-              </a>
-            </p>
-            <p className="mb-4">
-              <strong className="text-text-900">
-                Allgemeine Informationspflicht nach § 36 Verbraucherstreitbeilegungsgesetz (VSBG):
-              </strong>
-            </p>
             <p>
               Die twenty4collect GmbH ist nicht bereit und verpflichtet, an 
               Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen. 

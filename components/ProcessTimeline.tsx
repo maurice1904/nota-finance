@@ -197,19 +197,19 @@ export default function ProcessTimeline() {
                 
                 <div className="space-y-3 text-text-900/70 text-sm md:text-base">
                   <div>
-                    <h5 className="font-bold text-text-900 mb-1 text-sm md:text-base">Nur nach Rücksprache:</h5>
+                    <h5 className="font-bold text-text-900 mb-1 text-sm md:text-base">Klares Vorgehen für Sie:</h5>
                     <p className="leading-relaxed">
-                      Sollte das außergerichtliche Verfahren nicht zum Erfolg führen, besprechen wir 
-                      mit Ihnen das weitere Vorgehen. Erst nach Rücksprache leiten wir das gerichtliche 
-                      Mahnverfahren ein.
+                      Sollte das außergerichtliche Verfahren nicht erfolgreich sein, führen wir nach 
+                      Bonitätsprüfung das gerichtliche Mahnverfahren durch. Dies beinhaltet die Beantragung 
+                      des Mahnbescheids und Vollstreckungsbescheids.
                     </p>
                   </div>
                   <div>
-                    <h5 className="font-bold text-text-900 mb-1 text-sm md:text-base">Transparente Prozesse:</h5>
+                    <h5 className="font-bold text-text-900 mb-1 text-sm md:text-base">Vollständig kostenneutral für Sie:</h5>
                     <p className="leading-relaxed">
                       Für das gerichtliche Mahnverfahren fallen gesetzlich festgelegte Gebühren an. 
-                      Im Erfolgsfall werden auch diese Kosten vom Schuldner getragen. Über alle eventuellen 
-                      Kostenrisiken klären wir Sie im Vorfeld transparent auf.
+                      Im Erfolgsfall werden auch diese Kosten vom Schuldner getragen. Auch anfallende 
+                      Gerichtskosten sind von Ihrem Schuldner zu tragen. Ihnen entstehen keine Kosten.
                     </p>
                   </div>
                 </div>

@@ -190,7 +190,7 @@ export default function PreisePage() {
             </h1>
             
             <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
-              Unser Service ist für Sie als Auftraggeber in der Regel kostenfrei, entstehende 
+              Unser Service ist für Sie als Auftraggeber kostenfrei, entstehende 
               Kosten und Gebühren sind gesetzlich geregelt und vom Schuldner zu tragen.
             </p>
           </div>
@@ -212,15 +212,13 @@ export default function PreisePage() {
               <div className="prose prose-lg max-w-none text-text-900/70">
                 <p className="text-lg text-text-900/70 leading-relaxed mb-8">
                   Für Sie als Auftraggeber ist das <span className="font-bold text-text-900">außergerichtliche Mahnverfahren</span> bei Nota Finance 
-                  in der Regel kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen 
+                  kostenneutral. Die anfallenden Inkassokosten sowie Verzugszinsen 
                   sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. 
-                  Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung.
+                  Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung zuzüglich den Ihnen zustehenden Mahngebühren und Verzugszinsen.
                 </p>
                 <p className="text-lg text-text-900/70 leading-relaxed">
-                  Sollte ein <span className="font-bold text-text-900">gerichtliches Mahnverfahren</span> notwendig werden, informieren wir Sie im Vorfeld 
-                  transparent über eventuell anfallende Gerichtskosten. Auch diese sind im Erfolgsfall von 
-                  Ihrem Schuldner zu tragen. Unser Ziel ist es, Ihre Kostenrisiken stets so gering wie 
-                  möglich zu halten.
+                  Bei Nichtzahlung Ihres Kunden wird das <span className="font-bold text-text-900">gerichtliches Mahnverfahren</span> (Beantragung Mahnbescheid und Vollstreckungsbescheid) nach Bonitätsprüfung eingeleitet. Auch anfallende Gerichtskosten sind im Erfolgsfall von 
+                  Ihrem Kunden zu tragen. Sollte das gerichtliche Mahnverfahren nicht zum Erfolg führen, schicken wir einen Gerichtsvollzieher oder der Fall geht in die Langzeitüberwachung.
                 </p>
               </div>
             </RevealOnScroll>

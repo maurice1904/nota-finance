@@ -791,7 +791,7 @@ export default function UploadForm() {
                 >
                   Allgemeinen Geschäftsbedingungen (AGB)
                 </a>{" "}
-                inkl. der Vereinbarung zur Auftragsverarbeitung und die {" "}
+                und die {" "}
                 <a
                   href="/datenschutz.pdf"
                   target="_blank"
