@@ -13,15 +13,19 @@ Jede Aufgabe gilt erst als erledigt, wenn ihr Abnahmekriterium erfüllt ist und
 ### P0-1 · Öffentliche Storage-Links beseitigen · L
 **Problem:** `lib/email.ts` erzeugt `/object/public/invoices/...`. Zusammen mit öffentlichem Bucket
 und der Policy „allow public downloads" (SELECT für `anon`) wären alle Rechnungen für jeden abrufbar.
-**Lösung:** signierte Links serverseitig (7 Tage), `generatePublicUrl` entfernen; danach in Supabase
+**Lösung:** signierte Links serverseitig (14 Tage), `generatePublicUrl` entfernen; danach in Supabase
 Policy löschen und Bucket auf privat. **Reihenfolge: erst Code, dann testen, dann Supabase.**
 **Abnahme:** Neuer Link funktioniert, alter öffentlicher Link liefert Fehler.
 
-### P0-2 · Aktenzeichen und PDF-Anhang · M
-**Problem:** kein Aktenzeichen, obwohl die Bestätigungsmail eines ankündigt; Backoffice erhält nur Links.
-**Lösung:** `NF-JJJJ-####` per DB-Sequenz (race-condition-sicher), in beiden Mails und in der DB;
-Datei(en) als Anhang an die interne Mail (> 10 MB: nur Link).
-**Abnahme:** Zwei gleichzeitige Uploads erzeugen zwei verschiedene Aktenzeichen.
+### P0-2 · Aktenzeichen (intern) und PDF-Anhang · M
+**Problem:** kein Aktenzeichen; Backoffice erhält nur Links statt Anhang.
+**Lösung:** `NF-JJJJ-####` per DB-Sequenz (race-condition-sicher). Das Aktenzeichen erscheint in der
+**internen** Mail und in der Datenbank. **In der Bestätigungsmail an den Kunden erscheint es nicht** —
+die informiert nur über den Eingang. Der Kunde erhält das Aktenzeichen separat, sobald sein Vater den
+Fall geprüft hat (vorerst ein manueller Schritt außerhalb der Website). Dateien als Anhang an die
+interne Mail (> 10 MB: nur Link).
+**Abnahme:** Zwei gleichzeitige Uploads erzeugen zwei verschiedene Aktenzeichen; die Bestätigungsmail
+an den Kunden enthält kein Aktenzeichen.
 
 ### P0-3 · Kein Fall darf still verschwinden · M
 **Lösung:** DB-Eintrag vor Mailversand; `notification_status`; bei Fehlschlag Warnung an

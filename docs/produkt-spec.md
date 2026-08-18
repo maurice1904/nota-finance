@@ -67,6 +67,14 @@ Format `NF-JJJJ-####`, jahresbezogen fortlaufend, **beim Absenden** erzeugt.
 Umsetzung über eine **Datenbanksequenz oder atomare Funktion** — nicht über „höchsten Wert lesen und
 eins addieren“ (Race Condition bei gleichzeitigen Uploads). Eindeutigkeit per DB-Constraint erzwingen.
 
+**Wichtig — bewusste Entscheidung, Stand August 2026:** Das Aktenzeichen wird **intern** vergeben
+(Datenbank, interne Mail ans Backoffice), aber dem **Kunden noch nicht in der Bestätigungsmail
+mitgeteilt**. Die Bestätigungsmail an den Kunden dokumentiert nur den Eingang, ohne Aktenzeichen.
+Der Kunde erhält das Aktenzeichen **separat**, sobald sein Vater den Fall geprüft hat.
+**Grund:** Solange die Fallprüfung manuell erfolgt, würde ein sofort mitgeteiltes Aktenzeichen
+Verbindlichkeit suggerieren, bevor der Fall tatsächlich angenommen ist. Wird geändert, sobald die
+Prüfung stärker automatisiert ist (siehe `docs/entscheidungen.md`).
+
 ### Audit-Log (regulatorisch erforderlich)
 Eigene Tabelle `audit_log`: Zeitpunkt, Fallbezug, Ereignis, Akteur, Zusatzdaten.
 Zu protokollieren: Eingang, Statuswechsel, fachliche Freigabe, versendete Schreiben, Zugriffe auf
@@ -79,10 +87,10 @@ Falldateien, Löschläufe. **Nur anfügen, nie ändern oder löschen.**
 1. **Serverseitige Validierung** (siehe 5), dann Speicherung in Supabase Storage,
    Bucket `invoices` (**privat**), Pfad `YYYY/MM/<uuid>.<ext>`
 2. **Datenbankeintrag** inkl. Aktenzeichen — **vor** jedem Mailversand
-3. **Bestätigungsmail an den Kunden** mit Aktenzeichen und nächsten Schritten
+3. **Bestätigungsmail an den Kunden** — dokumentiert den Eingang, **ohne Aktenzeichen**; nennt die nächsten Schritte
 4. **Interne Benachrichtigung** ans Backoffice mit
    - Datei(en) im **Anhang** (> 10 MB: nur Link),
-   - **signiertem** Download-Link, Gültigkeit 7 Tage,
+   - **signiertem** Download-Link, Gültigkeit 14 Tage,
    - E-Mail des Kunden, Aktenzeichen, Zeitstempel, `bereits_gemahnt`
 5. **Fachliche Prüfung und Verfahrensstart erfolgen manuell** im Backoffice
 
@@ -144,7 +152,7 @@ gleiche Statuslogik.
 ## 10. Abnahmekriterien
 Eine Änderung am Einreichungsvorgang gilt erst als fertig, wenn:
 
-1. Einreichung mit einer echten PDF funktioniert (Datei in Storage, Datensatz in DB, Aktenzeichen vergeben)
+1. Einreichung mit einer echten PDF funktioniert (Datei in Storage, Datensatz in DB, Aktenzeichen intern vergeben — nicht in der Kundenmail)
 2. Beide E-Mails ankommen; interne Mail enthält Anhang **und** funktionierenden signierten Link
 3. Ein bewusst provozierter Mailfehler den Status auf `failed` setzt und eine Warnung auslöst
 4. Kein öffentlicher Storage-Link mehr erzeugt wird

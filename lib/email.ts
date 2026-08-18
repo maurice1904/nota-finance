@@ -8,6 +8,7 @@
  */
 
 import { Resend } from "resend";
+import { supabaseAdmin } from "./supabase-admin";
 
 // ═══════════════════════════════════════════════════════════════
 // CONSTANTS
@@ -15,8 +16,9 @@ import { Resend } from "resend";
 
 const SENDER_EMAIL = "Nota Finance Service <service@notafinance.de>";
 const GF_EMAIL = "admin@notafinance.de";
-const SUPABASE_PROJECT_ID = "dvztledaeaxufpeyrphq";
 const BUCKET_NAME = "invoices";
+const SIGNED_URL_EXPIRY_SECONDS = 14 * 24 * 60 * 60; // 14 Tage
+const MAX_ATTACHMENT_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -33,17 +35,65 @@ export interface NotificationData {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// URL UTILITIES
+// STORAGE UTILITIES (serverseitig, mit Service Role Key)
 // ═══════════════════════════════════════════════════════════════
 
 /**
- * Generiert eine öffentliche Supabase Storage URL
- * 
+ * Erzeugt einen signierten, zeitlich begrenzten Download-Link.
+ * Nur serverseitig aufrufen (nutzt SUPABASE_SERVICE_ROLE_KEY).
+ *
  * @param filepath - Pfad im Bucket (z.B. "2026/02/abc123.pdf")
- * @returns Vollständige öffentliche URL
+ * @returns Signierte URL (gültig 14 Tage) oder null bei Fehler
  */
-export function generatePublicUrl(filepath: string): string {
-  return `https://${SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/${BUCKET_NAME}/${filepath}`;
+async function createInternalSignedUrl(filepath: string): Promise<string | null> {
+  try {
+    const { data, error } = await supabaseAdmin.storage
+      .from(BUCKET_NAME)
+      .createSignedUrl(filepath, SIGNED_URL_EXPIRY_SECONDS);
+
+    if (error || !data?.signedUrl) {
+      console.error("[Email] Signed URL creation failed:", error?.message, filepath);
+      return null;
+    }
+
+    return data.signedUrl;
+  } catch (err) {
+    console.error("[Email] Signed URL creation error:", err, filepath);
+    return null;
+  }
+}
+
+/**
+ * Lädt eine Datei aus dem Storage, um sie als Mail-Anhang zu verwenden.
+ * Dateien über MAX_ATTACHMENT_SIZE_BYTES werden übersprungen (nur Link).
+ *
+ * @param filepath - Pfad im Bucket (z.B. "2026/02/abc123.pdf")
+ */
+async function downloadForAttachment(
+  filepath: string
+): Promise<{ filename: string; content: Buffer } | null> {
+  try {
+    const { data, error } = await supabaseAdmin.storage
+      .from(BUCKET_NAME)
+      .download(filepath);
+
+    if (error || !data) {
+      console.error("[Email] Attachment download failed:", error?.message, filepath);
+      return null;
+    }
+
+    if (data.size > MAX_ATTACHMENT_SIZE_BYTES) {
+      return null;
+    }
+
+    const content = Buffer.from(await data.arrayBuffer());
+    const filename = filepath.split("/").pop() || filepath;
+
+    return { filename, content };
+  } catch (err) {
+    console.error("[Email] Attachment download error:", err, filepath);
+    return null;
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -151,11 +201,20 @@ function getCustomerEmailHtml(fileCount: number): string {
 /**
  * Generiert HTML für die interne Admin-Notification
  */
-function getInternalNotificationHtml(customerEmail: string, filepaths: string[]): string {
+function getInternalNotificationHtml(
+  customerEmail: string,
+  filepaths: string[],
+  signedUrls: (string | null)[]
+): string {
   const fileLinks = filepaths.map((filepath, index) => {
-    const url = generatePublicUrl(filepath);
+    const url = signedUrls[index];
     const fallNummer = index + 1;
-    return `<a href="${url}" style="display: block; background: #021C8B; color: white; padding: 12px 20px; border-radius: 6px; text-decoration: none; margin: 8px 0; font-weight: 500; text-align: center;">📄 Fall ${fallNummer}</a>`;
+
+    if (!url) {
+      return `<p style="margin: 8px 0; color: #b00020;">⚠️ Fall ${fallNummer}: Link konnte nicht erzeugt werden (Datei ggf. als Anhang beigefügt)</p>`;
+    }
+
+    return `<a href="${url}" style="display: block; background: #021C8B; color: white; padding: 12px 20px; border-radius: 6px; text-decoration: none; margin: 8px 0; font-weight: 500; text-align: center;">📄 Fall ${fallNummer} (Link, 14 Tage gültig)</a>`;
   }).join("");
 
   return `
@@ -242,11 +301,23 @@ export async function sendInternalNotification(
   filepaths: string[]
 ): Promise<EmailResult> {
   try {
+    const signedUrls = await Promise.all(
+      filepaths.map((filepath) => createInternalSignedUrl(filepath))
+    );
+
+    const attachmentResults = await Promise.all(
+      filepaths.map((filepath) => downloadForAttachment(filepath))
+    );
+    const attachments = attachmentResults.filter(
+      (a): a is { filename: string; content: Buffer } => a !== null
+    );
+
     const { error } = await resend.emails.send({
       from: SENDER_EMAIL,
       to: GF_EMAIL,
       subject: `Neue Einreichung (${filepaths.length} ${filepaths.length === 1 ? "Fall" : "Fälle"})`,
-      html: getInternalNotificationHtml(customerEmail, filepaths),
+      html: getInternalNotificationHtml(customerEmail, filepaths, signedUrls),
+      attachments: attachments.length > 0 ? attachments : undefined,
     });
 
     if (error) {
