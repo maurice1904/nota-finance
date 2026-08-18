@@ -23,15 +23,31 @@ bestehenden Aktenzeichen-Prozess im Backoffice fort. Der PDF-Anhang an die inter
 bereits im Rahmen von P0-1 umgesetzt (war Teil des dortigen Auftrags) — dieser Teil ist also
 ebenfalls erledigt. Siehe `docs/entscheidungen.md`.
 
-### P0-3 · Kein Fall darf still verschwinden · M
-**Lösung:** DB-Eintrag vor Mailversand; `notification_status`; bei Fehlschlag Warnung an
-Ausweichadresse und Protokolleintrag.
-**Abnahme:** Provozierter Mailfehler → Status `failed` + Warnung, Kunde erhält keine falsche Erfolgsmeldung.
+### P0-3 · Kein Fall darf still verschwinden · S
+**Grundsatz:** Die **Datenbank ist die Wahrheit**, nicht die E-Mail. Solange jeder Fall zuverlässig in
+der Tabelle `uploads` steht, ist die interne Mail nur Bequemlichkeit. Der Vater kann die Fallliste
+jederzeit direkt in Supabase (Table Editor) einsehen; eine komfortablere Übersicht folgt als P2-5.
+**Konkretes Problem im Code:** Bei einem fehlgeschlagenen DB-Insert wird der Fehler nur geloggt, dem
+Kunden aber trotzdem Erfolg gemeldet — dann existiert der Fall nur als lose Datei im Storage, ohne
+Listeneintrag.
+**Lösung (minimal):** Schlägt der DB-Eintrag fehl, wird dem Kunden **kein** Erfolg gemeldet und die
+verwaiste Datei wird aus dem Storage wieder entfernt. Die Kundenmail wird weiterhin verschickt, wenn
+Upload **und** DB-Eintrag erfolgreich waren.
+**Bewusst NICHT gebaut:** kein `notification_status`, keine Warnmail an eine Ausweichadresse, keine
+Wochenübersicht — überflüssig, sobald die DB die verlässliche Quelle ist.
+**Abnahme:** Wird ein DB-Fehler provoziert, sieht der Kunde eine ehrliche Fehlermeldung (keinen
+falschen Erfolg), und es bleibt keine verwaiste Datei im Storage zurück.
 
-### P0-4 · API-Route absichern · M
-**Lösung:** Ratenbegrenzung pro IP und E-Mail; serverseitige Prüfung von Dateityp, -größe und -anzahl;
-MIME-Prüfung am Inhalt.
-**Abnahme:** Zu große Datei und falscher Typ werden serverseitig abgewiesen; wiederholte Anfragen gebremst.
+### P0-10 · Vercel-Umgebungsvariablen & robuster Build · S
+**Problem:** Der Vercel-Build von `umbau-mvp` schlägt fehl: „Missing Supabase admin environment
+variables". Die neuen Schlüssel liegen nur lokal in `.env.local`, nicht in Vercel.
+**Lösung:**
+1. In Vercel unter *Environment Variables* setzen (für Production, Preview, Development):
+   `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
+   `RESEND_API_KEY`.
+2. Optional/robuster: den Supabase-Admin-Client **lazy** initialisieren (erst im Request, nicht beim
+   Modul-Laden), damit der Build nicht an fehlenden Laufzeit-Secrets scheitert.
+**Abnahme:** Vercel-Build läuft grün durch.
 
 ### P0-5 · Datenmodell und Audit-Log · L
 **Lösung:** Tabelle `uploads` auf das Zielschema (`docs/produkt-spec.md`, Abschnitt 3) bringen,
@@ -103,6 +119,17 @@ AGB, Datenschutzerklärung, Markenkonstruktion, alle **[ANWALT]**-Punkte aus
 
 ## P1 — Vor dem Livegang
 
+### P1-0 · Upload-Endpunkt serverseitig absichern (vor Go-live) · M
+**Warum erst vor Go-live:** Solange der Passwortschutz aktiv ist, ist der Endpunkt nicht öffentlich.
+Beim Livegang fällt der Schutz weg — dann ist die Upload-/Mail-Route offen erreichbar, und
+Browser-seitige Prüfungen lassen sich umgehen. Risiko: Müll-Uploads und Missbrauch des E-Mail-Versands
+(schadet der Zustellbarkeit, siehe P0-9).
+**Lösung (reduziert):** **serverseitige** Prüfung von Dateityp (PDF/JPG/PNG, per Inhalt/MIME, nicht nur
+Endung) und Dateigröße. **Bewusst NICHT:** keine Ratenbegrenzung und keine Obergrenze für die Anzahl
+der Dateien — der Vater hat legitime Kunden, die viele Rechnungen auf einmal hochladen.
+**Abnahme:** Eine zu große Datei und ein falscher Dateityp werden serverseitig abgewiesen; ein normaler
+Mehrfach-Upload mit vielen PDFs funktioniert weiterhin.
+
 ### P1-1 · Zweites E-Mail-Feld entfernen · S
 `emailConfirm` entfernen, Adresse auf der Bestätigungsseite anzeigen.
 
@@ -148,8 +175,8 @@ Supabase-Backups prüfen und **einmal testweise wiederherstellen**. Ein ungetest
 ---
 
 ## Reihenfolge bis zum Livegang
-1. P0-1 bis P0-6 und P0-8 abarbeiten
-2. P1-1 bis P1-9 abarbeiten
+1. P0-1, P0-3, P0-5, P0-6, P0-8, P0-10 abarbeiten (P0-2 entfällt, P0-4 → P1-0)
+2. P1-0 bis P1-9 abarbeiten
 3. P0-7 anwaltliche Prüfung, Ergebnisse einarbeiten
 4. `npm run build` fehlerfrei, vollständiger Testdurchlauf
 5. Passwortschutz entfernen, Zweig nach `main`, Deployment prüfen

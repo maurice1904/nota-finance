@@ -94,33 +94,34 @@ Falldateien, Löschläufe. **Nur anfügen, nie ändern oder löschen.**
 
 ---
 
-## 5. Validierung und Missbrauchsschutz
+## 5. Validierung (serverseitig, relevant ab Go-live)
 
-Die API-Route ist vom Passwortschutz ausgenommen und von außen erreichbar. Erforderlich:
+Die API-Route ist beim Livegang (ohne Passwortschutz) öffentlich erreichbar; Browser-Prüfungen lassen
+sich umgehen. Erforderlich **vor** dem Go-live:
 
-- **Serverseitige Prüfung** von Dateityp (Whitelist: PDF, JPG, PNG), Größe (z. B. max. 10 MB je Datei,
-  30 MB gesamt) und Anzahl (z. B. max. 10). Clientseitige Prüfung allein genügt nie.
-- **MIME-Typ am Dateiinhalt prüfen**, nicht nur an der Endung
-- **Ratenbegrenzung** pro IP und pro E-Mail-Adresse
-- **Dublettenerkennung** (gleiche E-Mail + gleicher Dateiname + kurzer Zeitraum)
-- Keine Ausführung oder Vorschau hochgeladener Dateien im Browser
-- Prüfung der Gläubigerstellung im Backoffice, bevor ein Verfahren startet
-
----
+- **Serverseitige Prüfung** von Dateityp (Whitelist: PDF, JPG, PNG — anhand des Inhalts/MIME, nicht der
+  Endung) und Dateigröße.
+- **Bewusst nicht:** keine Ratenbegrenzung, keine Obergrenze für die Anzahl der Dateien. Kunden laden
+  legitim viele Rechnungen auf einmal hoch (siehe `docs/entscheidungen.md`).
+- Keine Ausführung oder Vorschau hochgeladener Dateien im Browser.
+- Prüfung der Gläubigerstellung erfolgt fachlich im Backoffice, nicht technisch im Upload.
 
 ## 6. Fehlerbehandlung — kein Fall darf verschwinden
+
+**Grundsatz:** Die Datenbank ist die verlässliche Quelle, nicht die E-Mail. Ziel ist nur, dass ein
+Fall niemals als lose Datei ohne Datenbankeintrag endet.
 
 | Fehlerpunkt | Verhalten |
 |---|---|
 | Upload zu Storage scheitert | Fehlermeldung an den Kunden, **kein** Erfolg melden |
-| Datenbankeintrag scheitert | Fehler melden, hochgeladene Datei wieder entfernen |
-| Bestätigungsmail scheitert | Fall bleibt gültig, `notification_status = failed`, Wiederholung |
-| Interne Mail scheitert | `notification_status = failed`, **Warnung an Ausweichadresse**, Protokolleintrag |
+| Datenbankeintrag scheitert | **kein** Erfolg an den Kunden; die bereits hochgeladene Datei wieder aus dem Storage entfernen |
+| Bestätigungsmail an Kunden scheitert | unkritisch; Fall bleibt gültig (steht in der DB), optional Log |
+| Interne Mail ans Backoffice scheitert | unkritisch; Fall steht in der DB und ist dort einsehbar, optional Log |
 
 Dem Kunden wird **nur** Erfolg gemeldet, wenn Datei **und** Datenbankeintrag vorliegen.
-Ein offener Fehlerstatus muss sichtbar werden — kein stiller Verlust.
-
----
+Der Vater sieht alle Fälle in der Tabelle `uploads` (im MVP direkt in Supabase; später eine eigene
+Übersichtsseite). Ein separater Fehlerstatus oder eine Warnmail ist bewusst nicht vorgesehen
+(siehe `docs/entscheidungen.md`).
 
 ## 7. Nutzerführung und Barrierefreiheit
 

@@ -29,6 +29,9 @@ Neue Entscheidungen werden hier ergänzt, nicht ersetzt. Stand: August 2026.
 | 15 | **Mehrere Dateien = ein Fall** | typisch sind Rechnung + Mahnung + Vertrag zur selben Forderung | Auswertung zeigt häufig unabhängige Forderungen |
 | 16 | **`consent_version` wird gespeichert** | ohne sie ist später nicht belegbar, welchen Text der Kunde akzeptiert hat | — |
 | 17 | **Kein Aktenzeichen im Nota-System** — der Vater vergibt seine eigene Fallreferenz im bestehenden Backoffice-Prozess | zwei parallele Nummernkreise für denselben Fall stiften Verwirrung; Nota ist im MVP ohnehin nur Frontend/Akquise, die eigentliche Fallführung bleibt beim Backoffice | falls Nota-Fälle direkt ins Backoffice-System übernommen werden und eine gemeinsame ID sinnvoll wird |
+| 18 | **Datenbank ist die Wahrheit, nicht die E-Mail** — kein Fehlerstatus/keine Warnmail; interne Mail ist nur Bequemlichkeit | E-Mails gehen verloren (Spam/Ausfall/übersehen); eine jederzeit einsehbare Fallliste ist robuster | wenn Volumen eine automatisierte Überwachung nötig macht |
+| 19 | **Keine Ratenbegrenzung und keine Obergrenze der Datei-Anzahl** | der Vater hat legitime Kunden, die viele Rechnungen auf einmal hochladen — eine Grenze träfe echte Nutzer | bei nachgewiesenem Missbrauch |
+| 20 | **Upload-Endpunkt-Absicherung erst vor Go-live**, reduziert auf serverseitige Typ-/Größenprüfung | solange der Passwortschutz aktiv ist, ist der Endpunkt nicht öffentlich | — |
 
 ---
 
