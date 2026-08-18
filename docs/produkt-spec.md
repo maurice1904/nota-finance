@@ -42,7 +42,6 @@ Verbindliches Zielschema. Änderungen nur mit Migration und Dokumentation hier.
 | Feld | Typ | Zweck |
 |---|---|---|
 | `id` | uuid, PK | technischer Schlüssel |
-| `aktenzeichen` | text, unique | fachliche Referenz `NF-JJJJ-####` |
 | `email` | text | Kontakt des Gläubigers |
 | `files` | jsonb | Liste: Originalname, Speicherpfad, Größe, MIME-Typ |
 | `bereits_gemahnt` | boolean, nullable | Einstiegsstufe |
@@ -62,18 +61,17 @@ akzeptiert hat.
 `eingegangen` → `in_pruefung` → `angenommen` | `abgelehnt` → `in_bearbeitung` → `erledigt`
 Jeder Wechsel mit Zeitstempel und auslösender Person im Audit-Log.
 
-### Aktenzeichen
-Format `NF-JJJJ-####`, jahresbezogen fortlaufend, **beim Absenden** erzeugt.
-Umsetzung über eine **Datenbanksequenz oder atomare Funktion** — nicht über „höchsten Wert lesen und
-eins addieren“ (Race Condition bei gleichzeitigen Uploads). Eindeutigkeit per DB-Constraint erzwingen.
+### Aktenzeichen — NICHT Teil des Nota-Systems
+**Bewusste Entscheidung, Stand August 2026:** Nota Finance vergibt **kein eigenes Aktenzeichen**.
+Der Vater führt seinen eigenen Aktenzeichen-/Nummernkreis im bestehenden Backoffice-Prozess
+(twenty4collect) fort und vergibt die Fallreferenz dort, sobald er den Fall prüft und übernimmt.
+Ein zweiter, paralleler Nummernkreis in Nota würde nur Verwirrung stiften (zwei verschiedene
+Referenznummern für denselben Fall).
 
-**Wichtig — bewusste Entscheidung, Stand August 2026:** Das Aktenzeichen wird **intern** vergeben
-(Datenbank, interne Mail ans Backoffice), aber dem **Kunden noch nicht in der Bestätigungsmail
-mitgeteilt**. Die Bestätigungsmail an den Kunden dokumentiert nur den Eingang, ohne Aktenzeichen.
-Der Kunde erhält das Aktenzeichen **separat**, sobald sein Vater den Fall geprüft hat.
-**Grund:** Solange die Fallprüfung manuell erfolgt, würde ein sofort mitgeteiltes Aktenzeichen
-Verbindlichkeit suggerieren, bevor der Fall tatsächlich angenommen ist. Wird geändert, sobald die
-Prüfung stärker automatisiert ist (siehe `docs/entscheidungen.md`).
+**Konsequenz für Code und Datenmodell:** Kein Feld `aktenzeichen`, keine Sequenz-Logik, keine
+Erwähnung in Kunden- oder interner Mail. Die eindeutige Referenz für die Zuordnung ist stattdessen
+die Kombination aus `id` (technischer Schlüssel) und `created_at` bzw. die E-Mail-Adresse des Kunden.
+**Falls dieser Punkt in älteren Chatverläufen oder Code-Kommentaren auftaucht: veraltet, ignorieren.**
 
 ### Audit-Log (regulatorisch erforderlich)
 Eigene Tabelle `audit_log`: Zeitpunkt, Fallbezug, Ereignis, Akteur, Zusatzdaten.
@@ -86,12 +84,12 @@ Falldateien, Löschläufe. **Nur anfügen, nie ändern oder löschen.**
 
 1. **Serverseitige Validierung** (siehe 5), dann Speicherung in Supabase Storage,
    Bucket `invoices` (**privat**), Pfad `YYYY/MM/<uuid>.<ext>`
-2. **Datenbankeintrag** inkl. Aktenzeichen — **vor** jedem Mailversand
+2. **Datenbankeintrag** — **vor** jedem Mailversand
 3. **Bestätigungsmail an den Kunden** — dokumentiert den Eingang, **ohne Aktenzeichen**; nennt die nächsten Schritte
 4. **Interne Benachrichtigung** ans Backoffice mit
    - Datei(en) im **Anhang** (> 10 MB: nur Link),
    - **signiertem** Download-Link, Gültigkeit 14 Tage,
-   - E-Mail des Kunden, Aktenzeichen, Zeitstempel, `bereits_gemahnt`
+   - E-Mail des Kunden, Zeitstempel, `bereits_gemahnt`
 5. **Fachliche Prüfung und Verfahrensstart erfolgen manuell** im Backoffice
 
 ---
@@ -152,7 +150,7 @@ gleiche Statuslogik.
 ## 10. Abnahmekriterien
 Eine Änderung am Einreichungsvorgang gilt erst als fertig, wenn:
 
-1. Einreichung mit einer echten PDF funktioniert (Datei in Storage, Datensatz in DB, Aktenzeichen intern vergeben — nicht in der Kundenmail)
+1. Einreichung mit einer echten PDF funktioniert (Datei in Storage, Datensatz in DB — kein Aktenzeichen wird vergeben)
 2. Beide E-Mails ankommen; interne Mail enthält Anhang **und** funktionierenden signierten Link
 3. Ein bewusst provozierter Mailfehler den Status auf `failed` setzt und eine Warnung auslöst
 4. Kein öffentlicher Storage-Link mehr erzeugt wird

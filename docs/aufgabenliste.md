@@ -17,15 +17,11 @@ und der Policy „allow public downloads" (SELECT für `anon`) wären alle Rechn
 Policy löschen und Bucket auf privat. **Reihenfolge: erst Code, dann testen, dann Supabase.**
 **Abnahme:** Neuer Link funktioniert, alter öffentlicher Link liefert Fehler.
 
-### P0-2 · Aktenzeichen (intern) und PDF-Anhang · M
-**Problem:** kein Aktenzeichen; Backoffice erhält nur Links statt Anhang.
-**Lösung:** `NF-JJJJ-####` per DB-Sequenz (race-condition-sicher). Das Aktenzeichen erscheint in der
-**internen** Mail und in der Datenbank. **In der Bestätigungsmail an den Kunden erscheint es nicht** —
-die informiert nur über den Eingang. Der Kunde erhält das Aktenzeichen separat, sobald sein Vater den
-Fall geprüft hat (vorerst ein manueller Schritt außerhalb der Website). Dateien als Anhang an die
-interne Mail (> 10 MB: nur Link).
-**Abnahme:** Zwei gleichzeitige Uploads erzeugen zwei verschiedene Aktenzeichen; die Bestätigungsmail
-an den Kunden enthält kein Aktenzeichen.
+### P0-2 · ENTFÄLLT — kein Aktenzeichen im Nota-System
+**Entscheidung (August 2026):** Nota vergibt kein eigenes Aktenzeichen. Der Vater führt seinen
+bestehenden Aktenzeichen-Prozess im Backoffice fort. Der PDF-Anhang an die interne Mail wurde
+bereits im Rahmen von P0-1 umgesetzt (war Teil des dortigen Auftrags) — dieser Teil ist also
+ebenfalls erledigt. Siehe `docs/entscheidungen.md`.
 
 ### P0-3 · Kein Fall darf still verschwinden · M
 **Lösung:** DB-Eintrag vor Mailversand; `notification_status`; bei Fehlschlag Warnung an
@@ -81,6 +77,23 @@ Herkunft. Beide Zahlen wöchentlich abgleichen.
 **Abnahme:** Eine Testeinreichung erzeugt Seitenaufruf, `upload_started`, Danke-Seiten-Aufruf und einen
 `source`-Eintrag in der Datenbank; im Netzwerk-Protokoll des Browsers ist kein personenbezogenes Feld
 Richtung Plausible zu sehen.
+
+### P0-9 · Domain-Authentifizierung für E-Mail-Versand (SPF/DKIM/DMARC) · M
+**Problem:** Mails von `service@notafinance.de` (bzw. `admin@notafinance.de`) landen im Spam-Ordner,
+weil die Domain nicht als autorisierter Absender bei Resend verifiziert ist. Betrifft sowohl die
+Bestätigungsmail an den Kunden als auch die interne Benachrichtigung — beide sind für den Betrieb
+kritisch.
+**Lösung:**
+1. In Resend („Domains") die Domain `notafinance.de` hinzufügen/öffnen
+2. Die von Resend angezeigten DNS-Einträge (SPF, DKIM, ggf. MX für eine Versand-Unterdomain wie
+   `send.notafinance.de`) beim Domain-Anbieter eintragen
+3. DMARC-Eintrag ergänzen, zu Beginn mit `p=none` (nur Beobachtung), nach 1–2 Wochen ohne
+   Auffälligkeiten auf `p=quarantine` verschärfen
+4. Prüfen, ob sich dadurch die Absenderadresse ändert (z. B. auf eine Versand-Unterdomain) und
+   Code/Texte entsprechend anpassen
+5. Nach DNS-Änderung 24–48 Std. auf Ausbreitung warten, dann in Resend auf „Verify" klicken
+**Abnahme:** Eine Testmail landet im normalen Posteingang (nicht Spam) bei Gmail **und** Outlook;
+Resend zeigt die Domain als „Verified"; E-Mail-Header zeigen `dkim=pass` und `spf=pass`.
 
 ### P0-7 · Anwaltliche Prüfung · L
 AGB, Datenschutzerklärung, Markenkonstruktion, alle **[ANWALT]**-Punkte aus

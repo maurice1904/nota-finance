@@ -28,7 +28,7 @@ Neue Entscheidungen werden hier ergänzt, nicht ersetzt. Stand: August 2026.
 | 14 | **Differenziertes Löschkonzept** statt einheitlicher Frist | HGB/AO-Aufbewahrung verdrängt die Löschpflicht nur für bestimmte Kategorien | Änderung der Rechtslage |
 | 15 | **Mehrere Dateien = ein Fall** | typisch sind Rechnung + Mahnung + Vertrag zur selben Forderung | Auswertung zeigt häufig unabhängige Forderungen |
 | 16 | **`consent_version` wird gespeichert** | ohne sie ist später nicht belegbar, welchen Text der Kunde akzeptiert hat | — |
-| 17 | **Aktenzeichen vorerst nicht an den Kunden kommunizieren** | solange die Fallprüfung manuell erfolgt, würde ein sofortiges Aktenzeichen Verbindlichkeit vor der Prüfung suggerieren; Kunde erhält es separat, sobald der Vater den Fall geprüft hat | Fallprüfung wird automatisiert / beschleunigt |
+| 17 | **Kein Aktenzeichen im Nota-System** — der Vater vergibt seine eigene Fallreferenz im bestehenden Backoffice-Prozess | zwei parallele Nummernkreise für denselben Fall stiften Verwirrung; Nota ist im MVP ohnehin nur Frontend/Akquise, die eigentliche Fallführung bleibt beim Backoffice | falls Nota-Fälle direkt ins Backoffice-System übernommen werden und eine gemeinsame ID sinnvoll wird |
 
 ---
 
