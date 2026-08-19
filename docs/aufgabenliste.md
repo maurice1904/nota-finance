@@ -24,19 +24,19 @@ bereits im Rahmen von P0-1 umgesetzt (war Teil des dortigen Auftrags) — dieser
 ebenfalls erledigt. Siehe `docs/entscheidungen.md`.
 
 ### P0-3 · Kein Fall darf still verschwinden · S
-**Grundsatz:** Die **Datenbank ist die Wahrheit**, nicht die E-Mail. Solange jeder Fall zuverlässig in
-der Tabelle `uploads` steht, ist die interne Mail nur Bequemlichkeit. Der Vater kann die Fallliste
-jederzeit direkt in Supabase (Table Editor) einsehen; eine komfortablere Übersicht folgt als P2-5.
-**Konkretes Problem im Code:** Bei einem fehlgeschlagenen DB-Insert wird der Fehler nur geloggt, dem
-Kunden aber trotzdem Erfolg gemeldet — dann existiert der Fall nur als lose Datei im Storage, ohne
-Listeneintrag.
-**Lösung (minimal):** Schlägt der DB-Eintrag fehl, wird dem Kunden **kein** Erfolg gemeldet und die
-verwaiste Datei wird aus dem Storage wieder entfernt. Die Kundenmail wird weiterhin verschickt, wenn
-Upload **und** DB-Eintrag erfolgreich waren.
-**Bewusst NICHT gebaut:** kein `notification_status`, keine Warnmail an eine Ausweichadresse, keine
-Wochenübersicht — überflüssig, sobald die DB die verlässliche Quelle ist.
-**Abnahme:** Wird ein DB-Fehler provoziert, sieht der Kunde eine ehrliche Fehlermeldung (keinen
-falschen Erfolg), und es bleibt keine verwaiste Datei im Storage zurück.
+**Grundsatz:** Ein Fall ist gerettet, solange **entweder** ein Datenbankeintrag existiert **oder** die
+interne Mail mit PDF-Anhang beim Backoffice ankommt. Der Erfolg für den Kunden hängt allein am
+erfolgreichen **Datei-Upload** — nicht an internen Schritten, die er nicht beeinflussen kann.
+**Konkrete Verbesserungen in `components/UploadForm.tsx`:**
+- Ein fehlgeschlagener Datenbank-Insert führt **nicht** zu einer Fehlermeldung beim Kunden (Erfolg
+  bleibt an den Datei-Upload gekoppelt); der Fehler wird nur geloggt.
+- Die interne Mail (mit Anhang) wird bereits nach erfolgreichem **Datei-Upload** ausgelöst, nicht erst
+  nach erfolgreichem DB-Insert — so erreicht der Fall das Backoffice unabhängig von der Datenbank.
+- Die hochgeladene Datei wird **niemals automatisch gelöscht**.
+**Bewusst NICHT gebaut:** kein `notification_status`, keine Warnmail, keine Ratenbegrenzung, kein
+automatisches Löschen.
+**Abnahme:** Normaler Upload → Kunde sieht Erfolg, Backoffice bekommt die Mail mit Anhang. Kein
+verwaistes Verhalten, keine Datei wird gelöscht.
 
 ### P0-10 · Vercel-Umgebungsvariablen & robuster Build · S
 **Problem:** Der Vercel-Build von `umbau-mvp` schlägt fehl: „Missing Supabase admin environment

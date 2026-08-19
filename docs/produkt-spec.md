@@ -108,20 +108,28 @@ sich umgehen. Erforderlich **vor** dem Go-live:
 
 ## 6. Fehlerbehandlung — kein Fall darf verschwinden
 
-**Grundsatz:** Die Datenbank ist die verlässliche Quelle, nicht die E-Mail. Ziel ist nur, dass ein
-Fall niemals als lose Datei ohne Datenbankeintrag endet.
+**Grundsatz:** Ein Fall gilt als gerettet, solange **entweder** ein Datenbankeintrag existiert
+**oder** die interne Mail mit der PDF im Anhang beim Backoffice ankommt. Der Kunde hat seinen Teil
+erledigt, sobald die **Datei** bei uns ist — sein Erfolg hängt allein daran, nicht an internen
+Schritten, die er nicht beeinflussen kann.
 
 | Fehlerpunkt | Verhalten |
 |---|---|
-| Upload zu Storage scheitert | Fehlermeldung an den Kunden, **kein** Erfolg melden |
-| Datenbankeintrag scheitert | **kein** Erfolg an den Kunden; die bereits hochgeladene Datei wieder aus dem Storage entfernen |
-| Bestätigungsmail an Kunden scheitert | unkritisch; Fall bleibt gültig (steht in der DB), optional Log |
-| Interne Mail ans Backoffice scheitert | unkritisch; Fall steht in der DB und ist dort einsehbar, optional Log |
+| Datei-Upload zu Storage scheitert | Fehlermeldung an den Kunden (nur hier), **kein** Erfolg — er muss es erneut versuchen |
+| Datenbankeintrag scheitert | Kunde sieht **Erfolg**; Fehler wird geloggt; Datei bleibt liegen; interne Mail geht trotzdem raus |
+| Interne Mail scheitert | unkritisch, sofern der Datenbankeintrag existiert (Fall steht in der Liste); Fehler loggen |
+| Bestätigungsmail an Kunden scheitert | unkritisch; Fall bleibt gültig; Fehler loggen |
 
-Dem Kunden wird **nur** Erfolg gemeldet, wenn Datei **und** Datenbankeintrag vorliegen.
-Der Vater sieht alle Fälle in der Tabelle `uploads` (im MVP direkt in Supabase; später eine eigene
-Übersichtsseite). Ein separater Fehlerstatus oder eine Warnmail ist bewusst nicht vorgesehen
-(siehe `docs/entscheidungen.md`).
+**Zwei feste Regeln:**
+- Die hochgeladene **Datei wird niemals automatisch gelöscht** — sie ist der Fall und das letzte
+  Sicherheitsnetz. (Ein früher Entwurf sah ein Löschen bei DB-Fehler vor — das wäre falsch und ist
+  ausdrücklich verworfen.)
+- Die **interne Mail wird schon nach erfolgreichem Datei-Upload** ausgelöst, nicht erst nach
+  erfolgreichem Datenbankeintrag — so erreicht der Fall das Backoffice unabhängig von der Datenbank.
+
+Der Vater sieht alle Fälle mit Datenbankeintrag in der Tabelle `uploads` (im MVP direkt in Supabase;
+später eigene Übersichtsseite). Ein separater Fehlerstatus oder eine Warnmail ist bewusst nicht
+vorgesehen (siehe `docs/entscheidungen.md`).
 
 ## 7. Nutzerführung und Barrierefreiheit
 
