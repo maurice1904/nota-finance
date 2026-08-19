@@ -68,7 +68,28 @@ sobald es eine Backoffice-Oberfläche mit Logins gibt (→ P2).
 Auftragsverarbeiter (Supabase, Vercel, Resend), Löschfristen und Betroffenenrechte ergänzen.
 **Abnahme:** Beide Seiten erreichbar, in der Fußzeile verlinkt, im Einreichungsflow referenziert.
 
-### P0-8 · Messung des Trichters · M
+### P0-8 · Messung des Trichters · M — **Code erledigt, Dashboard-Schritte offen**
+
+> **Stand August 2026:** Der Einbau ist fertig (`next-plausible@4`, Proxy, Danke-Seite, zwei
+> Ereignisse). **Noch manuell zu erledigen — ohne diese Schritte misst nichts:**
+> 1. Seite `notafinance.de` im Plausible-Dashboard anlegen und die seitenspezifische Skript-URL
+>    (`https://plausible.io/js/pa-XXXXX.js`) kopieren.
+> 2. Diese URL als `PLAUSIBLE_SRC` hinterlegen — in `.env.local` **und** in Vercel
+>    (Production, Preview, Development). Fehlt sie, bleibt der Build grün und die Messung aus.
+> 3. Drei Ziele im Dashboard anlegen (siehe unten).
+>
+> **Abweichungen von der ursprünglichen Planung — bewusst:**
+> - `next-plausible@4` kennt **kein `domain`-Prop** mehr; die Seite wird über die Skript-URL
+>   identifiziert.
+> - Proxy-Pfade sind `/js/script.js` und `/api/event`. Beide sind vom Passwortschutz in `proxy.ts`
+>   **bereits ausgenommen** — an `proxy.ts` war deshalb nichts zu ändern.
+> - „Cookies für die Proxy-Route strippen" entfällt: Das betrifft laut next-plausible-Doku nur den
+>   Pfad `/proxy/api/event` aus Version 3.
+> - `enabled` ist an `NODE_ENV` geknüpft, damit auch die Vercel-Vorschau misst (der Standard von
+>   next-plausible misst nur in Produktion). `npm run dev` sendet nichts.
+> - Der Absatz zu Plausible in der Datenschutzerklärung ist ergänzt, aber **noch nicht anwaltlich
+>   geprüft** → offener Punkt in P0-7.
+
 **Warum P0:** Der gesamte Zweck von Phase 1 ist zu messen, ob über die Website Gläubiger gewonnen
 werden. Ohne Messung ist der Test wertlos — und Traffic-Daten lassen sich **nicht rückwirkend** erheben.
 
@@ -83,15 +104,26 @@ und Plausible muss in der Datenschutzerklärung genannt werden.
 - **Proxy aktivieren** (`withPlausibleProxy()` in `next.config.ts`) — reduziert Verluste durch Werbeblocker
 - Cookies für die Proxy-Route strippen (bekanntes Verhalten bei gleicher Domain)
 
-**Vier Messpunkte:**
-| # | Was | Umsetzung |
-|---|---|---|
-| 1 | Aufruf `/einreichen` | automatischer Seitenaufruf |
-| 2 | Datei ausgewählt = Flow begonnen | Custom Event `upload_started` via `usePlausible()` |
-| 3 | Erfolgreich abgesendet | **eigene Danke-Seite** `/einreichen/danke` als Seitenaufruf-Ziel — robuster als ein Custom Event |
-| 4 | Herkunft | Plausible erfasst Referrer/UTM automatisch; zusätzlich UTM-Parameter in das Feld `source` der Tabelle `uploads` schreiben |
+**Messpunkte (umgesetzt):**
+| # | Was | Umsetzung | Wo im Code |
+|---|---|---|---|
+| 1 | Aufruf `/einreichen` | automatischer Seitenaufruf | `app/layout.tsx` |
+| 2 | Klick auf „Fall einreichen" | Ereignis `cta_einreichen_klick` | `components/PlausibleCTATracking.tsx` |
+| 3 | Datei ausgewählt = Flow begonnen | Ereignis `upload_started` | `components/UploadForm.tsx`, `handleFileSelect` |
+| 4 | Erfolgreich abgesendet | Seitenaufruf `/einreichen/danke` | `app/einreichen/danke/page.tsx` |
+| 5 | Herkunft | Plausible erfasst Referrer/UTM automatisch; UTM zusätzlich im Feld `source` der Tabelle `uploads` (P0-5) | `components/UploadForm.tsx`, `getSource()` |
 
 Custom Events erscheinen erst, wenn im Plausible-Dashboard ein passendes **Ziel (Goal)** angelegt ist.
+Anzulegen sind drei Ziele: `cta_einreichen_klick` (Custom Event), `upload_started` (Custom Event)
+und `/einreichen/danke` (Pageview).
+
+**Zu `cta_einreichen_klick`:** gezählt wird zentral über einen Klick-Listener auf Links zu
+`/einreichen` — nicht Button für Button. Damit zählen auch alle künftigen Seiten (Branchen-,
+Städte-Seiten) automatisch mit, ohne dass daran gedacht werden muss.
+
+**Bekannte Grenze:** Wird direkt auf der Danke-Seite eine zweite Rechnung eingereicht, bleibt die
+URL gleich — Plausible zählt dann nur einen Abschluss. Wahrheitsquelle für die Fallzahl ist ohnehin
+die Tabelle `uploads`.
 
 **Verboten:** keine personenbezogenen Daten an Plausible — keine E-Mail, keine Dateinamen, keine
 Rechnungsdaten, keine Aktenzeichen.
@@ -125,6 +157,11 @@ Resend zeigt die Domain als „Verified"; E-Mail-Header zeigen `dkim=pass` und `
 ### P0-7 · Anwaltliche Prüfung · L
 AGB, Datenschutzerklärung, Markenkonstruktion, alle **[ANWALT]**-Punkte aus
 `docs/recht-und-datenschutz.md`. **Kein Livegang ohne diesen Punkt.**
+
+**Konkret mit vorzulegen:** der neue Absatz „(3) Reichweitenmessung (Plausible Analytics)" in
+`app/datenschutz/page.tsx` (aus P0-8). Er ist im Quelltext mit einem Warnkommentar markiert.
+Ebenfalls zu klären: Ist mit Plausible ein AVV nötig oder genügt die Annahme der
+Nutzungsbedingungen? (`docs/recht-und-datenschutz.md`, Abschnitt 2.4 ergänzen.)
 
 ---
 

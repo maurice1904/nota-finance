@@ -159,6 +159,35 @@ export default function DatenschutzPage() {
               (im gerichtlichen Mahnverfahren), Rechtsanwälte (falls ein streitiges Verfahren
               notwendig wird und Sie dies beauftragen).
             </p>
+
+            {/* ============================================================
+                ACHTUNG - NOCH NICHT ANWALTLICH GEPRUEFT (siehe P0-7)
+
+                Der folgende Absatz zu Plausible Analytics wurde im Rahmen von
+                P0-8 ergaenzt und muss vor dem Livegang anwaltlich geprueft und
+                freigegeben werden. Alle uebrigen Texte dieser Seite sind davon
+                nicht beruehrt.
+                ============================================================ */}
+            <p className="mb-2 font-semibold text-text-900">
+              (3) Reichweitenmessung (Plausible Analytics)
+            </p>
+            <p>
+              Zur Auswertung der Nutzung unserer Website setzen wir Plausible Analytics
+              der Plausible Insights OÜ, Västriku tn 2, 50403 Tartu, Estland, ein. Die
+              Verarbeitung erfolgt ausschließlich auf Servern innerhalb der Europäischen
+              Union; eine Übermittlung in Drittländer findet nicht statt. Plausible
+              verwendet <strong className="text-text-900">keine Cookies</strong> und legt
+              keine Kennungen auf Ihrem Endgerät ab. Erfasst werden ausschließlich
+              aggregierte Angaben wie aufgerufene Seite, verweisende Seite, Browser,
+              Betriebssystem, Gerätetyp und Herkunftsland. Ihre IP-Adresse wird dabei
+              nicht gespeichert, sondern lediglich zur Ermittlung des Herkunftslandes
+              ausgewertet und sofort verworfen. Eine Zusammenführung dieser Daten mit
+              anderen Datenquellen, eine Wiedererkennung einzelner Personen oder eine
+              seitenübergreifende Nachverfolgung erfolgen nicht. Rechtsgrundlage ist
+              Art. 6 Abs. 1 S. 1 lit. f DSGVO; unser berechtigtes Interesse liegt in der
+              bedarfsgerechten Gestaltung und der statistischen Auswertung unseres
+              Angebots.
+            </p>
           </section>
 
           <section>

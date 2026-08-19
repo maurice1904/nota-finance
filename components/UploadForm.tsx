@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { usePlausible } from "next-plausible";
 import { Upload, X, FileText, CheckCircle, AlertCircle, RefreshCcw } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { uploadInvoice } from "@/lib/storage";
@@ -11,6 +13,10 @@ import { analyzeError, logError, withRetry, getSupportMessage } from "@/lib/erro
 
 // Version der akzeptierten AGB/Datenschutzerklärung - bei Änderungen der Rechtstexte anpassen
 const CONSENT_VERSION = "agb-2026-08";
+
+// Ziel nach erfolgreicher Einreichung. Der Seitenaufruf dieser URL ist zugleich der
+// Messpunkt "erfolgreich abgesendet" (siehe docs/aufgabenliste.md, P0-8).
+const DANKE_PFAD = "/einreichen/danke";
 
 // Herkunft des Besuchers: utm_source/ref-Parameter, sonst Referrer, sonst "direkt"
 const getSource = (): string => {
@@ -39,18 +45,49 @@ interface FormErrors {
   submit?: string;
 }
 
-export default function UploadForm() {
+interface UploadFormProps {
+  /**
+   * Zeigt den gruenen Bestaetigungskasten direkt beim Laden an.
+   * Wird von der Danke-Seite (/einreichen/danke) gesetzt; auf der normalen
+   * Einreichen-Seite bleibt es aus.
+   */
+  showSuccess?: boolean;
+}
+
+export default function UploadForm({ showSuccess = false }: UploadFormProps) {
   const [email, setEmail] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [acceptAGB, setAcceptAGB] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [successCount, setSuccessCount] = useState(0);
+  const [submitSuccess, setSubmitSuccess] = useState(showSuccess);
   const [errors, setErrors] = useState<FormErrors>({});
   const toast = useToast();
+  const router = useRouter();
+  const pathname = usePathname();
+  const plausible = usePlausible();
   const successRef = useRef<HTMLDivElement>(null);
+
+  // Scrollt den Bestaetigungskasten unter die Navbar
+  const scrollToSuccess = useCallback(() => {
+    if (!successRef.current) return;
+    const navbarHeight = 80; // h-20 = 5rem = 80px
+    const additionalOffset = 24; // Extra padding
+    const elementPosition = successRef.current.getBoundingClientRect().top;
+    const offsetPosition =
+      elementPosition + window.scrollY - navbarHeight - additionalOffset;
+
+    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  }, []);
+
+  // Auf der Danke-Seite einmal zum Bestaetigungskasten scrollen - damit fuehlt sich
+  // die Seite genauso an wie frueher die Ansicht direkt nach dem Absenden.
+  useEffect(() => {
+    if (!showSuccess) return;
+    const timer = setTimeout(scrollToSuccess, 150);
+    return () => clearTimeout(timer);
+  }, [showSuccess, scrollToSuccess]);
 
   // Clear specific error when user starts typing/interacting
   const clearError = useCallback((field: keyof FormErrors) => {
@@ -189,6 +226,13 @@ export default function UploadForm() {
   const handleFileSelect = useCallback((selectedFiles: FileList | null) => {
     if (!selectedFiles) return;
 
+    // Flow begonnen: meldet nur den Ereignisnamen, sobald die Dateiliste von leer auf
+    // gefuellt wechselt. Keine Dateinamen, keine Groessen, keine Rechnungsdaten.
+    // Deckt Klick-Auswahl und Drag & Drop ab, weil beide hier zusammenlaufen.
+    if (files.length === 0 && selectedFiles.length > 0) {
+      plausible("upload_started");
+    }
+
     // Reset success state when user starts new upload
     setSubmitSuccess(false);
 
@@ -206,7 +250,7 @@ export default function UploadForm() {
 
     setFiles((prev) => [...prev, ...newFiles]);
     clearError("files");
-  }, [clearError]);
+  }, [clearError, files.length, plausible]);
 
   // Handle drag and drop
   const handleDragEnter = useCallback((e: React.DragEvent) => {
@@ -451,37 +495,31 @@ export default function UploadForm() {
       // Handle results based on success/failure counts
       if (result.failed === 0 && result.success > 0) {
         // All files uploaded successfully
-        setSubmitSuccess(true);
-        setSuccessCount(result.success);
         setErrors({});
 
-        // Reset form fields but keep success message visible
+        // Reset form fields
         setEmail("");
         setEmailConfirm("");
         setFiles([]);
         setAcceptAGB(false);
 
-        // Scroll to success message (with offset for navbar)
-        setTimeout(() => {
-          if (successRef.current) {
-            const navbarHeight = 80; // h-20 = 5rem = 80px
-            const additionalOffset = 24; // Extra padding
-            const elementPosition = successRef.current.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.scrollY - navbarHeight - additionalOffset;
-            
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: "smooth"
-            });
-          }
-        }, 150);
-        
+        // Weiter zur Danke-Seite. Sie zeigt denselben Bestaetigungskasten und denselben
+        // Upload-Bereich - der Unterschied ist allein die URL, ueber die der Abschluss
+        // gezaehlt wird.
+        if (pathname === DANKE_PFAD) {
+          // Es wurde direkt auf der Danke-Seite eine weitere Rechnung eingereicht: Die URL
+          // bleibt gleich, die Seite wird nicht neu aufgebaut. Also den Kasten von Hand
+          // wieder einblenden.
+          setSubmitSuccess(true);
+          setTimeout(scrollToSuccess, 150);
+        } else {
+          router.push(DANKE_PFAD);
+        }
+
         toast.success(
           "Erfolgreich eingereicht!",
           `${result.success} ${result.success === 1 ? "Datei wurde" : "Dateien wurden"} hochgeladen. Sie erhalten eine Bestätigung per E-Mail.`
         );
-        
-        // Success message stays visible until user navigates away or uploads new files
       } else if (result.failed > 0 && result.success > 0) {
         // Partial success
         toast.error(
@@ -547,10 +585,7 @@ export default function UploadForm() {
             </h3>
             
             <p className="text-text-900/70 mb-6">
-              {successCount === 1 
-                ? "Ihr Fall wurde erfolgreich hochgeladen und wird jetzt von uns bearbeitet."
-                : "Ihre Fälle wurden erfolgreich hochgeladen und werden jetzt von uns bearbeitet."
-              }
+              Ihre Unterlagen wurden erfolgreich hochgeladen und werden jetzt von uns bearbeitet.
             </p>
             
             {/* Next steps */}

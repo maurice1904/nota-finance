@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Providers } from "@/components/Providers";
+import PlausibleProvider from "next-plausible";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -198,6 +199,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const inhalt = (
+    <Providers>
+      <ScrollToTop />
+      <Navbar />
+      {children}
+      <Footer />
+    </Providers>
+  );
+
   return (
     <html lang="de" className="scroll-smooth">
       <head>
@@ -217,12 +227,22 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.variable} antialiased font-sans`}
       >
-        <Providers>
-        <ScrollToTop />
-        <Navbar />
-        {children}
-        <Footer />
-        </Providers>
+        {/*
+          Plausible: cookiefreie, EU-gehostete Statistik ohne personenbezogene Daten.
+          Die Skript-URL kommt aus PLAUSIBLE_SRC (siehe next.config.ts); fehlt sie,
+          wird die Statistik einfach weggelassen.
+
+          enabled: bewusst an NODE_ENV geknuepft statt am Standard von next-plausible.
+          So misst auch die Vercel-Vorschau mit (dort ist der Standard aus), waehrend
+          "npm run dev" nichts sendet.
+        */}
+        {process.env.PLAUSIBLE_SRC ? (
+          <PlausibleProvider enabled={process.env.NODE_ENV === "production"}>
+            {inhalt}
+          </PlausibleProvider>
+        ) : (
+          inhalt
+        )}
       </body>
     </html>
   );
