@@ -120,6 +120,8 @@ kritisch.
 **Abnahme:** Eine Testmail landet im normalen Posteingang (nicht Spam) bei Gmail **und** Outlook;
 Resend zeigt die Domain als „Verified"; E-Mail-Header zeigen `dkim=pass` und `spf=pass`.
 
+**Nachkontrolle (Datum eintragen):** ~2 Tage nach der DNS-Änderung auf mxtoolbox.com/dmarc.aspx prüfen, dass kein doppelter DMARC-Eintrag mehr existiert und `p=quarantine` aktiv ist; Testmail muss im Posteingang landen (nicht Spam).
+
 ### P0-7 · Anwaltliche Prüfung · L
 AGB, Datenschutzerklärung, Markenkonstruktion, alle **[ANWALT]**-Punkte aus
 `docs/recht-und-datenschutz.md`. **Kein Livegang ohne diesen Punkt.**
@@ -139,12 +141,16 @@ der Dateien — der Vater hat legitime Kunden, die viele Rechnungen auf einmal h
 **Abnahme:** Eine zu große Datei und ein falscher Dateityp werden serverseitig abgewiesen; ein normaler
 Mehrfach-Upload mit vielen PDFs funktioniert weiterhin.
 
-### P1-1 · Zweites E-Mail-Feld entfernen · S
-`emailConfirm` entfernen, Adresse auf der Bestätigungsseite anzeigen.
+### P1-1 · ENTFÄLLT — zweites E-Mail-Feld bleibt
+**Entscheidung:** Das E-Mail-Bestätigungsfeld (`emailConfirm`) bleibt bewusst erhalten, um zu
+verhindern, dass Kunden versehentlich eine falsche Adresse angeben (ohne gültige Adresse gibt es keine
+Statuskommunikation). Damit ist diese Aufgabe erledigt — nichts zu tun.
 
-### P1-2 · Trust-Logos prüfen · S
-BDIU, Schufa, Wolters Kluwer, GeoTrust, GDD — nur behalten, wozu eine Berechtigung nachweisbar ist.
-Im Zweifel entfernen. „TÜV" nur bei vorliegender Zertifizierung.
+### P1-2 · ERLEDIGT — Trust-Logos abgestimmt
+**Stand:** Laut Vater ist die Nutzung der Logos (BDIU, Schufa, Wolters Kluwer, GeoTrust, GDD) mit den
+Unternehmen abgestimmt. **Offene Empfehlung (kein Blocker):** kurze schriftliche Bestätigung je Logo
+sichern (E-Mail genügt), da im Abmahnfall die Beweislast bei uns liegt. „TÜV" nur, falls eine
+Zertifizierung tatsächlich vorliegt.
 
 ### P1-3 · Barrierefreiheit WCAG 2.1 AA · L
 Tastaturbedienbarkeit, Fokus, Kontraste, `label`, Textfehlermeldungen, Alternativtexte, Zoom 200 %.

@@ -33,6 +33,9 @@ Neue Entscheidungen werden hier ergänzt, nicht ersetzt. Stand: August 2026.
 | 19 | **Keine Ratenbegrenzung und keine Obergrenze der Datei-Anzahl** | der Vater hat legitime Kunden, die viele Rechnungen auf einmal hochladen — eine Grenze träfe echte Nutzer | bei nachgewiesenem Missbrauch |
 | 20 | **Upload-Endpunkt-Absicherung erst vor Go-live**, reduziert auf serverseitige Typ-/Größenprüfung | solange der Passwortschutz aktiv ist, ist der Endpunkt nicht öffentlich | — |
 | 21 | **Hochgeladene Datei wird nie automatisch gelöscht; Kunden-Erfolg hängt nur am Datei-Upload** | die Datei ist der Fall — sie zu löschen (z. B. bei DB-Fehler) würde den Fall zerstören; ein interner Fehler darf den Kunden nicht mit einer Fehlermeldung bestrafen | — |
+| 22 | **Interne Mail bei Mehrfach-Upload: ausgelöst sobald ≥1 Datei erfolgreich**, unabhängig von anderen fehlgeschlagenen Dateien im selben Vorgang | sonst würde ein Fehlschlag die Backup-Kopie für alle anderen erfolgreichen Dateien im selben Vorgang unterdrücken | — |
+| 23 | **Zweites E-Mail-Bestätigungsfeld bleibt** | verhindert, dass Kunden versehentlich eine falsche Adresse angeben — ohne gültige Adresse keine Statuskommunikation | wenn Conversion-Daten zeigen, dass das Feld stark abbrechen lässt |
+| 24 | **Trust-Logos bleiben (mit Vorbehalt Nachweis)** | Nutzung laut Vater mit den Unternehmen abgestimmt; schriftliche Bestätigung je Logo noch zu sichern | falls kein Nachweis beibringbar |
 
 ---
 
