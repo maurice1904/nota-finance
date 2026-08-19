@@ -408,26 +408,16 @@ export default function UploadForm() {
 
     try {
       const result = await uploadFiles();
-      
-      // Handle results based on success/failure counts
-      if (result.failed === 0 && result.success > 0) {
-        // All files uploaded successfully
-        setSubmitSuccess(true);
-        setSuccessCount(result.success);
-        setErrors({});
-        
-        // E-Mail-Adresse speichern bevor Form zurückgesetzt wird
-        const customerEmail = email;
-        const uploadedFilepaths = result.filenames;
-        
-        // Reset form fields but keep success message visible
-        setEmail("");
-        setEmailConfirm("");
-        setFiles([]);
-        setAcceptAGB(false);
-        
-        // E-Mail-Benachrichtigungen senden (async, blockiert nicht UI)
-        // Fehler werden serverseitig geloggt, beeinflussen aber nicht den Erfolg
+
+      // E-Mail-Adresse und Dateipfade sichern, bevor das Formular ggf. zurückgesetzt wird
+      const customerEmail = email;
+      const uploadedFilepaths = result.filenames;
+
+      // Interne Benachrichtigung (mit Anhang) auslösen, sobald mindestens eine Datei
+      // erfolgreich im Storage liegt - unabhängig vom Datenbank-Insert und unabhängig
+      // davon, ob andere Dateien im selben Vorgang fehlgeschlagen sind. So erreicht
+      // jeder erfolgreich hochgeladene Fall das Backoffice.
+      if (result.success > 0) {
         fetch("/api/send-notification", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -439,7 +429,21 @@ export default function UploadForm() {
           // Netzwerkfehler loggen, aber nicht dem User zeigen
           console.error("[UploadForm] Failed to send notification:", err);
         });
-        
+      }
+
+      // Handle results based on success/failure counts
+      if (result.failed === 0 && result.success > 0) {
+        // All files uploaded successfully
+        setSubmitSuccess(true);
+        setSuccessCount(result.success);
+        setErrors({});
+
+        // Reset form fields but keep success message visible
+        setEmail("");
+        setEmailConfirm("");
+        setFiles([]);
+        setAcceptAGB(false);
+
         // Scroll to success message (with offset for navbar)
         setTimeout(() => {
           if (successRef.current) {

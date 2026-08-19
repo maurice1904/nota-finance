@@ -108,28 +108,36 @@ sich umgehen. Erforderlich **vor** dem Go-live:
 
 ## 6. Fehlerbehandlung — kein Fall darf verschwinden
 
-**Grundsatz:** Ein Fall gilt als gerettet, solange **entweder** ein Datenbankeintrag existiert
-**oder** die interne Mail mit der PDF im Anhang beim Backoffice ankommt. Der Kunde hat seinen Teil
-erledigt, sobald die **Datei** bei uns ist — sein Erfolg hängt allein daran, nicht an internen
-Schritten, die er nicht beeinflussen kann.
+**Was den Fall real schützt — drei getrennte Ebenen:**
+1. **Die Datei im Storage** — das Original der Rechnung. Ohne sie gibt es nichts einzuziehen.
+2. **Der Datenbankeintrag** — speichert nur den *Pfad* zur Datei, nicht die Datei selbst. Er ist der
+   Wegweiser und die Übersicht, **kein** eigenes Sicherheitsnetz für die Datei: Fällt der Storage aus,
+   zeigt der Eintrag ins Leere.
+3. **Die interne Mail mit PDF im Anhang** — die **einzige unabhängige Kopie** der Rechnung, physisch
+   getrennt vom Storage. Sie ist das eigentliche Sicherheitsnetz gegen einen Storage-Verlust.
+
+**Wichtige Konsequenz:** Datenbankeintrag und Storage-Datei hängen zusammen. Der wirklich unabhängige
+Schutz ist die Mail-Kopie. Deshalb ist die **zuverlässige Zustellung der internen Mail** kritisch
+(siehe auch P0-9 Spam/Domain-Authentifizierung) — sie ist nicht bloß Benachrichtigung, sondern Backup.
+
+**Der Kunde** hat seinen Teil erledigt, sobald die Datei bei uns ist — sein Erfolg hängt allein am
+erfolgreichen Datei-Upload, nicht an internen Schritten, die er nicht beeinflussen kann.
 
 | Fehlerpunkt | Verhalten |
 |---|---|
 | Datei-Upload zu Storage scheitert | Fehlermeldung an den Kunden (nur hier), **kein** Erfolg — er muss es erneut versuchen |
-| Datenbankeintrag scheitert | Kunde sieht **Erfolg**; Fehler wird geloggt; Datei bleibt liegen; interne Mail geht trotzdem raus |
-| Interne Mail scheitert | unkritisch, sofern der Datenbankeintrag existiert (Fall steht in der Liste); Fehler loggen |
+| Datenbankeintrag scheitert | Kunde sieht **Erfolg**; Fehler wird geloggt; Datei bleibt liegen; interne Mail (mit Anhang!) geht trotzdem raus → Fall erreicht das Backoffice |
+| Interne Mail scheitert | Fall bleibt über Storage + DB-Eintrag auffindbar; Fehler loggen. Zustellbarkeit der Mail ist wichtig, weil sie die einzige unabhängige Kopie trägt |
 | Bestätigungsmail an Kunden scheitert | unkritisch; Fall bleibt gültig; Fehler loggen |
 
 **Zwei feste Regeln:**
-- Die hochgeladene **Datei wird niemals automatisch gelöscht** — sie ist der Fall und das letzte
-  Sicherheitsnetz. (Ein früher Entwurf sah ein Löschen bei DB-Fehler vor — das wäre falsch und ist
-  ausdrücklich verworfen.)
-- Die **interne Mail wird schon nach erfolgreichem Datei-Upload** ausgelöst, nicht erst nach
-  erfolgreichem Datenbankeintrag — so erreicht der Fall das Backoffice unabhängig von der Datenbank.
+- Die hochgeladene **Datei wird niemals automatisch gelöscht** — sie ist der Fall. (Ein früher Entwurf
+  sah ein Löschen bei DB-Fehler vor — falsch, ausdrücklich verworfen.)
+- Die **interne Mail (mit Anhang) wird schon nach erfolgreichem Datei-Upload** ausgelöst, nicht erst
+  nach erfolgreichem DB-Insert — so entsteht die unabhängige Kopie unabhängig von der Datenbank.
 
 Der Vater sieht alle Fälle mit Datenbankeintrag in der Tabelle `uploads` (im MVP direkt in Supabase;
-später eigene Übersichtsseite). Ein separater Fehlerstatus oder eine Warnmail ist bewusst nicht
-vorgesehen (siehe `docs/entscheidungen.md`).
+später eigene Übersichtsseite).
 
 ## 7. Nutzerführung und Barrierefreiheit
 

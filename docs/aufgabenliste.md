@@ -24,8 +24,9 @@ bereits im Rahmen von P0-1 umgesetzt (war Teil des dortigen Auftrags) — dieser
 ebenfalls erledigt. Siehe `docs/entscheidungen.md`.
 
 ### P0-3 · Kein Fall darf still verschwinden · S
-**Grundsatz:** Ein Fall ist gerettet, solange **entweder** ein Datenbankeintrag existiert **oder** die
-interne Mail mit PDF-Anhang beim Backoffice ankommt. Der Erfolg für den Kunden hängt allein am
+**Grundsatz:** Die Rechnung existiert in der Datei im Storage; die interne Mail mit PDF-Anhang ist die
+einzige davon **unabhängige Kopie** und damit das eigentliche Backup. Der Datenbankeintrag ist nur
+Wegweiser/Übersicht (speichert den Pfad, nicht die Datei). Der Erfolg für den Kunden hängt allein am
 erfolgreichen **Datei-Upload** — nicht an internen Schritten, die er nicht beeinflussen kann.
 **Konkrete Verbesserungen in `components/UploadForm.tsx`:**
 - Ein fehlgeschlagener Datenbank-Insert führt **nicht** zu einer Fehlermeldung beim Kunden (Erfolg
