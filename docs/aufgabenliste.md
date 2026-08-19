@@ -50,10 +50,18 @@ variables". Die neuen Schlüssel liegen nur lokal in `.env.local`, nicht in Verc
    Modul-Laden), damit der Build nicht an fehlenden Laufzeit-Secrets scheitert.
 **Abnahme:** Vercel-Build läuft grün durch.
 
-### P0-5 · Datenmodell und Audit-Log · L
-**Lösung:** Tabelle `uploads` auf das Zielschema (`docs/produkt-spec.md`, Abschnitt 3) bringen,
-inkl. `consent_version`; Tabelle `audit_log` (nur anfügen) anlegen.
-**Abnahme:** Jeder Eingang und Statuswechsel erzeugt einen unveränderlichen Protokolleintrag.
+### P0-5 · Zustimmung und Herkunft speichern · S
+**Problem:** Das AGB-Häkchen ist Pflicht, wird aber nirgends gespeichert — kein Nachweis, dass/wann
+der Kunde zugestimmt hat.
+**Lösung:** In `uploads` drei Spalten ergänzen und beim Insert befüllen: `consent_at` (Zeitpunkt),
+`consent_version` (feste Kennung, z. B. `agb-2026-08`), `source` (Herkunft: UTM/Referrer, sonst
+„direkt").
+**Bewusst NICHT jetzt:** kein Audit-Log, kein Status-Feld. Nota ist im MVP nur die Annahmestelle; der
+regulatorisch relevante Audit-Trail über die Fallbearbeitung gehört in das Backoffice-System
+(twenty4collect), nicht an die Eingangs-Website. Ein Nota-seitiger Audit-/Zugriffslog wird relevant,
+sobald es eine Backoffice-Oberfläche mit Logins gibt (→ P2).
+**Abnahme:** Ein neuer Upload erzeugt in `uploads` einen Eintrag mit gefülltem `consent_at`,
+`consent_version` und `source`.
 
 ### P0-6 · Rechtstexte als HTML-Seiten · M
 **Lösung:** AGB und Datenschutzerklärung als Seiten (nicht PDF); Datenschutzerklärung um

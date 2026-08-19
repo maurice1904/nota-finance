@@ -73,12 +73,12 @@ Erwähnung in Kunden- oder interner Mail. Die eindeutige Referenz für die Zuord
 die Kombination aus `id` (technischer Schlüssel) und `created_at` bzw. die E-Mail-Adresse des Kunden.
 **Falls dieser Punkt in älteren Chatverläufen oder Code-Kommentaren auftaucht: veraltet, ignorieren.**
 
-### Audit-Log (regulatorisch erforderlich)
-Eigene Tabelle `audit_log`: Zeitpunkt, Fallbezug, Ereignis, Akteur, Zusatzdaten.
-Zu protokollieren: Eingang, Statuswechsel, fachliche Freigabe, versendete Schreiben, Zugriffe auf
-Falldateien, Löschläufe. **Nur anfügen, nie ändern oder löschen.**
-
----
+### Audit-Log — im MVP bewusst nicht in Nota
+Nota ist die Annahmestelle; die Fallbearbeitung (und damit der regulatorisch relevante Audit-Trail)
+findet im Backoffice-System twenty4collect statt. Ein Nota-seitiger Audit-/Zugriffslog wird erst
+relevant, sobald Nota eine eigene Backoffice-Oberfläche mit Benutzer-Logins hat (→ P2). Für das MVP
+genügt: zuverlässige Speicherung des Eingangs plus Zustimmungsnachweis (`consent_at`,
+`consent_version`).
 
 ## 4. Nach dem Absenden (unsichtbar für den Kunden)
 
@@ -130,11 +130,15 @@ erfolgreichen Datei-Upload, nicht an internen Schritten, die er nicht beeinfluss
 | Interne Mail scheitert | Fall bleibt über Storage + DB-Eintrag auffindbar; Fehler loggen. Zustellbarkeit der Mail ist wichtig, weil sie die einzige unabhängige Kopie trägt |
 | Bestätigungsmail an Kunden scheitert | unkritisch; Fall bleibt gültig; Fehler loggen |
 
-**Zwei feste Regeln:**
+**Drei feste Regeln:**
 - Die hochgeladene **Datei wird niemals automatisch gelöscht** — sie ist der Fall. (Ein früher Entwurf
   sah ein Löschen bei DB-Fehler vor — falsch, ausdrücklich verworfen.)
 - Die **interne Mail (mit Anhang) wird schon nach erfolgreichem Datei-Upload** ausgelöst, nicht erst
   nach erfolgreichem DB-Insert — so entsteht die unabhängige Kopie unabhängig von der Datenbank.
+- **Bei mehreren Dateien in einem Vorgang:** Die interne Mail wird ausgelöst, sobald **mindestens
+  eine** Datei erfolgreich hochgeladen wurde — unabhängig davon, ob andere Dateien im selben Vorgang
+  fehlgeschlagen sind. Sonst würde ein einzelner Fehlschlag die Mail für alle erfolgreichen Dateien
+  im selben Vorgang unterdrücken, obwohl deren Backup-Kopie genauso wichtig ist.
 
 Der Vater sieht alle Fälle mit Datenbankeintrag in der Tabelle `uploads` (im MVP direkt in Supabase;
 später eigene Übersichtsseite).
