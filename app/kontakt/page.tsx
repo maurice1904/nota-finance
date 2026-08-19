@@ -308,18 +308,18 @@ ${formData.message}
                   />
                   <label htmlFor="acceptAGB" className="text-sm text-text-900/70 leading-relaxed">
                     Ich akzeptiere die{" "}
-                    <a 
-                      href="/agb.pdf" 
-                      target="_blank" 
+                    <a
+                      href="/agb"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="text-brand-900 hover:underline font-semibold"
                     >
                       Allgemeinen Geschäftsbedingungen (AGB)
                     </a>{" "}
                     und die{" "}
-                    <a 
-                      href="/datenschutz.pdf" 
-                      target="_blank" 
+                    <a
+                      href="/datenschutz"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="text-brand-900 hover:underline font-semibold"
                     >

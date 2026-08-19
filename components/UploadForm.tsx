@@ -805,7 +805,7 @@ export default function UploadForm() {
               <label htmlFor="acceptAGB" className="text-xs text-text-900/70 leading-relaxed">
                 Ich akzeptiere die{" "}
                 <a
-                  href="/agb.pdf"
+                  href="/agb"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-brand-900 hover:underline font-medium"
@@ -814,7 +814,7 @@ export default function UploadForm() {
                 </a>{" "}
                 und die {" "}
                 <a
-                  href="/datenschutz.pdf"
+                  href="/datenschutz"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-brand-900 hover:underline font-medium"

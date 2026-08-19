@@ -30,22 +30,18 @@ export default function Footer() {
             >
               Impressum
             </Link>
-            <a 
-              href="/datenschutz.pdf" 
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/datenschutz"
               className="text-sm text-surface-100 hover:text-white transition-colors duration-300"
             >
               Datenschutz
-            </a>
-            <a 
-              href="/agb.pdf" 
-              target="_blank"
-              rel="noopener noreferrer"
+            </Link>
+            <Link
+              href="/agb"
               className="text-sm text-surface-100 hover:text-white transition-colors duration-300"
             >
               AGB
-            </a>
+            </Link>
             <Link 
               href="/kontakt" 
               className="text-sm text-surface-100 hover:text-white transition-colors duration-300"

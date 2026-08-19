@@ -46,7 +46,7 @@ const serviceSchema = {
     },
   },
   serviceType: "Inkasso und Forderungsmanagement",
-  termsOfService: "https://www.notafinance.de/agb.pdf",
+  termsOfService: "https://www.notafinance.de/agb",
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Inkasso-Prozess",
