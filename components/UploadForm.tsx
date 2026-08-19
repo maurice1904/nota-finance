@@ -9,6 +9,20 @@ import { FormError, FormErrorSummary } from "@/components/FormError";
 import { useToast } from "@/components/Toast";
 import { analyzeError, logError, withRetry, getSupportMessage } from "@/lib/errors";
 
+// Version der akzeptierten AGB/Datenschutzerklärung - bei Änderungen der Rechtstexte anpassen
+const CONSENT_VERSION = "agb-2026-08";
+
+// Herkunft des Besuchers: utm_source/ref-Parameter, sonst Referrer, sonst "direkt"
+const getSource = (): string => {
+  const params = new URLSearchParams(window.location.search);
+  return (
+    params.get("utm_source") ||
+    params.get("ref") ||
+    document.referrer ||
+    "direkt"
+  );
+};
+
 interface UploadedFile {
   id: string;
   file: File;
@@ -273,6 +287,9 @@ export default function UploadForm() {
           filename: uploadResult.filename, // Nur Dateiname (z.B. "abc123.pdf")
           filepath: uploadResult.path,     // Vollständiger Pfad im Bucket (z.B. "2026/02/abc123.pdf")
           upload_date: uploadDate,         // Datum im Format YYYY/MM/DD (z.B. "2026/02/16")
+          consent_at: new Date().toISOString(),
+          consent_version: CONSENT_VERSION,
+          source: getSource(),
         });
 
       if (dbError) {
