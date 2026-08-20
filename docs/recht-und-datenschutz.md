@@ -75,6 +75,20 @@ fest in das erste Anschreiben.
 - **Datenschutzerklärung** nach Art. 13/14, inkl. Nennung aller Auftragsverarbeiter.
 
 ### 2.4 Auftragsverarbeiter
+
+**Darstellung in der Datenschutzerklärung (Art. 13 Abs. 1 lit. e):** Es genügt nicht, die
+Dienstleister nur beim Namen zu nennen. Erforderlich ist je Dienstleister: vollständige Firmierung
+mit Anschrift, Zweck der Verarbeitung, Verarbeitungsort und — als gute Praxis — ein Link auf dessen
+Datenschutzerklärung, eingeleitet durch den Hinweis, dass die Übermittlung im Rahmen eines
+Auftragsverarbeitungsverhältnisses nach Art. 28 DSGVO an weisungsgebundene Dienstleister mit
+geeigneten Maßnahmen nach Art. 32 DSGVO erfolgt. Diesen Standard setzen auch die etablierten
+Wettbewerber (z. B. PAIR Finance).
+
+**Die AV-Verträge selbst werden nicht veröffentlicht** — es sind zweiseitige Verträge, die der
+Aufsichtsbehörde auf Anfrage vorgelegt werden. Öffentlich ist nur die Aussage, dass sie bestehen;
+diese Aussage darf erst in die Datenschutzerklärung, wenn die Verträge tatsächlich abgeschlossen und
+abgelegt sind.
+
 AVV erforderlich mit: **Supabase**, **Vercel**, **Resend**, ggf. Analytics-Anbieter, Auskunfteien.
 Für jeden Dienst dokumentieren: Zweck, Datenkategorien, Serverstandort, Drittlandtransfer.
 **Supabase-Region ist `eu-central-1` (Frankfurt) — beibehalten.** Bei US-Anbietern zusätzlich
