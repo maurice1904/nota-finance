@@ -156,6 +156,13 @@ Zertifizierung tatsächlich vorliegt.
 Tastaturbedienbarkeit, Fokus, Kontraste, `label`, Textfehlermeldungen, Alternativtexte, Zoom 200 %.
 Erklärung zur Barrierefreiheit ergänzen, sobald die BFSG-Bewertung vorliegt.
 
+**Korrektur aus P1-12 (August 2026):** Die in Etappe 1 gewählte Lösung für den Upload-Knopf
+(verstecktes `<input type="file">` plus `<label for>` plus Fokus-Spiegelung) war auf dem iPhone
+**nicht bedienbar** — Safari öffnet die Dateiauswahl nicht, wenn das Feld nur einen Pixel groß ist.
+Ersetzt durch echte `<button>`-Elemente, die das Feld per JavaScript öffnen. **Lehre für die
+restlichen Teilaufgaben:** Tastaturlösungen zusätzlich auf einem echten iPhone prüfen, nicht nur
+am Rechner.
+
 ### P1-4 · Löschkonzept technisch umsetzen · M
 Differenzierte Fristen nach `docs/recht-und-datenschutz.md` 2.5; Löschläufe protokollieren.
 
@@ -193,7 +200,7 @@ ergibt (auch E-Mail-Vorlagen in `lib/email.ts` prüfen).
 **Abnahme:** Keine Fundstelle verspricht ein sofortiges Aktenzeichen; alle Formulierungen knüpfen es
 an die Prüfung.
 
-### P1-12 · Fotos erlauben und zu EINEM PDF zusammenführen · M
+### P1-12 · ERLEDIGT — Fotos erlauben und zu EINEM PDF zusammenführen
 **Entschieden:** Kunden sollen Rechnungen abfotografieren können. **Alle Bilder einer Einreichung
 werden serverseitig zu genau einem mehrseitigen PDF zusammengeführt** — auch bei nur einem Foto.
 Begründung: Ein Handwerker, der eine dreiseitige Rechnung abfotografiert, soll ein Dokument
@@ -219,6 +226,44 @@ Vermieter.
 **Abnahme:** Drei Fotos in einer Einreichung erzeugen **ein** PDF mit drei Seiten in richtiger
 Reihenfolge und Ausrichtung; die internen Mail enthält dieses PDF als Anhang; der signierte Link
 öffnet dasselbe PDF; die drei Originalbilder liegen weiterhin im Storage.
+
+**Umgesetzt (August 2026):**
+- `lib/pdf.ts` — Zusammenführung mit `sharp` (EXIF-Drehung, Verkleinerung auf A4/150 dpi,
+  JPEG-Kompression) und `@cantoo/pdf-lib` (gepflegter Fork von `pdf-lib`; für die genutzten
+  Aufrufe API-gleich). Reißt das PDF 9 MB, wird es einmal sparsamer neu gebaut.
+- `app/api/merge-images-to-pdf/route.ts` — Node-Runtime, `maxDuration = 60` (Hobby-Tarif erlaubt
+  bis 300 s; bewusst darunter, damit kein Kunde minutenlang wartet). Nimmt nur Storage-Pfade
+  entgegen, weil der Anfragekörper auf ca. 4,5 MB begrenzt ist.
+- `lib/fileTypes.ts` — eine Quelle für erlaubte Formate und Größen (10 MB je Dokument, 15 MB je
+  Foto), die Browser und Server gemeinsam lesen. Grundlage für P1-0.
+- `components/UploadForm.tsx` — Kamera-Knopf „Rechnung fotografieren" (nur auf Geräten mit
+  Berührungsbildschirm, Regel `.touch-only` in `app/globals.css` über `any-pointer: coarse`),
+  eigener Fortschrittshinweis während der Zusammenführung, eigene Zeile in `uploads` für das
+  erzeugte PDF. Rückfallebene: Scheitert die Erzeugung, gehen die Originalbilder in die Mail.
+- **Upload-Knöpfe sind jetzt echte `<button>`**, die das versteckte Dateifeld per JavaScript
+  öffnen. Grund: Safari auf dem iPhone öffnete die Dateiauswahl über ein `<label for>` **nicht**,
+  wenn das Feld per `sr-only` auf einen Pixel geschrumpft ist — am Rechner funktionierte es.
+  Damit war „Dateien auswählen" auf dem iPhone seit P1-3 wirkungslos.
+  Die Umstellung verbessert zugleich die Tastaturbedienung: Ein Knopf ist von sich aus in der
+  Tabulator-Reihenfolge, reagiert auf Enter und Leertaste und zeigt seinen Fokusrahmen selbst.
+  Die frühere Hilfskonstruktion `.focus-proxy` in `app/globals.css` ist deshalb entfallen.
+- Hinweis im Upload-Bereich unterscheidet nach Gerät: Auf Handy und Tablet „Mehrere Fotos fügen
+  wir automatisch zu einem PDF zusammen", am Rechner stattdessen der Hinweis, die Seite zum
+  Fotografieren am Mobilgerät zu öffnen (Regeln `.touch-only` / `.pointer-only`).
+
+### P1-14 · AGB an die neuen Einreichungsformate anpassen · S — **teilweise erledigt**
+**Problem:** Die AGB nannten als zulässige Einreichungsformate „PDF, XRechnung, ZUGFeRD". Mit P1-12
+sind zusätzlich **Fotos (JPG, PNG)** zulässig. Die Website böte damit etwas an, das die AGB nicht
+abdecken.
+**Erledigt (auf ausdrückliche Weisung des Auftraggebers, August 2026):** In `app/agb/page.tsx`
+wurde **ausschließlich die Aufzählung der Dateiformate** um „Bilddatei (JPG, PNG)" ergänzt —
+zwei Stellen (Vertragsschluss, Leistungsbeschreibung). Am übrigen juristischen Text wurde nichts
+geändert.
+**Weiterhin offen — gehört in P0-7:** Rechtlich noch zu bewerten ist nicht die Formatliste, sondern
+dass Nota aus den Fotos **serverseitig ein neues Dokument erzeugt** und die Originale zusätzlich
+speichert. Das ist eine Verarbeitung, die die AGB bisher nicht beschreiben.
+**Abnahme:** AGB nennen die tatsächlich zulässigen Formate (erfüllt); anwaltliche Bestätigung der
+Foto-Verarbeitung liegt vor (offen).
 
 ### P1-13 · Strukturierte Daten korrigieren · S
 **Problem:** Im JSON-LD (`app/layout.tsx`, Z. 114–119, 123, 148) stehen `foundingDate: "2024"`,

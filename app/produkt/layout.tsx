@@ -54,7 +54,7 @@ const serviceSchema = {
       {
         "@type": "Offer",
         name: "Forderungseinreichung",
-        description: "Upload per PDF, XRechnung oder ZUGFeRD – ohne Registrierung.",
+        description: "Upload per PDF, XRechnung, ZUGFeRD oder Foto – ohne Registrierung.",
       },
       {
         "@type": "Offer",

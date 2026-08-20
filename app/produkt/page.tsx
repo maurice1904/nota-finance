@@ -25,7 +25,7 @@ export default function ProduktPage() {
             </h1>
             
             <p className="text-base sm:text-lg md:text-xl text-text-900/70 leading-relaxed">
-              Jetzt Ihre offene Rechnung direkt als PDF, XRechnung oder ZUGFeRD hochladen und wir kümmern uns um den Rest.
+              Jetzt Ihre offene Rechnung direkt als PDF, XRechnung, ZUGFeRD oder als Foto hochladen und wir kümmern uns um den Rest.
             </p>
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function ProduktPage() {
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-1" strokeWidth={2.5} />
-                    <span>Unterstützung aller gängigen Rechnungsformate (PDF, XRechnung, ZUGFeRD).</span>
+                    <span>Unterstützung aller gängigen Rechnungsformate (PDF, XRechnung, ZUGFeRD) sowie Fotos Ihrer Rechnung.</span>
                   </li>
                 </ul>
               </div>

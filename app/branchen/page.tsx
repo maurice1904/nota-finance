@@ -37,7 +37,7 @@ const industries: Industry[] = [
     subtitle: "Wir arbeiten für Grafikdesigner, Webdesigner, Texter, Berater, IT-Spezialisten, Fotografen, Musiker, Künstler, und Freiberufler aller Branchen.",
     challenge: "Sie leisten exzellente, oft projektbasierte Arbeit, doch unregelmäßige Zahlungseingänge und der administrative Aufwand des Mahnwesens rauben Zeit und Nerven. Die Sorge, durch Mahnungen die oft persönliche Kundenbeziehung zu belasten, ist groß.",
     solutions: [
-      "Einfache Einreichung: Laden Sie Ihre Rechnungen (PDF, XRechnung, ZUGFeRD) in Minuten hoch – ohne Registrierung für Einzelfälle. Ideal für variable Auftragslagen.",
+      "Einfache Einreichung: Laden Sie Ihre Rechnungen (PDF, XRechnung, ZUGFeRD oder Foto) in Minuten hoch – ohne Registrierung für Einzelfälle. Ideal für variable Auftragslagen.",
       "Kundenorientiertes Vorgehen: Wir mahnen professionell und fair, um Ihre wertvollen Kundenkontakte zu schützen.",
       "Digitale Effizienz: Konzentrieren Sie sich auf Ihre kreative oder beratende Tätigkeit, wir kümmern uns digital und schnell um den Rest.",
       "Forderungen ab 50€: Auch kleinere Honorare sind es wert, eingefordert zu werden."
@@ -114,7 +114,7 @@ const industries: Industry[] = [
     subtitle: "Nota Finance ist perfekt für IT-Systemhäuser, Softwareentwicklungsfirmen (SaaS, …), Managed Service Provider (MSPs), IT-Beratungsunternehmen, Telekommunikationsdienstleister und viele weitere Unternehmen.",
     challenge: "Lange Projektlaufzeiten mit Meilensteinzahlungen, unbezahlte Wartungsverträge oder Lizenzgebühren sind an der Tagesordnung. Diskussionen über den Leistungsumfang können Zahlungen zusätzlich verzögern, während Ihr Team bereits neue Projekte stemmt.",
     solutions: [
-      "Digitale Einreichung & API: Übermitteln Sie Forderungen effizient per Upload (PDF, XRechnung, ZUGFeRD) oder nutzen Sie unsere API-Schnittstelle zur Anbindung Ihrer Systeme.",
+      "Digitale Einreichung & API: Übermitteln Sie Forderungen effizient per Upload (PDF, XRechnung, ZUGFeRD oder Foto) oder nutzen Sie unsere API-Schnittstelle zur Anbindung Ihrer Systeme.",
       "Professionelle Kommunikation: Wir verstehen die Komplexität von IT-Projekten und kommunizieren klar und sachlich mit Ihren Kunden.",
       "Entlastung Ihres Managements: Reduzieren Sie den internen Aufwand für das Debitorenmanagement und schützen Sie Ihre Kundenbeziehungen auch bei laufenden Verträgen.",
       "Rechtssichere Durchsetzung: Bei Bedarf leiten wir nach Rücksprache das gerichtliche Mahnverfahren ein."

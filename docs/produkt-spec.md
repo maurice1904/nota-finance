@@ -12,7 +12,7 @@ Ein Bildschirm, keine Formularstrecke:
 
 | # | Element | Pflicht | Anmerkung |
 |---|---|---|---|
-| 1 | Rechnung hochladen | ja | PDF/JPG/PNG, auch mehrere Dateien |
+| 1 | Rechnung hochladen | ja | PDF, XML (XRechnung/ZUGFeRD), JPG, PNG — auch mehrere Dateien |
 | 2 | E-Mail-Adresse | ja | ein Feld, Formatprüfung |
 | 3 | Zustimmung AGB + Datenschutz + Auftragserteilung | ja | eine Checkbox |
 | 4 | „Wurde bereits gemahnt?" ja/nein | optional | Ein-Klick, bestimmt Einstiegsstufe |
@@ -21,6 +21,10 @@ Ein Bildschirm, keine Formularstrecke:
 
 **Mehrere Dateien:** gehören standardmäßig zu **einem** Fall (typisch: Rechnung + Mahnung + Vertrag).
 Betrifft der Upload mehrere unabhängige Forderungen, wird das im Backoffice getrennt.
+
+**Fotos:** Der Kunde kann die Rechnung abfotografieren — am Handy und Tablet über einen eigenen
+Knopf direkt aus der Kamera, am Rechner über die Dateiauswahl. Alle Bilder einer Einreichung
+werden **serverseitig zu genau einem mehrseitigen PDF** zusammengeführt (siehe Abschnitt 4a).
 
 ### Abweichung vom Ist-Zustand
 Aktuell wird die E-Mail **zweimal** abgefragt (`email` + `emailConfirm`). Das Bestätigungsfeld entfällt;
@@ -84,13 +88,46 @@ genügt: zuverlässige Speicherung des Eingangs plus Zustimmungsnachweis (`conse
 
 1. **Serverseitige Validierung** (siehe 5), dann Speicherung in Supabase Storage,
    Bucket `invoices` (**privat**), Pfad `YYYY/MM/<uuid>.<ext>`
-2. **Datenbankeintrag** — **vor** jedem Mailversand
-3. **Bestätigungsmail an den Kunden** — dokumentiert den Eingang, **ohne Aktenzeichen**; nennt die nächsten Schritte
-4. **Interne Benachrichtigung** ans Backoffice mit
+2. **Zusammenführung der Fotos** zu einem PDF (siehe 4a), sofern Bilder dabei sind
+3. **Datenbankeintrag** — **vor** jedem Mailversand
+4. **Bestätigungsmail an den Kunden** — dokumentiert den Eingang, **ohne Aktenzeichen**; nennt die nächsten Schritte
+5. **Interne Benachrichtigung** ans Backoffice mit
    - Datei(en) im **Anhang** (> 10 MB: nur Link),
    - **signiertem** Download-Link, Gültigkeit 14 Tage,
    - E-Mail des Kunden, Zeitstempel, `bereits_gemahnt`
-5. **Fachliche Prüfung und Verfahrensstart erfolgen manuell** im Backoffice
+6. **Fachliche Prüfung und Verfahrensstart erfolgen manuell** im Backoffice
+
+---
+
+## 4a. Fotos zu einem PDF zusammenführen
+
+**Grundsatz:** Wer eine dreiseitige Rechnung abfotografiert, reicht **ein Dokument** ein, nicht drei
+lose Bilder. Das PDF ist die Verpackung, die Originalbilder bleiben der Nachweis.
+
+| Regel | Verhalten |
+|---|---|
+| Alle Bilder einer Einreichung | ergeben **genau ein** mehrseitiges PDF — auch bei nur einem Foto |
+| Seitenreihenfolge | Auswahlreihenfolge des Kunden |
+| Hochgeladene PDF- und XML-Dateien | bleiben **unverändert** und wandern nicht in das erzeugte PDF |
+| Gemischte Einreichung (z. B. 2 Fotos + 1 PDF) | ergibt zwei Dokumente: erzeugtes Foto-PDF und Original-PDF |
+| Originalbilder | bleiben zusätzlich im Storage — sie werden nie automatisch gelöscht |
+| Mailanhang und signierter Link | zeigen auf das **erzeugte** PDF |
+
+**Technisch:** Der Browser lädt die Originale direkt zu Supabase; die Route
+`POST /api/merge-images-to-pdf` erhält nur die Storage-Pfade, holt die Bilder mit dem
+Service-Role-Key und legt das Ergebnis unter `YYYY/MM/fotos-<uuid>.pdf` ab. Der Umweg über Pfade
+ist nötig, weil der Anfragekörper einer Serverfunktion auf ca. 4,5 MB begrenzt ist — ein einziges
+Handyfoto sprengt das.
+
+- **Ausrichtung:** EXIF-Drehung wird angewendet, Quer- und Hochformat bekommen jeweils eine
+  passend ausgerichtete A4-Seite.
+- **Größe:** Bilder werden auf A4 bei 150 dpi verkleinert und als JPEG komprimiert. Überschreitet
+  das PDF 9 MB, wird es einmal sparsamer neu gebaut (110 dpi). So bleibt es unter der 10-MB-Grenze
+  für Mailanhänge — sonst entfiele ausgerechnet bei Fotoeinreichungen die einzige vom Storage
+  unabhängige Kopie (Abschnitt 6).
+- **Fehlerfall:** Scheitert die Zusammenführung oder läuft sie ins Zeitlimit (45 s im Browser,
+  60 s serverseitig), gehen die **Originalbilder** in die interne Mail. Der Kunde sieht Erfolg,
+  der Fall geht nicht verloren.
 
 ---
 
@@ -99,8 +136,9 @@ genügt: zuverlässige Speicherung des Eingangs plus Zustimmungsnachweis (`conse
 Die API-Route ist beim Livegang (ohne Passwortschutz) öffentlich erreichbar; Browser-Prüfungen lassen
 sich umgehen. Erforderlich **vor** dem Go-live:
 
-- **Serverseitige Prüfung** von Dateityp (Whitelist: PDF, JPG, PNG — anhand des Inhalts/MIME, nicht der
-  Endung) und Dateigröße.
+- **Serverseitige Prüfung** von Dateityp (Whitelist: PDF, XML, JPG, PNG — anhand des Inhalts/MIME,
+  nicht der Endung) und Dateigröße (10 MB je Dokument, 15 MB je Foto; Grenzwerte in
+  `lib/fileTypes.ts`, damit Browser- und Serverprüfung dieselbe Regel lesen).
 - **Bewusst nicht:** keine Ratenbegrenzung, keine Obergrenze für die Anzahl der Dateien. Kunden laden
   legitim viele Rechnungen auf einmal hoch (siehe `docs/entscheidungen.md`).
 - Keine Ausführung oder Vorschau hochgeladener Dateien im Browser.
@@ -176,8 +214,10 @@ Eine Änderung am Einreichungsvorgang gilt erst als fertig, wenn:
 3. Ein bewusst provozierter Mailfehler den Status auf `failed` setzt und eine Warnung auslöst
 4. Kein öffentlicher Storage-Link mehr erzeugt wird
 5. Ein zu großer bzw. unzulässiger Dateityp **serverseitig** abgewiesen wird
-6. Der Flow vollständig per Tastatur bedienbar ist
-7. `npm run build` fehlerfrei durchläuft
+6. Drei Fotos **ein** PDF mit drei Seiten in richtiger Reihenfolge und Ausrichtung ergeben; die
+   Originalbilder weiterhin im Storage liegen
+7. Der Flow vollständig per Tastatur bedienbar ist
+8. `npm run build` fehlerfrei durchläuft
 
 ## 11. Messgrößen
 | Kennzahl | Ziel |

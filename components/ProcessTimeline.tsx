@@ -88,7 +88,7 @@ export default function ProcessTimeline() {
               <div>
                 <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">Einfach & Unkompliziert:</h4>
                 <p className="leading-relaxed">
-                  Sie reichen Ihre offenen Rechnungen einfach per Upload (PDF, XRechnung, ZUGFeRD) 
+                  Sie reichen Ihre offenen Rechnungen einfach per Upload (PDF, XRechnung, ZUGFeRD oder Foto) 
                   oder Drag & Drop auf unserer Website, per E-Mail, oder API-Anbindung ein.
                 </p>
               </div>

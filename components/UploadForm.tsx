@@ -3,13 +3,21 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { usePlausible } from "next-plausible";
-import { Upload, X, FileText, CheckCircle, AlertCircle, RefreshCcw } from "lucide-react";
+import { Upload, X, FileText, CheckCircle, AlertCircle, RefreshCcw, Camera } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { uploadInvoice } from "@/lib/storage";
 import { v4 as uuidv4 } from "uuid";
 import { FormError, FormErrorSummary } from "@/components/FormError";
 import { useToast } from "@/components/Toast";
 import { analyzeError, logError, withRetry, getSupportMessage } from "@/lib/errors";
+import {
+  FILE_INPUT_ACCEPT,
+  MAX_DOCUMENT_SIZE_BYTES,
+  MAX_IMAGE_SIZE_BYTES,
+  isDocumentFile,
+  isHeicFile,
+  isImageFile,
+} from "@/lib/fileTypes";
 
 // Version der akzeptierten AGB/Datenschutzerklärung - bei Änderungen der Rechtstexte anpassen
 const CONSENT_VERSION = "agb-2026-08";
@@ -17,6 +25,10 @@ const CONSENT_VERSION = "agb-2026-08";
 // Ziel nach erfolgreicher Einreichung. Der Seitenaufruf dieser URL ist zugleich der
 // Messpunkt "erfolgreich abgesendet" (siehe docs/aufgabenliste.md, P0-8).
 const DANKE_PFAD = "/einreichen/danke";
+
+// Zeitlimit fuer das Zusammenfuehren der Fotos zu einem PDF. Laeuft es ab, gehen stattdessen
+// die Originalbilder in die interne Mail - der Kunde soll nie laenger warten als noetig.
+const MERGE_TIMEOUT_MS = 45_000;
 
 // Herkunft des Besuchers: utm_source/ref-Parameter, sonst Referrer, sonst "direkt"
 const getSource = (): string => {
@@ -35,6 +47,17 @@ interface UploadedFile {
   status: "pending" | "uploading" | "success" | "error" | "retrying";
   error?: string;
   retryCount?: number;
+}
+
+/**
+ * Gilt fuer eine gesamte Einreichung: Alle Dateien eines Vorgangs bekommen denselben
+ * Zustimmungszeitpunkt und dieselbe Herkunft - sonst waere der Zustimmungsnachweis (P0-5)
+ * je nach Uploaddauer um Sekunden verschoben.
+ */
+interface SubmissionContext {
+  email: string;
+  consentAt: string;
+  source: string;
 }
 
 interface FormErrors {
@@ -60,7 +83,14 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [acceptAGB, setAcceptAGB] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // Phasen des Absendens. "merging" bekommt einen eigenen Hinweis, weil das Zusammenfuehren
+  // der Fotos spuerbar laenger dauert als der reine Upload - der Kunde soll wissen, worauf er wartet.
+  const [submitPhase, setSubmitPhase] = useState<"idle" | "uploading" | "merging">("idle");
+  const isSubmitting = submitPhase !== "idle";
+
+  // Anzahl der Fotos, die gerade verarbeitet werden. Nur fuer den Wortlaut des Hinweises:
+  // Bei genau einem Foto gibt es nichts "zusammenzufuegen", da wird nur umgewandelt.
+  const [mergingCount, setMergingCount] = useState(0);
   const [submitSuccess, setSubmitSuccess] = useState(showSuccess);
   const [errors, setErrors] = useState<FormErrors>({});
   const toast = useToast();
@@ -68,6 +98,8 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
   const pathname = usePathname();
   const plausible = usePlausible();
   const successRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   // Scrollt den Bestaetigungskasten unter die Navbar
   const scrollToSuccess = useCallback(() => {
@@ -206,17 +238,31 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
            validateEmail(email).valid;
   };
 
-  // File validation
+  // Dateipruefung. Die erlaubten Formate und Groessen stehen in lib/fileTypes.ts, damit die
+  // spaetere serverseitige Pruefung (P1-0) dieselbe Regel liest.
   const isValidFile = (file: File): { valid: boolean; error?: string } => {
-    const validTypes = ["application/pdf", "application/xml", "text/xml"];
-    const maxSize = 10 * 1024 * 1024; // 10MB
-
-    if (!validTypes.includes(file.type)) {
-      return { valid: false, error: "Nur PDF und XML Dateien sind erlaubt" };
+    if (isHeicFile(file)) {
+      return {
+        valid: false,
+        error: "Dieses Foto-Format können wir nicht lesen. Bitte wählen Sie das Foto aus Ihrer Mediathek aus - dann wandelt es Ihr iPhone automatisch um.",
+      };
     }
 
+    const image = isImageFile(file);
+
+    if (!image && !isDocumentFile(file)) {
+      return {
+        valid: false,
+        error: "Erlaubt sind PDF, XRechnung/ZUGFeRD (XML) sowie Fotos als JPG oder PNG.",
+      };
+    }
+
+    const maxSize = image ? MAX_IMAGE_SIZE_BYTES : MAX_DOCUMENT_SIZE_BYTES;
     if (file.size > maxSize) {
-      return { valid: false, error: "Datei ist zu groß (max. 10MB)" };
+      return {
+        valid: false,
+        error: `Datei ist zu groß (max. ${maxSize / 1024 / 1024} MB).`,
+      };
     }
 
     return { valid: true };
@@ -252,6 +298,20 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
     clearError("files");
   }, [clearError, files.length, plausible]);
 
+  // Gemeinsamer Handler beider Dateifelder.
+  //
+  // Das Zuruecksetzen von `value` ist wichtig: Waehlt der Kunde eine Datei, entfernt sie
+  // wieder aus der Liste und waehlt dieselbe Datei erneut, meldet der Browser sonst "keine
+  // Aenderung" und es passiert nichts. Am Handy betrifft das auch zwei Aufnahmen mit
+  // gleichem Namen.
+  const handleFileInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      handleFileSelect(e.target.files);
+      e.target.value = "";
+    },
+    [handleFileSelect]
+  );
+
   // Handle drag and drop
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -284,9 +344,45 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
     setFiles((prev) => prev.filter((f) => f.id !== fileId));
   };
 
+  // Schreibt einen Datenbankeintrag fuer eine im Storage liegende Datei.
+  //
+  // Der Eintrag ist Wegweiser und Uebersicht, kein Sicherheitsnetz fuer die Datei selbst
+  // (docs/produkt-spec.md, Abschnitt 6). Schlaegt er fehl, wird das nur geloggt - der Kunde
+  // sieht trotzdem Erfolg, und die interne Mail mit Anhang geht ohnehin raus.
+  const insertUploadRow = async (
+    context: SubmissionContext,
+    filename: string,
+    filepath: string
+  ): Promise<void> => {
+    // Datum im Format YYYY/MM/DD
+    const now = new Date();
+    const uploadDate = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}/${String(now.getDate()).padStart(2, "0")}`;
+
+    const { error: dbError } = await supabase.from("uploads").insert({
+      email: context.email,
+      filename,                            // Nur Dateiname (z.B. "abc123.pdf")
+      filepath,                            // Vollstaendiger Pfad im Bucket (z.B. "2026/02/abc123.pdf")
+      upload_date: uploadDate,             // Datum im Format YYYY/MM/DD (z.B. "2026/02/16")
+      consent_at: context.consentAt,
+      consent_version: CONSENT_VERSION,
+      source: context.source,
+    });
+
+    if (dbError) {
+      logError("UploadForm.insertUploadRow", dbError, {
+        filename,
+        filepath,
+        email: context.email,
+      });
+    }
+  };
+
   // Upload a single file to Supabase with retry logic
   // Returns the generated filename on success, null on failure
-  const uploadSingleFile = async (uploadedFile: UploadedFile, userEmail: string): Promise<string | null> => {
+  const uploadSingleFile = async (
+    uploadedFile: UploadedFile,
+    context: SubmissionContext
+  ): Promise<string | null> => {
     try {
       // Step 1: Upload file to Storage (mit zeitbasierter Ordnerstruktur: YYYY/MM/filename.ext)
       const uploadResult = await withRetry(
@@ -320,32 +416,7 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
       );
 
       // Step 2: Save metadata to database (only if storage upload succeeded)
-      // Datum im Format YYYY/MM/DD generieren
-      const now = new Date();
-      const uploadDate = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}/${String(now.getDate()).padStart(2, "0")}`;
-      
-      const { error: dbError } = await supabase
-        .from("uploads")
-        .insert({
-          email: userEmail,
-          filename: uploadResult.filename, // Nur Dateiname (z.B. "abc123.pdf")
-          filepath: uploadResult.path,     // Vollständiger Pfad im Bucket (z.B. "2026/02/abc123.pdf")
-          upload_date: uploadDate,         // Datum im Format YYYY/MM/DD (z.B. "2026/02/16")
-          consent_at: new Date().toISOString(),
-          consent_version: CONSENT_VERSION,
-          source: getSource(),
-        });
-
-      if (dbError) {
-        // Log database error but don't fail the upload
-        // The file is already in storage, so we consider this a partial success
-        logError("UploadForm.uploadSingleFile.dbInsert", dbError, {
-          filename: uploadResult.filename,
-          filepath: uploadResult.path,
-          email: userEmail,
-        });
-        // Note: In production, you might want to implement a cleanup or retry mechanism
-      }
+      await insertUploadRow(context, uploadResult.filename!, uploadResult.path!);
 
       return uploadResult.path;
     } catch (error) {
@@ -380,7 +451,11 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
       )
     );
 
-    const uploadedFileName = await uploadSingleFile(fileToRetry, email);
+    const uploadedFileName = await uploadSingleFile(fileToRetry, {
+      email,
+      consentAt: new Date().toISOString(),
+      source: getSource(),
+    });
     if (uploadedFileName) {
       setFiles((prev) =>
         prev.map((f) => (f.id === fileId ? { ...f, status: "success" } : f))
@@ -389,12 +464,25 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
     }
   };
 
+  interface UploadBatchResult {
+    success: number;
+    failed: number;
+    /** Alle erfolgreichen Pfade in Auswahlreihenfolge (Rueckfallebene fuer die interne Mail). */
+    uploadedPaths: string[];
+    /** Nur die Fotos, in Auswahlreihenfolge - daraus wird die Seitenreihenfolge im PDF. */
+    imagePaths: string[];
+    /** PDF- und XML-Dateien; sie bleiben unveraendert und wandern nicht in das erzeugte PDF. */
+    documentPaths: string[];
+  }
+
   // Upload all files to Supabase (Storage + Database)
-  const uploadFiles = async (): Promise<{ success: number; failed: number; filenames: string[] }> => {
+  const uploadFiles = async (context: SubmissionContext): Promise<UploadBatchResult> => {
     const validFiles = files.filter((f) => f.status === "pending");
     let successCount = 0;
     let failedCount = 0;
-    const uploadedFilenames: string[] = [];
+    const uploadedPaths: string[] = [];
+    const imagePaths: string[] = [];
+    const documentPaths: string[] = [];
 
     for (const uploadedFile of validFiles) {
       // Update status to uploading
@@ -404,22 +492,68 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
         )
       );
 
-      const uploadedFileName = await uploadSingleFile(uploadedFile, email);
+      const uploadedPath = await uploadSingleFile(uploadedFile, context);
       
-      if (uploadedFileName) {
+      if (uploadedPath) {
         setFiles((prev) =>
           prev.map((f) =>
             f.id === uploadedFile.id ? { ...f, status: "success" } : f
           )
         );
         successCount++;
-        uploadedFilenames.push(uploadedFileName);
+        uploadedPaths.push(uploadedPath);
+        // Die Reihenfolge dieser Schleife ist die Auswahlreihenfolge des Kunden und wird
+        // damit zur Seitenreihenfolge im erzeugten PDF (P1-12, Anforderung 3).
+        if (isImageFile(uploadedFile.file)) {
+          imagePaths.push(uploadedPath);
+        } else {
+          documentPaths.push(uploadedPath);
+        }
       } else {
         failedCount++;
       }
     }
 
-    return { success: successCount, failed: failedCount, filenames: uploadedFilenames };
+    return { success: successCount, failed: failedCount, uploadedPaths, imagePaths, documentPaths };
+  };
+
+  /**
+   * Laesst die Fotos serverseitig zu genau einem mehrseitigen PDF zusammenfuehren.
+   *
+   * Gibt bei jedem Fehler `null` zurueck statt zu werfen: Das Zusammenfuehren ist eine
+   * Verbesserung fuer das Backoffice, kein Teil dessen, was der Kunde schuldet. Seine Dateien
+   * liegen zu diesem Zeitpunkt bereits im Storage.
+   */
+  const mergeImagesToPdf = async (
+    imagePaths: string[]
+  ): Promise<{ path: string; filename: string } | null> => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), MERGE_TIMEOUT_MS);
+
+    try {
+      const response = await fetch("/api/merge-images-to-pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imagePaths }),
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Antwort ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (!data?.success || !data.path || !data.filename) {
+        throw new Error("Unerwartete Antwort der PDF-Erzeugung");
+      }
+
+      return { path: data.path as string, filename: data.filename as string };
+    } catch (error) {
+      logError("UploadForm.mergeImagesToPdf", error, { imageCount: imagePaths.length });
+      return null;
+    } finally {
+      clearTimeout(timeout);
+    }
   };
 
   // Validate form and return errors
@@ -465,14 +599,40 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
       return;
     }
 
-    setIsSubmitting(true);
+    setSubmitPhase("uploading");
 
     try {
-      const result = await uploadFiles();
+      // Zustimmungszeitpunkt und Herkunft einmal je Einreichung festhalten (P0-5)
+      const context: SubmissionContext = {
+        email,
+        consentAt: new Date().toISOString(),
+        source: getSource(),
+      };
 
-      // E-Mail-Adresse und Dateipfade sichern, bevor das Formular ggf. zurückgesetzt wird
-      const customerEmail = email;
-      const uploadedFilepaths = result.filenames;
+      const result = await uploadFiles(context);
+
+      // Rückfallebene: Solange kein PDF erzeugt wurde, gehen die Originale in die interne Mail.
+      let notificationPaths = result.uploadedPaths;
+
+      // Fotos zu genau einem mehrseitigen PDF zusammenführen (P1-12). Das erzeugte PDF ersetzt
+      // in der internen Mail die einzelnen Bilder; die Originalbilder bleiben im Storage.
+      if (result.imagePaths.length > 0) {
+        setMergingCount(result.imagePaths.length);
+        setSubmitPhase("merging");
+        const mergedPdf = await mergeImagesToPdf(result.imagePaths);
+
+        if (mergedPdf) {
+          // Eigene Zeile in `uploads`, damit das Dokument, mit dem das Backoffice tatsächlich
+          // arbeitet, auch in der Übersicht auffindbar ist - nicht nur im Postfach.
+          await insertUploadRow(context, mergedPdf.filename, mergedPdf.path);
+          notificationPaths = [mergedPdf.path, ...result.documentPaths];
+        }
+        // Kein `else`: Schlägt die Erzeugung fehl, bleibt es bei den Originalen. Der Kunde
+        // merkt davon nichts, sein Fall erreicht das Backoffice trotzdem.
+      }
+
+      // E-Mail-Adresse sichern, bevor das Formular ggf. zurückgesetzt wird
+      const customerEmail = context.email;
 
       // Interne Benachrichtigung (mit Anhang) auslösen, sobald mindestens eine Datei
       // erfolgreich im Storage liegt - unabhängig vom Datenbank-Insert und unabhängig
@@ -484,7 +644,7 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email: customerEmail,
-            filepaths: uploadedFilepaths,
+            filepaths: notificationPaths,
           }),
         }).catch((err) => {
           // Netzwerkfehler loggen, aber nicht dem User zeigen
@@ -516,10 +676,9 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
           router.push(DANKE_PFAD);
         }
 
-        toast.success(
-          "Erfolgreich eingereicht!",
-          `${result.success} ${result.success === 1 ? "Datei wurde" : "Dateien wurden"} hochgeladen. Sie erhalten eine Bestätigung per E-Mail.`
-        );
+        // Bewusst KEINE zusaetzliche Einblendung: Der gruene Bestaetigungskasten oben auf der
+        // Danke-Seite ist die Erfolgsmeldung. Eine zweite unten am Bildschirm doppelte sie nur
+        // und liess zweifeln, ob versehentlich zweimal eingereicht wurde.
       } else if (result.failed > 0 && result.success > 0) {
         // Partial success
         toast.error(
@@ -561,7 +720,8 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
           : undefined
       );
     } finally {
-      setIsSubmitting(false);
+      setSubmitPhase("idle");
+      setMergingCount(0);
     }
   };
 
@@ -701,25 +861,30 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
             `}
           >
             {/*
-              WICHTIG - nicht auf "hidden" zuruecksetzen:
-              "hidden" bedeutet display:none und nimmt das Feld aus der
-              Tabulator-Reihenfolge. Damit war der Upload per Tastatur
-              ueberhaupt nicht bedienbar (WCAG 2.1.1, Stufe A) - der sichtbare
-              Knopf darunter ist ein <label> und Labels sind nicht fokussierbar.
+              DIE DATEIFELDER SIND VERSTECKT UND WERDEN VON DEN KNOEPFEN UNTEN GEOEFFNET.
 
-              "sr-only" versteckt das Feld optisch genauso vollstaendig, laesst
-              es aber fokussierbar. "focus-proxy" gibt die Fokus-Markierung an
-              den sichtbaren Knopf weiter (Regel in app/globals.css), sodass
-              erkennbar bleibt, wo der Tastaturfokus gerade steht.
+              Warum kein <label for> mehr: Safari auf dem iPhone oeffnet die Dateiauswahl
+              nicht, wenn das zugehoerige Feld kein echtes sichtbares Ziel ist - und "sr-only"
+              schrumpft es auf einen Pixel. Auf dem Rechner funktionierte es, am Handy nicht.
+
+              Echte <button>-Elemente loesen das und sind zugleich besser bedienbar: Ein Knopf
+              ist von sich aus in der Tabulator-Reihenfolge, reagiert auf Enter und Leertaste
+              und zeigt seinen Fokusrahmen selbst (WCAG 2.1.1 und 2.4.7). Damit entfaellt die
+              fruehere Hilfskonstruktion "focus-proxy".
+
+              Die Felder bekommen tabIndex={-1} und aria-hidden, damit sie keine zweite,
+              unsichtbare Station beim Durchtabben bilden.
             */}
             <input
+              ref={fileInputRef}
               type="file"
               id="fileInput"
               multiple
-              accept=".pdf,.xml"
-              onChange={(e) => handleFileSelect(e.target.files)}
-              className="focus-proxy sr-only"
-              disabled={!isEmailValid()}
+              accept={FILE_INPUT_ACCEPT}
+              onChange={handleFileInputChange}
+              className="sr-only"
+              tabIndex={-1}
+              aria-hidden="true"
             />
 
             <Upload className="w-10 h-10 text-brand-700 mx-auto mb-3" />
@@ -729,13 +894,14 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
             </h4>
 
             <p className="text-sm text-neutral-500 mb-4">
-              Formate: PDF, XRechnung, oder ZUGFeRD · Max. 10 MB pro Datei
+              Formate: PDF, XRechnung/ZUGFeRD oder Foto (JPG, PNG) · max. 10 MB je Dokument, 15 MB je Foto
             </p>
 
-            <label
-              htmlFor="fileInput"
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={!isEmailValid()}
               className={`
-                focus-proxy-target
                 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300
                 ${isEmailValid()
                   ? "bg-brand-900 text-white hover:bg-brand-700 hover:shadow-lg cursor-pointer"
@@ -745,7 +911,56 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
             >
               <Upload className="w-4 h-4" />
               Dateien auswählen
-            </label>
+            </button>
+
+            {/*
+              KAMERA-KNOPF - nur auf Geraeten mit Beruehrungsbildschirm sichtbar (Regel
+              .touch-only in app/globals.css, rein per CSS und nicht per Geraetekennung in
+              JavaScript; so entsteht kein Unterschied zwischen Server- und Browser-Darstellung).
+
+              "capture" waehlt die rueckwaertige Kamera. Der Knopf darueber bleibt unveraendert
+              und fuehrt weiterhin zu Mediathek und Dateien.
+            */}
+            <div className="touch-only mt-3">
+              <input
+                ref={cameraInputRef}
+                type="file"
+                id="cameraInput"
+                multiple
+                accept="image/jpeg,image/png"
+                capture="environment"
+                onChange={handleFileInputChange}
+                className="sr-only"
+                tabIndex={-1}
+                aria-hidden="true"
+              />
+
+              <button
+                type="button"
+                onClick={() => cameraInputRef.current?.click()}
+                disabled={!isEmailValid()}
+                className={`
+                  inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm border-2 transition-all duration-300
+                  ${isEmailValid()
+                    ? "border-brand-900 text-brand-900 hover:bg-brand-900/5 cursor-pointer"
+                    : "border-border-subtle text-neutral-500 cursor-not-allowed"
+                  }
+                `}
+              >
+                <Camera className="w-4 h-4" />
+                Rechnung fotografieren
+              </button>
+
+              <p className="text-sm text-neutral-500 mt-3">
+                Mehrere Fotos fügen wir automatisch zu einem PDF zusammen.
+              </p>
+            </div>
+
+            {/* Am Rechner gibt es keinen Kamera-Knopf - stattdessen der Hinweis, wie es geht. */}
+            <p className="pointer-only text-sm text-neutral-500 mt-3">
+              Alternativ öffnen Sie diese Seite auf Ihrem Handy oder Tablet und fotografieren die
+              Rechnung(en) einfach ab.
+            </p>
 
             {!isEmailValid() && (
               <p className="text-xs text-neutral-500 mt-3">
@@ -890,7 +1105,11 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
               {isSubmitting ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Wird eingereicht...
+                  {submitPhase !== "merging"
+                    ? "Wird eingereicht..."
+                    : mergingCount === 1
+                    ? "Foto wird umgewandelt..."
+                    : "Fotos werden zusammengefügt..."}
                 </>
               ) : (
                 <>
@@ -899,6 +1118,22 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                 </>
               )}
             </button>
+
+            {/*
+              Fortschrittshinweis. Der Kasten steht immer im Aufbau der Seite und wechselt nur
+              seinen Text - nur so liest ein Screenreader die Aenderung ueber aria-live vor.
+              Wuerde der ganze Absatz erst eingeblendet, bliebe die Meldung oft stumm.
+            */}
+            <p
+              className="text-xs text-neutral-500 mt-2 text-center min-h-[1rem]"
+              aria-live="polite"
+            >
+              {submitPhase !== "merging"
+                ? ""
+                : mergingCount === 1
+                ? "Ihr Foto wird in ein PDF umgewandelt. Das dauert einen Moment - bitte schließen Sie die Seite nicht."
+                : "Ihre Fotos werden zu einem PDF zusammengefügt. Das dauert einen Moment - bitte schließen Sie die Seite nicht."}
+            </p>
           </div>
         </div>
       </form>

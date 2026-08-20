@@ -47,13 +47,19 @@ export interface StoragePath {
  * 
  * @param originalFilename - Ursprünglicher Dateiname (für Extension)
  * @param date - Optionales Datum (Standard: jetzt)
+ * @param filenamePrefix - Optionaler Namensvorsatz, um erzeugte Dateien erkennbar zu machen
+ *                         (z.B. "fotos-" für das aus Fotos zusammengeführte PDF, siehe P1-12)
  * @returns StoragePath mit allen Pfad-Komponenten
  * 
  * @example
  * generateStoragePath("rechnung.pdf")
  * // Returns: { year: "2026", month: "02", folder: "2026/02", fullPath: "2026/02/a1b2c3.pdf", filename: "a1b2c3.pdf" }
  */
-export function generateStoragePath(originalFilename: string, date: Date = new Date()): StoragePath {
+export function generateStoragePath(
+  originalFilename: string,
+  date: Date = new Date(),
+  filenamePrefix: string = ""
+): StoragePath {
   // Jahr und Monat extrahieren
   const year = date.getFullYear().toString();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -63,7 +69,7 @@ export function generateStoragePath(originalFilename: string, date: Date = new D
   
   // Eindeutigen Dateinamen generieren
   const uniqueId = uuidv4();
-  const filename = `${uniqueId}.${extension}`;
+  const filename = `${filenamePrefix}${uniqueId}.${extension}`;
   
   // Pfade zusammenbauen
   const folder = `${year}/${month}`;

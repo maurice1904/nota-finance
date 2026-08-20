@@ -249,21 +249,55 @@ footer :focus-visible,
 }
 
 /*
- * FOKUS-SPIEGELUNG fuer optisch versteckte Eingabefelder
+ * Hier stand bis August 2026 eine „Fokus-Spiegelung" (.focus-proxy), die die
+ * Fokus-Markierung von einem optisch versteckten <input type="file"> auf ein
+ * sichtbares <label> uebertrug.
  *
- * Ein mit "sr-only" verstecktes Feld ist zwar per Tastatur erreichbar, kann
- * seine eigene Fokus-Markierung aber nicht zeigen - es ist nur 1 Pixel gross.
- * Diese Regel gibt die Markierung an das zugehoerige sichtbare Bedienelement
- * weiter, das direkt danach im selben Container steht.
- *
- * Im Projekt betrifft das den Knopf „Dateien auswaehlen" im Upload-Bereich:
- * fokussierbar ist dort das <input type="file">, sichtbar ist das <label>.
- * Bewusst als echtes CSS und nicht als Tailwind-Utility - die Kombination
- * peer-focus-visible + outline wird von Tailwind 4 nicht erzeugt.
+ * Entfallen, weil die Upload-Knoepfe jetzt echte <button>-Elemente sind, die das
+ * Dateifeld per JavaScript oeffnen. Ein Knopf ist von sich aus fokussierbar und
+ * zeigt seinen Fokusrahmen selbst - die Hilfskonstruktion wird nicht mehr gebraucht.
+ * Grund fuer die Umstellung: Safari auf dem iPhone oeffnete die Dateiauswahl ueber
+ * ein <label for> nicht, wenn das Feld nur 1 Pixel gross ist.
  */
-.focus-proxy:focus-visible ~ .focus-proxy-target {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 2px;
+
+/*
+ * NUR AUF GERAETEN MIT FINGERBEDIENUNG
+ *
+ * Betrifft den Knopf „Rechnung fotografieren" im Upload-Bereich. Am Rechner gibt es keine
+ * Kamera im dortigen Sinne - der Knopf wuerde dort nur einen zweiten Dateidialog oeffnen und
+ * verwirren.
+ *
+ * Bewusst per Medienabfrage statt per Geraetekennung in JavaScript: So ist die Darstellung
+ * auf dem Server und im Browser identisch, und es gibt kein Nachladen oder Springen.
+ *
+ * "any-pointer: coarse" statt "pointer: coarse": Ein Tablet mit angesteckter Tastatur meldet
+ * als *primaeres* Zeigegeraet den Trackpad ("fine") und wuerde den Knopf sonst verstecken,
+ * obwohl Kamera und Beruehrungsbildschirm vorhanden sind. "any-pointer" fragt, ob das Geraet
+ * ueberhaupt eine Fingerbedienung hat - das trifft Handy und Tablet gleichermassen.
+ */
+.touch-only {
+  display: none;
+}
+
+@media (any-pointer: coarse) {
+  .touch-only {
+    display: block;
+  }
+}
+
+/*
+ * Gegenstueck: nur auf Geraeten OHNE Beruehrungsbildschirm sichtbar.
+ * Traegt am Rechner den Hinweis, dass sich die Rechnung am Handy abfotografieren laesst -
+ * dort waere ein Kamera-Knopf sinnlos, der Hinweis darauf aber nicht.
+ */
+.pointer-only {
+  display: block;
+}
+
+@media (any-pointer: coarse) {
+  .pointer-only {
+    display: none;
+  }
 }
 
 /* Smooth Breathing Zoom Animation for Hero Background, change scale in 100% and animation speed */ 

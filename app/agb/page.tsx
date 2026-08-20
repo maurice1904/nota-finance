@@ -121,8 +121,8 @@ export default function AGBPage() {
             <p className="mb-2">(2) Der Vertragsschluss erfolgt in folgenden technischen Schritten:</p>
             <p className="mb-4">
               a) Der Kunde lädt die betreffenden Rechnungen/Dokumente auf der Plattform Nota
-              Finance als PDF-Datei, als E-Rechnung im XRechnungs Format oder als E-Rechnung im
-              ZUGFeRD Format hoch.
+              Finance als PDF-Datei, als E-Rechnung im XRechnungs Format, als E-Rechnung im
+              ZUGFeRD Format oder als Bilddatei (JPG, PNG) hoch.
               <br />
               b) Der Kunde gibt seine korrekten Kontaktdaten (E-Mail-Adresse) ein.
               <br />
@@ -175,7 +175,8 @@ export default function AGBPage() {
             </p>
             <p className="mb-4">
               (2) twenty4collect bietet die Möglichkeit, Forderungsdaten elektronisch als
-              PDF, E-Rechnung (XRechnung) oder im ZUGFeRD-Format zu übermitteln.
+              PDF, E-Rechnung (XRechnung), im ZUGFeRD-Format oder als Bilddatei (JPG, PNG) zu
+              übermitteln.
             </p>
             <p className="mb-4">
               (3) Soweit der Kunde im Rahmen des Uploads personenbezogene Daten Dritter

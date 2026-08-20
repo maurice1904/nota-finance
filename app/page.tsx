@@ -189,8 +189,8 @@ export default function Home() {
                   </h3>
                   <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
                     Reichen Sie Ihren Fall oder mehrere Fälle direkt per Upload oder Drag-&-Drop ein. 
-                    Als PDF-Datei, als E-Rechnung im XRechnungs Format oder als E-Rechnung im ZUGFeRD 
-                    Format. Sie können Ihre Fälle alternativ auch per Mail einreichen.
+                    Als PDF-Datei, als E-Rechnung im XRechnungs- oder ZUGFeRD-Format – oder einfach 
+                    als Foto Ihrer Rechnung. Sie können Ihre Fälle alternativ auch per Mail einreichen.
                   </p>
                 </div>
               </RevealOnScroll>
@@ -243,8 +243,8 @@ export default function Home() {
                   </h3>
                   <p className="text-sm text-text-900/70 leading-relaxed">
                     Reichen Sie Ihren Fall oder mehrere Fälle direkt per Upload oder Drag-&-Drop ein. 
-                    Als PDF-Datei, als E-Rechnung im XRechnungs Format oder als E-Rechnung im ZUGFeRD 
-                    Format. Sie können Ihre Fälle alternativ auch per Mail einreichen.
+                    Als PDF-Datei, als E-Rechnung im XRechnungs- oder ZUGFeRD-Format – oder einfach 
+                    als Foto Ihrer Rechnung. Sie können Ihre Fälle alternativ auch per Mail einreichen.
                   </p>
                 </div>
               </div>

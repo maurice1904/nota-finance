@@ -28,7 +28,7 @@ const faqs: FAQItem[] = [
     question: "Wie reiche ich eine Forderung ein? Welche Formate werden unterstützt?",
     answer: [
       "Die Einreichung Ihrer Forderung ist denkbar einfach:",
-      "• Online-Upload: Nutzen Sie den Upload-Bereich auf unserer Website. Sie können Ihre Rechnung als PDF-Datei, als E-Rechnung im XRechnungs-Format oder als E-Rechnung im ZUGFeRD-Format hochladen.",
+      "• Online-Upload: Nutzen Sie den Upload-Bereich auf unserer Website. Sie können Ihre Rechnung als PDF-Datei, als E-Rechnung im XRechnungs-Format oder als E-Rechnung im ZUGFeRD-Format hochladen. Sie können Ihre Rechnung auch einfach mit dem Handy abfotografieren – mehrere Fotos fügen wir automatisch zu einem Dokument zusammen.",
       "• E-Mail: Sie können uns Ihre Unterlagen auch per E-Mail zusenden.",
       "Wichtig ist, dass die Rechnung alle notwendigen Angaben (Ihre Daten, Daten des Schuldners, Rechnungsnummer, Datum, Leistungsbeschreibung, Forderungsbetrag) enthält."
     ]

@@ -27,7 +27,7 @@ const faqItems = [
   {
     question: "Wie reiche ich eine Forderung ein? Welche Formate werden unterstützt?",
     answer:
-      "Die Einreichung Ihrer Forderung ist denkbar einfach: Nutzen Sie den Upload-Bereich auf unserer Website. Sie können Ihre Rechnung als PDF-Datei, als E-Rechnung im XRechnungs-Format oder als E-Rechnung im ZUGFeRD-Format hochladen. Alternativ per E-Mail oder API-Schnittstelle.",
+      "Die Einreichung Ihrer Forderung ist denkbar einfach: Nutzen Sie den Upload-Bereich auf unserer Website. Sie können Ihre Rechnung als PDF-Datei, als E-Rechnung im XRechnungs-Format oder als E-Rechnung im ZUGFeRD-Format hochladen. Sie können Ihre Rechnung auch einfach mit dem Handy abfotografieren – mehrere Fotos fügen wir automatisch zu einem Dokument zusammen. Alternativ per E-Mail oder API-Schnittstelle.",
   },
   {
     question: "Was passiert, nachdem ich eine Forderung eingereicht habe?",
