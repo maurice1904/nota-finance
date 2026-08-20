@@ -223,8 +223,34 @@ Browser-Bundle landen. `.env.example` dokumentiert alle Variablen des Projekts.
 AGB-Text passen) sowie Linkgültigkeit und Anhanggrenze (Fachregeln aus `docs/produkt-spec.md`).
 Adressen in Impressum, AGB und Datenschutzerklärung bleiben im Text — juristisch geprüfte Fassungen.
 
-### P1-8 · Sicherheitswarnungen prüfen · M
-`npm audit` meldet 15 Schwachstellen. Gezielt bewerten und beheben. **Nie `npm audit fix --force`.**
+### P1-8 · ERLEDIGT — Sicherheitswarnungen bewertet und gezielt behoben
+**Stand August 2026:** Aus 15 Meldungen wurden 7. Jede wurde einzeln bewertet; behoben wurde nur,
+was im Betrieb läuft oder ohne Risiko entfernbar war. Kein `npm audit fix --force`.
+
+**Behoben (vier getrennte Schritte, nach jedem `npm run build` geprüft):**
+
+| Paket | Ist → Soll | Warum |
+|---|---|---|
+| `next` | 16.1.6 → 16.3.1 | **Der einzige real ausnutzbare Punkt.** Mehrere „Middleware/Proxy bypass"-Lücken betreffen genau den Mechanismus hinter `proxy.ts` (Passwortschutz); dazu Cache-Poisoning, SSRF und XSS, die nach dem Livegang die öffentliche Seite träfen. `eslint-config-next` wurde mit angehoben. |
+| `sharp`, `postcss`, `nanoid` | mit `next` bzw. `npm update` | Kamen kostenlos mit. Eigenständig nicht ausnutzbar: `sharp` verarbeitet nur eigene Bilder (hochgeladene Rechnungen laufen nie durch `next/image`), `postcss`/`nanoid` sind reine Bauwerkzeuge. |
+| `@supabase/supabase-js` | 2.86.0 → 2.112.3 | Gemeldet wegen `ws` (Realtime-WebSockets). Nota nutzt kein Realtime — nicht ausnutzbar. Ab 2.112.3 entfällt `ws` als Abhängigkeit ganz. |
+| `resend` | 6.9.2 → 6.20.0 | Gemeldet wegen `svix` (Webhook-Signaturprüfung). Nota empfängt keine Webhooks — nicht ausnutzbar. Ab 6.20.0 entfällt `svix` ganz. |
+| `uuid` | 13.0.0 → 13.0.2 | Lücke betrifft `v3/v5/v6` mit `buf`-Parameter; Nota nutzt nur `v4` ohne `buf` — nicht ausnutzbar. Patch, keine Codeänderung. |
+
+**Bewusst NICHT behoben — 7 verbleibende Meldungen:**
+`@babel/core`, `ajv`, `brace-expansion`, `flatted`, `js-yaml`, `minimatch`, `picomatch`.
+Alle hängen an `eslint` bzw. `eslint-config-next` und laufen **ausschließlich auf dem
+Entwicklungsrechner** beim Linten. Sie landen nicht im ausgelieferten Code und sind für keinen
+Website-Besucher erreichbar. Die Lücken sind durchweg ReDoS — der einzige Text, den diese Werkzeuge
+je zu sehen bekommen, ist unser eigener Quelltext. Ihre Behebung würde `eslint` auf Version 10
+(Hauptversionssprung) zwingen: reales Risiko für die Lint-Konfiguration, null Sicherheitsgewinn.
+**Neu bewerten, wenn** eines dieser Pakete in den Laufzeit-Code wandert oder `eslint` ohnehin
+angehoben wird.
+
+**Nebenbei erledigt:** 14 Lint-Fehler (`react/no-unescaped-entities`) in `app/agb/page.tsx` und
+`app/datenschutz/page.tsx` behoben — gerade Anführungszeichen im JSX-Text zu `&quot;` maskiert.
+Bewusst `&quot;` und nicht `&ldquo;`: der sichtbare Text bleibt Zeichen für Zeichen identisch,
+die juristisch geprüften Formulierungen sind unverändert. `npm run lint` meldet jetzt 0 Fehler.
 
 ### P1-9 · Backup und Wiederherstellung · M
 Supabase-Backups prüfen und **einmal testweise wiederherstellen**. Ein ungetestetes Backup ist keines.

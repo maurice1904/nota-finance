@@ -31,7 +31,7 @@ export default function AGBPage() {
               Die twenty4collect GmbH ist ein nach dem Rechtsdienstleistungsgesetz (RDG)
               tätiges Inkassounternehmen mit dem Schwerpunkt auf außergerichtlichem Inkasso
               und gerichtlicher Titulierung. Die twenty4collect GmbH bietet Unternehmen,
-              Gewerbetreibenden und Freiberuflern (nachfolgend als „Kunde" bezeichnet) über
+              Gewerbetreibenden und Freiberuflern (nachfolgend als „Kunde&quot; bezeichnet) über
               die multimodale Serviceplattform notafinance.de eine digitale Lösung für das
               Forderungsmanagement an. Der Fokus liegt auf einer medienbruchfreien, sofortigen
               Einreichung offener Forderungen ohne vorherige Registrierungshürden, um den
@@ -53,8 +53,8 @@ export default function AGBPage() {
             <p className="mb-4">
               (2) Diese Allgemeinen Geschäftsbedingungen regeln die Rechte und Pflichten im
               Zusammenhang mit der Nutzung der Serviceplattform des Anbieters twenty4collect
-              GmbH, In den Weiden 9, 56729 Weiler (nachfolgend „twenty4collect", „Betreiber",
-              „wir" oder „Diensteanbieter") und des Kunden. Es gelten ausschließlich diese
+              GmbH, In den Weiden 9, 56729 Weiler (nachfolgend „twenty4collect&quot;, „Betreiber&quot;,
+              „wir&quot; oder „Diensteanbieter&quot;) und des Kunden. Es gelten ausschließlich diese
               AGB. Entgegenstehende oder von diesen AGB abweichende Bedingungen des Kunden
               werden nicht anerkannt, es sei denn, twenty4collect hat ihrer Geltung
               ausdrücklich schriftlich zugestimmt. Die Dienste und Dienstleistungen werden
@@ -130,7 +130,7 @@ export default function AGBPage() {
               dieser AGB, nimmt die Datenschutzerklärung zur Kenntnis und schließt die
               Vereinbarung zur Auftragsverarbeitung (AVV) ab.
               <br />
-              d) Durch Klicken des Buttons „Fall einreichen" oder „Jetzt einreichen" auf der
+              d) Durch Klicken des Buttons „Fall einreichen&quot; oder „Jetzt einreichen&quot; auf der
               Upload-Seite von Nota Finance gibt der Kunde ein verbindliches Angebot auf
               Abschluss eines Geschäftsbesorgungsvertrages (Inkassoauftrag) ab.
             </p>

@@ -47,8 +47,8 @@ export default function DatenschutzPage() {
             </p>
             <p>
               Ihr Vertrauen ist uns wichtig. Die twenty4collect GmbH als Betreiber der Website
-              https://www.notafinance.de – (nachfolgend als: „twenty4collect" oder „wir" oder
-              „uns" oder „unserer" bezeichnet) schätzt Ihr Vertrauen. Uns ist selbstverständlich
+              https://www.notafinance.de – (nachfolgend als: „twenty4collect&quot; oder „wir&quot; oder
+              „uns&quot; oder „unserer&quot; bezeichnet) schätzt Ihr Vertrauen. Uns ist selbstverständlich
               bewusst, dass Ihnen der sorgfältige Umgang mit Ihren persönlichen Daten sehr
               wichtig ist. Aufgrund der ständigen Weiterentwicklung des Internets sowie
               Änderungen der gesetzlichen Bestimmungen sind gelegentliche Anpassungen unserer
@@ -243,7 +243,7 @@ export default function DatenschutzPage() {
               Verschlüsselungsstufe, die von Ihrem Browser unterstützt wird. Sie erkennen die
               verschlüsselte Übertragung an der geschlossenen Darstellung des
               Schlüssel- beziehungsweise Schloss-Symbols in der unteren Statusleiste Ihres
-              Browsers oder in der Adresszeile ("https://").
+              Browsers oder in der Adresszeile (&quot;https://&quot;).
             </p>
           </section>
 
@@ -252,7 +252,7 @@ export default function DatenschutzPage() {
             <p className="mb-4">
               Um den Besuch unserer Website attraktiv und die Nutzung bestimmter Funktionen
               nutzerfreundlicher, sicherer und effektiver zu gestalten, verwenden wir
-              sogenannte Cookies. Wir setzen auf unserer Seite sogenannte „Session-Cookies"
+              sogenannte Cookies. Wir setzen auf unserer Seite sogenannte „Session-Cookies&quot;
               oder lokale Speichertechnologien (Local Storage) ein, die technisch zwingend
               erforderlich sind, um die Funktionen der Website (z. B. den sicheren
               Upload-Prozess, den Schutz vor Angriffen oder den Login-Status) zu
