@@ -246,7 +246,7 @@ export default function UnternehmenPage() {
 
               <Link
                 href="/produkt"
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-control hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
               >
                 So funktioniert es
                 <ArrowRight className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 group-hover:translate-x-1 transition-all duration-300" />

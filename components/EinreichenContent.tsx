@@ -77,7 +77,7 @@ export default function EinreichenContent({ showSuccess = false }: EinreichenCon
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
             <Link
               href="/produkt"
-              className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 bg-white text-text-900 px-5 py-2.5 rounded-lg font-medium text-sm border border-border-subtle hover:border-brand-700/50 hover:shadow-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 bg-white text-text-900 px-5 py-2.5 rounded-lg font-medium text-sm border border-border-control hover:border-brand-700/50 hover:shadow-md transition-all duration-300"
             >
               <HelpCircle className="w-4 h-4 text-neutral-500 group-hover:text-brand-700 transition-colors duration-300" />
               Warum Nota Finance?
@@ -85,7 +85,7 @@ export default function EinreichenContent({ showSuccess = false }: EinreichenCon
 
             <Link
               href="/kontakt"
-              className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 bg-white text-text-900 px-5 py-2.5 rounded-lg font-medium text-sm border border-border-subtle hover:border-brand-700/50 hover:shadow-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 bg-white text-text-900 px-5 py-2.5 rounded-lg font-medium text-sm border border-border-control hover:border-brand-700/50 hover:shadow-md transition-all duration-300"
             >
               <Mail className="w-4 h-4 text-neutral-500 group-hover:text-brand-700 transition-colors duration-300" />
               Kontakt aufnehmen

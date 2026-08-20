@@ -161,7 +161,7 @@ export default function Navbar() {
               <Link
                 href="/einreichen"
                 onClick={() => handleLinkClick("/einreichen")}
-                className="sm:hidden bg-brand-900 text-white px-3 py-2 rounded-lg font-semibold text-xs text-center leading-tight hover:bg-brand-700 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="sm:hidden bg-brand-900 text-white px-3 py-2 rounded-lg font-semibold text-xs text-center leading-tight hover:bg-brand-700 active:scale-95 transition-all duration-300"
               >
                 Fall<br />einreichen
               </Link>
@@ -170,7 +170,7 @@ export default function Navbar() {
           <Link
             href="/einreichen"
                 onClick={() => handleLinkClick("/einreichen")}
-                className="hidden sm:inline-flex bg-brand-900 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-brand-700 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring leading-none items-center"
+                className="hidden sm:inline-flex bg-brand-900 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-brand-700 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 leading-none items-center"
           >
             Fall einreichen
           </Link>
@@ -180,7 +180,7 @@ export default function Navbar() {
                 ref={menuButtonRef}
                 type="button"
                 onClick={toggleMenu}
-                className="flex lg:hidden items-center justify-center w-11 h-11 rounded-lg hover:bg-surface-100 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="flex lg:hidden items-center justify-center w-11 h-11 rounded-lg hover:bg-surface-100 transition-colors duration-300"
                 aria-expanded={isMenuOpen}
                 aria-controls="mobile-menu"
                 aria-label={isMenuOpen ? "Menü schließen" : "Menü öffnen"}
@@ -229,7 +229,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={closeMenu}
-            className="flex items-center justify-center w-11 h-11 rounded-lg hover:bg-surface-100 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+            className="flex items-center justify-center w-11 h-11 rounded-lg hover:bg-surface-100 transition-colors duration-300"
             aria-label="Menü schließen"
           >
             <X className="w-6 h-6 text-text-900" />
@@ -269,7 +269,7 @@ export default function Navbar() {
             <Link
               href="/einreichen"
               onClick={() => handleLinkClick("/einreichen")}
-              className="flex items-center justify-center gap-2 w-full bg-brand-900 text-white px-6 py-4 rounded-xl font-semibold text-base hover:bg-brand-700 hover:shadow-lg active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="flex items-center justify-center gap-2 w-full bg-brand-900 text-white px-6 py-4 rounded-xl font-semibold text-base hover:bg-brand-700 hover:shadow-lg active:scale-[0.98] transition-all duration-300"
             >
               Fall einreichen
               <ArrowRight className="w-5 h-5" />
@@ -278,7 +278,7 @@ export default function Navbar() {
             <Link
               href="/kontakt"
               onClick={() => handleLinkClick("/kontakt")}
-              className="flex items-center justify-center gap-2 w-full mt-3 bg-white text-text-900 px-6 py-4 rounded-xl font-semibold text-base border-2 border-border-subtle hover:border-brand-700/50 hover:shadow-lg active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="flex items-center justify-center gap-2 w-full mt-3 bg-white text-text-900 px-6 py-4 rounded-xl font-semibold text-base border-2 border-border-control hover:border-brand-700/50 hover:shadow-lg active:scale-[0.98] transition-all duration-300"
             >
               Kontakt
             </Link>

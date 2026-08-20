@@ -114,7 +114,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up-delay-2">
                 <Link
                   href="/kontakt"
-                  className="group bg-white/50 backdrop-blur-sm text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-subtle hover:bg-white/80 hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring flex-1 sm:flex-initial sm:min-w-[240px]"
+                  className="group bg-white/50 backdrop-blur-sm text-text-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-border-control hover:bg-white/80 hover:border-brand-700/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 flex-1 sm:flex-initial sm:min-w-[240px]"
                 >
                   Kontakt aufnehmen
                   <ArrowRight className="w-5 h-5 text-neutral-500 group-hover:text-brand-700 group-hover:translate-x-1 transition-all duration-300" />
@@ -122,7 +122,7 @@ export default function Home() {
                 
                 <Link
                   href="/einreichen"
-                  className="group bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-brand-900 hover:bg-brand-700 hover:border-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring flex-1 sm:flex-initial sm:min-w-[240px]"
+                  className="group bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-brand-900 hover:bg-brand-700 hover:border-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 flex-1 sm:flex-initial sm:min-w-[240px]"
                 >
                   Fall einreichen
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -289,7 +289,7 @@ export default function Home() {
             <div className="text-center mt-16 px-4 sm:px-0">
               <Link
                 href="/einreichen"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-900 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300"
               >
                 Fall einreichen
                 <ArrowRight className="w-5 h-5" />

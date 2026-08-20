@@ -212,8 +212,8 @@ ${formData.message}
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 ${
-                    errors.name ? "border-error" : "border-border-subtle"
+                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 transition-all duration-300 ${
+                    errors.name ? "border-error" : "border-border-control"
                   }`}
                   placeholder="Max Mustermann"
                 />
@@ -231,8 +231,8 @@ ${formData.message}
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 ${
-                    errors.company ? "border-error" : "border-border-subtle"
+                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 transition-all duration-300 ${
+                    errors.company ? "border-error" : "border-border-control"
                   }`}
                   placeholder="Musterfirma GmbH"
                 />
@@ -250,8 +250,8 @@ ${formData.message}
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 ${
-                    errors.email ? "border-error" : "border-border-subtle"
+                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 transition-all duration-300 ${
+                    errors.email ? "border-error" : "border-border-control"
                   }`}
                   placeholder="max@musterfirma.de"
                 />
@@ -269,7 +269,7 @@ ${formData.message}
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border-2 border-border-subtle rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300"
+                  className="w-full px-4 py-3 bg-white border-2 border-border-control rounded-lg focus:border-brand-900 transition-all duration-300"
                   placeholder="+49 123 456789"
                 />
               </div>
@@ -285,8 +285,8 @@ ${formData.message}
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 resize-none ${
-                    errors.message ? "border-error" : "border-border-subtle"
+                  className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 transition-all duration-300 resize-none ${
+                    errors.message ? "border-error" : "border-border-control"
                   }`}
                   placeholder="Beschreiben Sie hier Ihr Anliegen..."
                 />
@@ -302,8 +302,8 @@ ${formData.message}
                     name="acceptAGB"
                     checked={formData.acceptAGB}
                     onChange={handleChange}
-                    className={`mt-1 w-5 h-5 text-brand-900 border-2 rounded focus:ring-2 focus:ring-focus-ring transition-all duration-300 ${
-                      errors.agb ? "border-error" : "border-border-subtle"
+                    className={`mt-1 w-5 h-5 text-brand-900 border-2 rounded transition-all duration-300 ${
+                      errors.agb ? "border-error" : "border-border-control"
                     }`}
                   />
                   <label htmlFor="acceptAGB" className="text-sm text-text-900/70 leading-relaxed">
@@ -336,7 +336,7 @@ ${formData.message}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-brand-900 hover:bg-brand-700 hover:border-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                  className="w-full bg-brand-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg border-2 border-brand-900 hover:bg-brand-700 hover:border-brand-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
                   {isSubmitting ? (
                     <>

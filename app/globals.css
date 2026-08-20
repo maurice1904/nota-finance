@@ -20,24 +20,41 @@
    * Single source of truth - no duplicate tokens
    */
   
+  /*
+   * KONTRASTWERTE (WCAG 2.1 AA, mindestens 4,5:1 fuer Text)
+   * Die Textfarben unten wurden im August 2026 abgedunkelt, damit sie die
+   * Anforderung erfuellen. Farbton und Saettigung sind unveraendert - nur die
+   * Helligkeit wurde so weit gesenkt, wie noetig, nicht weiter.
+   * Geprueft gegen die drei Flaechen, auf denen sie tatsaechlich vorkommen:
+   * Weiss, Ghost-White und das Ende des Kartenverlaufs (to-surface-100/50 = #E0E3E9).
+   */
+
   /* PRIMITIVES */
-  --brand-900: #0524b0;     /* Primary brand – CTAs, buttons */
-  --brand-700: #1B52D7;     /* Secondary brand – hover states, accents */
-  --neutral-500: #767888;   /* Muted text, icons, secondary UI */
+  --brand-900: #0524b0;     /* Primary brand – CTAs, buttons (11,14:1 auf Weiss) */
+  --brand-700: #1B52D7;     /* Secondary brand – hover states, accents (6,49:1) */
+  --neutral-500: #636472;   /* Muted text, icons, secondary UI (5,84 Weiss · 4,54 Karte) */
   --surface-100: #C0C7D3;   /* Cards, soft backgrounds */
   --ghost-white: #F5F7FA;   /* Page backgrounds – max 1x per page, für schwebende Cards */
   --text-900: #13111F;      /* Primary text (no pure black) */
   --white: #FFFFFF;
-  
-  /* STATES */
-  --success: #0F9D58;
-  --warning: #F59E0B;
-  --error: #E11D48;
-  
+
+  /* STATES – stehen ausschliesslich auf weissen bzw. fast weissen Flaechen */
+  --success: #0C8047;       /* 5,01 auf Weiss · 4,69 auf dem Erfolgskasten (to-success/5) */
+  --warning: #A56A07;       /* 4,50 auf Weiss */
+  --error: #C61A3F;         /* 5,80 auf Weiss · 4,51 auf Karte */
+
   /* DERIVED TOKENS */
-  --border-subtle: rgba(118, 120, 136, 0.12);
+  --border-subtle: rgba(118, 120, 136, 0.12);   /* nur Dekoration: Karten, Trennlinien */
   --border-strong: rgba(19, 17, 31, 0.12);
-  --focus-ring: rgba(5, 36, 176, 0.18);
+  /*
+   * Rand von BEDIENELEMENTEN (Buttons, Eingabefelder). WCAG 1.4.11 verlangt
+   * hier 3:1, weil der Rand das Element als bedienbar erkennbar macht -
+   * ein weisser Knopf auf weissem Grund ist sonst unsichtbar.
+   * Dekorative Raender bleiben bewusst bei --border-subtle.
+   * 3,21:1 auf Weiss · 3,03:1 auf Ghost-White.
+   */
+  --border-control: rgba(118, 120, 136, 0.83);
+  --focus-ring: #0524b0;    /* deckend, siehe Fokus-Regel weiter unten */
 }
 
 @theme inline {
@@ -57,6 +74,7 @@
   /* Border tokens */
   --color-border-subtle: var(--border-subtle);
   --color-border-strong: var(--border-strong);
+  --color-border-control: var(--border-control);
   --color-focus-ring: var(--focus-ring);
   
   --font-sans: var(--font-jakarta);
@@ -200,10 +218,52 @@ button, a, input, textarea {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Focus ring utility for accessibility */
-.focus-ring:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 4px var(--focus-ring);
+/*
+ * FOKUS-MARKIERUNG (WCAG 2.4.7 „Fokus sichtbar", Stufe A)
+ *
+ * Eine Regel fuer die ganze Seite statt 30 einzelner Angaben. Vorher stand an
+ * jedem Button „focus:outline-none focus:ring-2 focus:ring-focus-ring" - der
+ * Browser-Rahmen wurde also abgeschaltet und durch einen Ring mit 18 % Deckkraft
+ * ersetzt, der nur auf 1,42:1 kam und damit praktisch unsichtbar war.
+ *
+ * outline-offset ist hier der entscheidende Teil: die Markierung liegt
+ * AUSSERHALB des Elements auf der Seitenflaeche. Sonst waere eine blaue
+ * Markierung auf dem blauen CTA-Button unsichtbar (1,00:1). So erreicht sie
+ * 11,14:1 auf Weiss und 6,55:1 auf surface-100.
+ *
+ * :focus-visible statt :focus - die Markierung erscheint bei Tastaturbedienung,
+ * nicht bei jedem Mausklick.
+ */
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/*
+ * Auf dunklen Flaechen (Fusszeile, dunkle Kacheln) waere das Blau zu schwach.
+ * Dort wird auf Weiss umgeschaltet.
+ */
+footer :focus-visible,
+.glass-dark :focus-visible {
+  outline-color: var(--white);
+}
+
+/*
+ * FOKUS-SPIEGELUNG fuer optisch versteckte Eingabefelder
+ *
+ * Ein mit "sr-only" verstecktes Feld ist zwar per Tastatur erreichbar, kann
+ * seine eigene Fokus-Markierung aber nicht zeigen - es ist nur 1 Pixel gross.
+ * Diese Regel gibt die Markierung an das zugehoerige sichtbare Bedienelement
+ * weiter, das direkt danach im selben Container steht.
+ *
+ * Im Projekt betrifft das den Knopf „Dateien auswaehlen" im Upload-Bereich:
+ * fokussierbar ist dort das <input type="file">, sichtbar ist das <label>.
+ * Bewusst als echtes CSS und nicht als Tailwind-Utility - die Kombination
+ * peer-focus-visible + outline wird von Tailwind 4 nicht erzeugt.
+ */
+.focus-proxy:focus-visible ~ .focus-proxy-target {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 /* Smooth Breathing Zoom Animation for Hero Background, change scale in 100% and animation speed */ 

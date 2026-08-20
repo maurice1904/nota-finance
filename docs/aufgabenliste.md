@@ -68,28 +68,7 @@ sobald es eine Backoffice-Oberfläche mit Logins gibt (→ P2).
 Auftragsverarbeiter (Supabase, Vercel, Resend), Löschfristen und Betroffenenrechte ergänzen.
 **Abnahme:** Beide Seiten erreichbar, in der Fußzeile verlinkt, im Einreichungsflow referenziert.
 
-### P0-8 · Messung des Trichters · M — **Code erledigt, Dashboard-Schritte offen**
-
-> **Stand August 2026:** Der Einbau ist fertig (`next-plausible@4`, Proxy, Danke-Seite, zwei
-> Ereignisse). **Noch manuell zu erledigen — ohne diese Schritte misst nichts:**
-> 1. Seite `notafinance.de` im Plausible-Dashboard anlegen und die seitenspezifische Skript-URL
->    (`https://plausible.io/js/pa-XXXXX.js`) kopieren.
-> 2. Diese URL als `PLAUSIBLE_SRC` hinterlegen — in `.env.local` **und** in Vercel
->    (Production, Preview, Development). Fehlt sie, bleibt der Build grün und die Messung aus.
-> 3. Drei Ziele im Dashboard anlegen (siehe unten).
->
-> **Abweichungen von der ursprünglichen Planung — bewusst:**
-> - `next-plausible@4` kennt **kein `domain`-Prop** mehr; die Seite wird über die Skript-URL
->   identifiziert.
-> - Proxy-Pfade sind `/js/script.js` und `/api/event`. Beide sind vom Passwortschutz in `proxy.ts`
->   **bereits ausgenommen** — an `proxy.ts` war deshalb nichts zu ändern.
-> - „Cookies für die Proxy-Route strippen" entfällt: Das betrifft laut next-plausible-Doku nur den
->   Pfad `/proxy/api/event` aus Version 3.
-> - `enabled` ist an `NODE_ENV` geknüpft, damit auch die Vercel-Vorschau misst (der Standard von
->   next-plausible misst nur in Produktion). `npm run dev` sendet nichts.
-> - Der Absatz zu Plausible in der Datenschutzerklärung ist ergänzt, aber **noch nicht anwaltlich
->   geprüft** → offener Punkt in P0-7.
-
+### P0-8 · Messung des Trichters · M
 **Warum P0:** Der gesamte Zweck von Phase 1 ist zu messen, ob über die Website Gläubiger gewonnen
 werden. Ohne Messung ist der Test wertlos — und Traffic-Daten lassen sich **nicht rückwirkend** erheben.
 
@@ -104,26 +83,15 @@ und Plausible muss in der Datenschutzerklärung genannt werden.
 - **Proxy aktivieren** (`withPlausibleProxy()` in `next.config.ts`) — reduziert Verluste durch Werbeblocker
 - Cookies für die Proxy-Route strippen (bekanntes Verhalten bei gleicher Domain)
 
-**Messpunkte (umgesetzt):**
-| # | Was | Umsetzung | Wo im Code |
-|---|---|---|---|
-| 1 | Aufruf `/einreichen` | automatischer Seitenaufruf | `app/layout.tsx` |
-| 2 | Klick auf „Fall einreichen" | Ereignis `cta_einreichen_klick` | `components/PlausibleCTATracking.tsx` |
-| 3 | Datei ausgewählt = Flow begonnen | Ereignis `upload_started` | `components/UploadForm.tsx`, `handleFileSelect` |
-| 4 | Erfolgreich abgesendet | Seitenaufruf `/einreichen/danke` | `app/einreichen/danke/page.tsx` |
-| 5 | Herkunft | Plausible erfasst Referrer/UTM automatisch; UTM zusätzlich im Feld `source` der Tabelle `uploads` (P0-5) | `components/UploadForm.tsx`, `getSource()` |
+**Vier Messpunkte:**
+| # | Was | Umsetzung |
+|---|---|---|
+| 1 | Aufruf `/einreichen` | automatischer Seitenaufruf |
+| 2 | Datei ausgewählt = Flow begonnen | Custom Event `upload_started` via `usePlausible()` |
+| 3 | Erfolgreich abgesendet | **eigene Danke-Seite** `/einreichen/danke` als Seitenaufruf-Ziel — robuster als ein Custom Event |
+| 4 | Herkunft | Plausible erfasst Referrer/UTM automatisch; zusätzlich UTM-Parameter in das Feld `source` der Tabelle `uploads` schreiben |
 
 Custom Events erscheinen erst, wenn im Plausible-Dashboard ein passendes **Ziel (Goal)** angelegt ist.
-Anzulegen sind drei Ziele: `cta_einreichen_klick` (Custom Event), `upload_started` (Custom Event)
-und `/einreichen/danke` (Pageview).
-
-**Zu `cta_einreichen_klick`:** gezählt wird zentral über einen Klick-Listener auf Links zu
-`/einreichen` — nicht Button für Button. Damit zählen auch alle künftigen Seiten (Branchen-,
-Städte-Seiten) automatisch mit, ohne dass daran gedacht werden muss.
-
-**Bekannte Grenze:** Wird direkt auf der Danke-Seite eine zweite Rechnung eingereicht, bleibt die
-URL gleich — Plausible zählt dann nur einen Abschluss. Wahrheitsquelle für die Fallzahl ist ohnehin
-die Tabelle `uploads`.
 
 **Verboten:** keine personenbezogenen Daten an Plausible — keine E-Mail, keine Dateinamen, keine
 Rechnungsdaten, keine Aktenzeichen.
@@ -157,11 +125,6 @@ Resend zeigt die Domain als „Verified"; E-Mail-Header zeigen `dkim=pass` und `
 ### P0-7 · Anwaltliche Prüfung · L
 AGB, Datenschutzerklärung, Markenkonstruktion, alle **[ANWALT]**-Punkte aus
 `docs/recht-und-datenschutz.md`. **Kein Livegang ohne diesen Punkt.**
-
-**Konkret mit vorzulegen:** der neue Absatz „(3) Reichweitenmessung (Plausible Analytics)" in
-`app/datenschutz/page.tsx` (aus P0-8). Er ist im Quelltext mit einem Warnkommentar markiert.
-Ebenfalls zu klären: Ist mit Plausible ein AVV nötig oder genügt die Annahme der
-Nutzungsbedingungen? (`docs/recht-und-datenschutz.md`, Abschnitt 2.4 ergänzen.)
 
 ---
 
@@ -203,59 +166,77 @@ Datenpannen-Ablauf schriftlich (72 h), Postfach für Betroffenenanfragen.
 ### P1-6 · Erfahrungsangaben und Farbpalette vereinheitlichen · S
 Widerspruch „über 15 Jahre" vs. „über 20 Jahre" auflösen (Gründung 2008). Eine Farbpalette festlegen.
 
-### P1-7 · ERLEDIGT — Konfiguration aus Umgebungsvariablen
-**Stand August 2026:** Die hart im Code stehende Supabase-Projekt-ID war bereits mit P0-1 entfallen
-(signierte Links statt öffentlicher URLs). Adressen und Bucket-Name sind jetzt über
-Umgebungsvariablen änderbar; fehlt eine Variable, greift der bisherige Wert — nichts bricht.
+### P1-7 · Projekt-ID und Konfiguration aus Umgebungsvariablen · S
+Supabase-Projekt-ID nicht hart in `lib/email.ts`; Empfänger- und Ausweichadresse konfigurierbar.
 
-| Variable | Standardwert | Wo |
-|---|---|---|
-| `EMAIL_FROM` | `Nota Finance Service <service@notafinance.de>` | `lib/email.ts` (serverseitig) |
-| `EMAIL_INTERNAL_RECIPIENT` | `admin@notafinance.de` | `lib/email.ts` (serverseitig) |
-| `NEXT_PUBLIC_SUPPORT_EMAIL` | `service@notafinance.de` | `lib/config.ts` |
-| `NEXT_PUBLIC_SUPABASE_BUCKET` | `invoices` | `lib/config.ts` |
+### P1-8 · Sicherheitswarnungen prüfen · M
+`npm audit` meldet 15 Schwachstellen. Gezielt bewerten und beheben. **Nie `npm audit fix --force`.**
 
-Öffentliche Werte stehen in `lib/config.ts`, die beiden Versandadressen bewusst in `lib/email.ts` —
-`lib/config.ts` wird auch von Client-Code importiert, die interne Backoffice-Adresse soll nicht im
-Browser-Bundle landen. `.env.example` dokumentiert alle Variablen des Projekts.
+### P1-9 · Datensicherung · M
+**Befund (August 2026):** Der kostenlose Supabase-Tarif enthält **null Tage** Sicherungsaufbewahrung —
+es existiert keine Kopie der Daten. Art. 32 Abs. 1 lit. c DSGVO verlangt jedoch die Fähigkeit, die
+Verfügbarkeit der Daten nach einem Zwischenfall rasch wiederherzustellen.
+**Zwischenlösung (jetzt):** manuell auslösbares Sicherungsskript (Export der Tabelle `uploads` plus
+Download der Storage-Dateien in einen datierten lokalen Ordner; Ordner in `.gitignore`).
+**Endlösung:** siehe P1-10.
+**Abnahme:** Sicherung einmal erzeugt und Inhalt geprüft; Ergebnis in der TOM-Dokumentation vermerkt.
 
-**Bewusst nicht konfigurierbar:** `CONSENT_VERSION` (Rechtsnachweis, muss zum ausgelieferten
-AGB-Text passen) sowie Linkgültigkeit und Anhanggrenze (Fachregeln aus `docs/produkt-spec.md`).
-Adressen in Impressum, AGB und Datenschutzerklärung bleiben im Text — juristisch geprüfte Fassungen.
+### P1-11 · Aktenzeichen-Formulierungen vereinheitlichen · S
+**Entschieden:** Der **automatische Inkassostart bleibt** in den Texten — die Aussage ist korrekt,
+weil zuerst die fachliche Prüfung erfolgt und der Verfahrensablauf danach automatisiert läuft.
+**Zu ändern:** Überall, wo ein Aktenzeichen erwähnt wird, muss sinngemäß stehen:
+**„Sie erhalten nach Prüfung ein Aktenzeichen."** Keine Zusage eines sofortigen Aktenzeichens in der
+Eingangsbestätigung (Entscheidung 17: der Vater vergibt es erst nach der Prüfung).
+**Fundstellen:** `components/UploadForm.tsx` (Z. 603, 607), `components/EinreichenContent.tsx`
+(Z. 43), `app/page.tsx` (Z. 208), `app/faq/page.tsx` (Z. 40) — sowie alle weiteren, die die Suche
+ergibt (auch E-Mail-Vorlagen in `lib/email.ts` prüfen).
+**Abnahme:** Keine Fundstelle verspricht ein sofortiges Aktenzeichen; alle Formulierungen knüpfen es
+an die Prüfung.
 
-### P1-8 · ERLEDIGT — Sicherheitswarnungen bewertet und gezielt behoben
-**Stand August 2026:** Aus 15 Meldungen wurden 7. Jede wurde einzeln bewertet; behoben wurde nur,
-was im Betrieb läuft oder ohne Risiko entfernbar war. Kein `npm audit fix --force`.
+### P1-12 · Fotos erlauben und zu EINEM PDF zusammenführen · M
+**Entschieden:** Kunden sollen Rechnungen abfotografieren können. **Alle Bilder einer Einreichung
+werden serverseitig zu genau einem mehrseitigen PDF zusammengeführt** — auch bei nur einem Foto.
+Begründung: Ein Handwerker, der eine dreiseitige Rechnung abfotografiert, soll ein Dokument
+einreichen, nicht drei lose Bilder. Bewusster Kundenvorteil, besonders für Handwerk und private
+Vermieter.
 
-**Behoben (vier getrennte Schritte, nach jedem `npm run build` geprüft):**
+**Regeln:**
+1. Erlaubte Formate: **PDF, JPG, PNG, XML** (XRechnung/ZUGFeRD). Spezifikation angleichen.
+2. Alle **Bilder** einer Einreichung → **ein** mehrseitiges PDF, Seitenreihenfolge = Auswahlreihenfolge
+   des Kunden.
+3. **Hochgeladene PDFs und XML-Dateien bleiben unverändert** und werden nicht in das erzeugte PDF
+   eingefügt. Gemischte Einreichung (z. B. 2 Fotos + 1 PDF) ergibt zwei Dokumente: das erzeugte
+   Foto-PDF und das Original-PDF.
+4. **Die Original-Bilder bleiben zusätzlich im Storage** — sie sind der eigentliche Nachweis, das PDF
+   ist die Verpackung (Grundsatz: Dateien werden nie automatisch gelöscht).
+5. **Mail-Anhang und signierter Link zeigen auf das erzeugte PDF.**
+6. **Bildgröße beachten:** Handyfotos sind groß. Bilder vor dem Einbetten sinnvoll auf Seitenformat
+   skalieren und komprimieren, damit das erzeugte PDF die 10-MB-Grenze für Mailanhänge möglichst
+   nicht überschreitet (sonst greift die Regel „nur Link").
+7. Hoch- und Querformat sowie die EXIF-Ausrichtung korrekt berücksichtigen, damit Seiten nicht
+   gedreht erscheinen.
 
-| Paket | Ist → Soll | Warum |
-|---|---|---|
-| `next` | 16.1.6 → 16.3.1 | **Der einzige real ausnutzbare Punkt.** Mehrere „Middleware/Proxy bypass"-Lücken betreffen genau den Mechanismus hinter `proxy.ts` (Passwortschutz); dazu Cache-Poisoning, SSRF und XSS, die nach dem Livegang die öffentliche Seite träfen. `eslint-config-next` wurde mit angehoben. |
-| `sharp`, `postcss`, `nanoid` | mit `next` bzw. `npm update` | Kamen kostenlos mit. Eigenständig nicht ausnutzbar: `sharp` verarbeitet nur eigene Bilder (hochgeladene Rechnungen laufen nie durch `next/image`), `postcss`/`nanoid` sind reine Bauwerkzeuge. |
-| `@supabase/supabase-js` | 2.86.0 → 2.112.3 | Gemeldet wegen `ws` (Realtime-WebSockets). Nota nutzt kein Realtime — nicht ausnutzbar. Ab 2.112.3 entfällt `ws` als Abhängigkeit ganz. |
-| `resend` | 6.9.2 → 6.20.0 | Gemeldet wegen `svix` (Webhook-Signaturprüfung). Nota empfängt keine Webhooks — nicht ausnutzbar. Ab 6.20.0 entfällt `svix` ganz. |
-| `uuid` | 13.0.0 → 13.0.2 | Lücke betrifft `v3/v5/v6` mit `buf`-Parameter; Nota nutzt nur `v4` ohne `buf` — nicht ausnutzbar. Patch, keine Codeänderung. |
+**Abnahme:** Drei Fotos in einer Einreichung erzeugen **ein** PDF mit drei Seiten in richtiger
+Reihenfolge und Ausrichtung; die internen Mail enthält dieses PDF als Anhang; der signierte Link
+öffnet dasselbe PDF; die drei Originalbilder liegen weiterhin im Storage.
 
-**Bewusst NICHT behoben — 7 verbleibende Meldungen:**
-`@babel/core`, `ajv`, `brace-expansion`, `flatted`, `js-yaml`, `minimatch`, `picomatch`.
-Alle hängen an `eslint` bzw. `eslint-config-next` und laufen **ausschließlich auf dem
-Entwicklungsrechner** beim Linten. Sie landen nicht im ausgelieferten Code und sind für keinen
-Website-Besucher erreichbar. Die Lücken sind durchweg ReDoS — der einzige Text, den diese Werkzeuge
-je zu sehen bekommen, ist unser eigener Quelltext. Ihre Behebung würde `eslint` auf Version 10
-(Hauptversionssprung) zwingen: reales Risiko für die Lint-Konfiguration, null Sicherheitsgewinn.
-**Neu bewerten, wenn** eines dieser Pakete in den Laufzeit-Code wandert oder `eslint` ohnehin
-angehoben wird.
+### P1-13 · Strukturierte Daten korrigieren · S
+**Problem:** Im JSON-LD (`app/layout.tsx`, Z. 114–119, 123, 148) stehen `foundingDate: "2024"`,
+„über 15 Jahren Erfahrung" und falsche Logo-Maße (512 × 512 statt 144 × 147).
+**Lösung:** Gründungsjahr 2008, Erfahrungsangabe konsistent zu P1-6, echte Logo-Maße.
+**Abnahme:** Keine widersprüchliche Jahresangabe mehr im Projekt.
 
-**Nebenbei erledigt:** 14 Lint-Fehler (`react/no-unescaped-entities`) in `app/agb/page.tsx` und
-`app/datenschutz/page.tsx` behoben — gerade Anführungszeichen im JSX-Text zu `&quot;` maskiert.
-Bewusst `&quot;` und nicht `&ldquo;`: der sichtbare Text bleibt Zeichen für Zeichen identisch,
-die juristisch geprüften Formulierungen sind unverändert. `npm run lint` meldet jetzt 0 Fehler.
-
-### P1-9 · Backup und Wiederherstellung · M
-Supabase-Backups prüfen und **einmal testweise wiederherstellen**. Ein ungetestetes Backup ist keines.
-
----
+### P1-10 · Supabase-Tarif vor dem Livegang · S
+**Zwei Probleme des kostenlosen Tarifs:**
+1. Keine automatischen Sicherungen (siehe P1-9).
+2. **Automatische Pausierung nach 7 Tagen ohne Datenbankaktivität** — das Projekt geht offline, bis es
+   manuell gestartet wird. Genau der wahrscheinliche Zustand in der Anfangsphase mit wenig Verkehr;
+   ein Interessent fände eine tote Seite vor.
+**Lösung:** Wechsel auf Supabase Pro (ca. 25 $/Monat) **vor dem Livegang**. Beseitigt beide Probleme.
+Bei ~3.000 € Budget etwa 1 % pro Monat.
+**Alternative (nicht empfohlen):** beim kostenlosen Tarif bleiben und eine automatische
+Wachhalte-Routine einrichten — Krücke, kein Ersatz für Sicherungen.
+**Abnahme:** Tarif umgestellt; anschließend Wiederherstellung einmal erprobt und dokumentiert.
 
 ## P2 — Nach dem Livegang
 

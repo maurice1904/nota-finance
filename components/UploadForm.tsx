@@ -634,8 +634,8 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                 value={email}
                 onChange={(e) => handleEmailChange(e.target.value)}
                 onBlur={handleEmailBlur}
-                className={`w-full px-4 py-2.5 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 text-base ${
-                  errors.email ? "border-error" : "border-border-subtle"
+                className={`w-full px-4 py-2.5 bg-white border-2 rounded-lg focus:border-brand-900 transition-all duration-300 text-base ${
+                  errors.email ? "border-error" : "border-border-control"
                 } ${!errors.email && email && isValidEmail(email) ? "pr-10" : ""}`}
                 placeholder="ihre.email@beispiel.de"
               />
@@ -658,8 +658,8 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                 value={emailConfirm}
                 onChange={(e) => handleEmailConfirmChange(e.target.value)}
                 onBlur={handleEmailConfirmBlur}
-                className={`w-full px-4 py-2.5 bg-white border-2 rounded-lg focus:border-brand-900 focus:ring-2 focus:ring-focus-ring outline-none transition-all duration-300 text-base ${
-                  errors.emailConfirm ? "border-error" : "border-border-subtle"
+                className={`w-full px-4 py-2.5 bg-white border-2 rounded-lg focus:border-brand-900 transition-all duration-300 text-base ${
+                  errors.emailConfirm ? "border-error" : "border-border-control"
                 } ${!errors.emailConfirm && emailConfirm && email === emailConfirm && isValidEmail(email) ? "pr-10" : ""}`}
                 placeholder="ihre.email@beispiel.de"
               />
@@ -700,22 +700,34 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
               }
             `}
           >
+            {/*
+              WICHTIG - nicht auf "hidden" zuruecksetzen:
+              "hidden" bedeutet display:none und nimmt das Feld aus der
+              Tabulator-Reihenfolge. Damit war der Upload per Tastatur
+              ueberhaupt nicht bedienbar (WCAG 2.1.1, Stufe A) - der sichtbare
+              Knopf darunter ist ein <label> und Labels sind nicht fokussierbar.
+
+              "sr-only" versteckt das Feld optisch genauso vollstaendig, laesst
+              es aber fokussierbar. "focus-proxy" gibt die Fokus-Markierung an
+              den sichtbaren Knopf weiter (Regel in app/globals.css), sodass
+              erkennbar bleibt, wo der Tastaturfokus gerade steht.
+            */}
             <input
               type="file"
               id="fileInput"
               multiple
               accept=".pdf,.xml"
               onChange={(e) => handleFileSelect(e.target.files)}
-              className="hidden"
+              className="focus-proxy sr-only"
               disabled={!isEmailValid()}
             />
 
             <Upload className="w-10 h-10 text-brand-700 mx-auto mb-3" />
-            
+
             <h4 className="text-base sm:text-lg font-bold text-text-900 mb-1">
               Dateien hier ablegen
             </h4>
-            
+
             <p className="text-sm text-neutral-500 mb-4">
               Formate: PDF, XRechnung, oder ZUGFeRD · Max. 10 MB pro Datei
             </p>
@@ -723,9 +735,10 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
             <label
               htmlFor="fileInput"
               className={`
+                focus-proxy-target
                 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300
                 ${isEmailValid()
-                  ? "bg-brand-900 text-white hover:bg-brand-700 hover:shadow-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                  ? "bg-brand-900 text-white hover:bg-brand-700 hover:shadow-lg cursor-pointer"
                   : "bg-surface-100 text-neutral-500 cursor-not-allowed"
                 }
               `}
@@ -833,8 +846,8 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                   setAcceptAGB(e.target.checked);
                   clearError("agb");
                 }}
-                className={`mt-0.5 w-4 h-4 text-brand-900 border-2 rounded focus:ring-2 focus:ring-focus-ring transition-all duration-300 flex-shrink-0 ${
-                  errors.agb ? "border-error" : "border-border-subtle"
+                className={`mt-0.5 w-4 h-4 text-brand-900 border-2 rounded transition-all duration-300 flex-shrink-0 ${
+                  errors.agb ? "border-error" : "border-border-control"
                 }`}
               />
               <label htmlFor="acceptAGB" className="text-xs text-text-900/70 leading-relaxed">
@@ -872,7 +885,7 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                 files.length === 0 ||
                 !acceptAGB
               }
-              className="w-full bg-brand-900 text-white px-6 py-3 rounded-lg font-semibold text-base hover:bg-brand-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full bg-brand-900 text-white px-6 py-3 rounded-lg font-semibold text-base hover:bg-brand-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               {isSubmitting ? (
                 <>
