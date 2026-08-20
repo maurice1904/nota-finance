@@ -9,14 +9,28 @@
 
 import { Resend } from "resend";
 import { supabaseAdmin } from "./supabase-admin";
+import { envOr, STORAGE_BUCKET, SUPPORT_EMAIL } from "./config";
 
 // ═══════════════════════════════════════════════════════════════
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════
 
-const SENDER_EMAIL = "Nota Finance Service <service@notafinance.de>";
-const GF_EMAIL = "admin@notafinance.de";
-const BUCKET_NAME = "invoices";
+/**
+ * Absender beider E-Mails. Format: `Anzeigename <adresse@domain>` oder nur `adresse@domain`.
+ * Muss eine bei Resend verifizierte Domain sein (siehe P0-9).
+ * Serverseitig — bewusst nicht in lib/config.ts, damit die Adresse nicht im Browser-Bundle landet.
+ */
+const EMAIL_FROM = envOr(
+  process.env.EMAIL_FROM,
+  "Nota Finance Service <service@notafinance.de>"
+);
+
+/** Empfänger der internen Benachrichtigung (Backoffice). Ebenfalls serverseitig. */
+const EMAIL_INTERNAL_RECIPIENT = envOr(
+  process.env.EMAIL_INTERNAL_RECIPIENT,
+  "admin@notafinance.de"
+);
+
 const SIGNED_URL_EXPIRY_SECONDS = 14 * 24 * 60 * 60; // 14 Tage
 const MAX_ATTACHMENT_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 
@@ -48,7 +62,7 @@ export interface NotificationData {
 async function createInternalSignedUrl(filepath: string): Promise<string | null> {
   try {
     const { data, error } = await supabaseAdmin.storage
-      .from(BUCKET_NAME)
+      .from(STORAGE_BUCKET)
       .createSignedUrl(filepath, SIGNED_URL_EXPIRY_SECONDS);
 
     if (error || !data?.signedUrl) {
@@ -74,7 +88,7 @@ async function downloadForAttachment(
 ): Promise<{ filename: string; content: Buffer } | null> {
   try {
     const { data, error } = await supabaseAdmin.storage
-      .from(BUCKET_NAME)
+      .from(STORAGE_BUCKET)
       .download(filepath);
 
     if (error || !data) {
@@ -118,7 +132,7 @@ function getImpressumFooterHtml(): string {
     <p style="margin: 15px 0 5px 0; font-weight: 600; color: #444;">Kontakt</p>
     <p style="margin: 0;">
       Telefon: +49 (0) 2656 / 951 314<br>
-      E-Mail: <a href="mailto:service@notafinance.de" style="color: #0524b0;">service@notafinance.de</a>
+      E-Mail: <a href="mailto:${SUPPORT_EMAIL}" style="color: #0524b0;">${SUPPORT_EMAIL}</a>
     </p>
     
     <p style="margin: 15px 0 5px 0; font-weight: 600; color: #444;">Handelsregister</p>
@@ -183,7 +197,7 @@ function getCustomerEmailHtml(fileCount: number): string {
     </ul>
     
     <p>Bei Fragen stehen wir Ihnen gerne zur Verfügung:</p>
-    <p style="margin: 5px 0;">📧 <a href="mailto:service@notafinance.de" style="color: #0524b0;">service@notafinance.de</a></p>
+    <p style="margin: 5px 0;">📧 <a href="mailto:${SUPPORT_EMAIL}" style="color: #0524b0;">${SUPPORT_EMAIL}</a></p>
     
     <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 30px 0;">
     
@@ -273,7 +287,7 @@ export async function sendCustomerConfirmation(
 ): Promise<EmailResult> {
   try {
     const { error } = await resend.emails.send({
-      from: SENDER_EMAIL,
+      from: EMAIL_FROM,
       to: customerEmail,
       subject: "Ihre Einreichung bei Nota Finance",
       html: getCustomerEmailHtml(fileCount),
@@ -313,8 +327,8 @@ export async function sendInternalNotification(
     );
 
     const { error } = await resend.emails.send({
-      from: SENDER_EMAIL,
-      to: GF_EMAIL,
+      from: EMAIL_FROM,
+      to: EMAIL_INTERNAL_RECIPIENT,
       subject: `Neue Einreichung (${filepaths.length} ${filepaths.length === 1 ? "Fall" : "Fälle"})`,
       html: getInternalNotificationHtml(customerEmail, filepaths, signedUrls),
       attachments: attachments.length > 0 ? attachments : undefined,

@@ -203,8 +203,25 @@ Datenpannen-Ablauf schriftlich (72 h), Postfach für Betroffenenanfragen.
 ### P1-6 · Erfahrungsangaben und Farbpalette vereinheitlichen · S
 Widerspruch „über 15 Jahre" vs. „über 20 Jahre" auflösen (Gründung 2008). Eine Farbpalette festlegen.
 
-### P1-7 · Projekt-ID und Konfiguration aus Umgebungsvariablen · S
-Supabase-Projekt-ID nicht hart in `lib/email.ts`; Empfänger- und Ausweichadresse konfigurierbar.
+### P1-7 · ERLEDIGT — Konfiguration aus Umgebungsvariablen
+**Stand August 2026:** Die hart im Code stehende Supabase-Projekt-ID war bereits mit P0-1 entfallen
+(signierte Links statt öffentlicher URLs). Adressen und Bucket-Name sind jetzt über
+Umgebungsvariablen änderbar; fehlt eine Variable, greift der bisherige Wert — nichts bricht.
+
+| Variable | Standardwert | Wo |
+|---|---|---|
+| `EMAIL_FROM` | `Nota Finance Service <service@notafinance.de>` | `lib/email.ts` (serverseitig) |
+| `EMAIL_INTERNAL_RECIPIENT` | `admin@notafinance.de` | `lib/email.ts` (serverseitig) |
+| `NEXT_PUBLIC_SUPPORT_EMAIL` | `service@notafinance.de` | `lib/config.ts` |
+| `NEXT_PUBLIC_SUPABASE_BUCKET` | `invoices` | `lib/config.ts` |
+
+Öffentliche Werte stehen in `lib/config.ts`, die beiden Versandadressen bewusst in `lib/email.ts` —
+`lib/config.ts` wird auch von Client-Code importiert, die interne Backoffice-Adresse soll nicht im
+Browser-Bundle landen. `.env.example` dokumentiert alle Variablen des Projekts.
+
+**Bewusst nicht konfigurierbar:** `CONSENT_VERSION` (Rechtsnachweis, muss zum ausgelieferten
+AGB-Text passen) sowie Linkgültigkeit und Anhanggrenze (Fachregeln aus `docs/produkt-spec.md`).
+Adressen in Impressum, AGB und Datenschutzerklärung bleiben im Text — juristisch geprüfte Fassungen.
 
 ### P1-8 · Sicherheitswarnungen prüfen · M
 `npm audit` meldet 15 Schwachstellen. Gezielt bewerten und beheben. **Nie `npm audit fix --force`.**

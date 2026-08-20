@@ -8,6 +8,7 @@
  */
 
 import { supabase } from "./supabase";
+import { STORAGE_BUCKET } from "./config";
 import { v4 as uuidv4 } from "uuid";
 
 // ═══════════════════════════════════════════════════════════════
@@ -114,7 +115,7 @@ export function getContentType(filename: string): string {
  * invoices/YYYY/MM/filename.ext
  * 
  * @param file - Die hochzuladende Datei
- * @param bucketName - Name des Supabase Buckets (Standard: "invoices")
+ * @param bucketName - Name des Supabase Buckets (Standard: STORAGE_BUCKET aus lib/config.ts)
  * @returns UploadResult mit Pfad oder Fehler
  * 
  * @example
@@ -125,7 +126,7 @@ export function getContentType(filename: string): string {
  */
 export async function uploadInvoice(
   file: File,
-  bucketName: string = "invoices"
+  bucketName: string = STORAGE_BUCKET
 ): Promise<UploadResult> {
   try {
     // 1. Zeitbasierten Pfad generieren
@@ -201,7 +202,7 @@ export async function uploadInvoice(
  */
 export async function getSignedUrl(
   path: string,
-  bucketName: string = "invoices",
+  bucketName: string = STORAGE_BUCKET,
   expiresIn: number = 3600
 ): Promise<string | null> {
   try {

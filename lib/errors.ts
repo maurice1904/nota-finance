@@ -7,6 +7,8 @@
  * - Server-side Logging (keine sensiblen Daten an den Client)
  */
 
+import { SUPPORT_EMAIL } from "./config";
+
 // Bekannte transiente Fehler, die einen Retry rechtfertigen
 const TRANSIENT_ERROR_CODES = [
   "ECONNRESET",
@@ -225,9 +227,9 @@ export async function withRetry<T>(
 }
 
 /**
- * Kontakt-Info für Support
+ * Kontakt-Info für Support (zentral in lib/config.ts, per Umgebungsvariable änderbar)
  */
-export const SUPPORT_EMAIL = "service@notafinance.de";
+export { SUPPORT_EMAIL };
 
 export function getSupportMessage(): string {
   return `Sollte das Problem weiterhin bestehen, kontaktieren Sie uns unter ${SUPPORT_EMAIL}`;
