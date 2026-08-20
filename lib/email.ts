@@ -118,7 +118,7 @@ function getImpressumFooterHtml(): string {
     <p style="margin: 15px 0 5px 0; font-weight: 600; color: #444;">Kontakt</p>
     <p style="margin: 0;">
       Telefon: +49 (0) 2656 / 951 314<br>
-      E-Mail: <a href="mailto:service@notafinance.de" style="color: #021C8B;">service@notafinance.de</a>
+      E-Mail: <a href="mailto:service@notafinance.de" style="color: #0524b0;">service@notafinance.de</a>
     </p>
     
     <p style="margin: 15px 0 5px 0; font-weight: 600; color: #444;">Handelsregister</p>
@@ -157,16 +157,16 @@ function getCustomerEmailHtml(fileCount: number): string {
     Wir haben Ihre Einreichung erhalten, nach Prüfung startet der Inkassoprozess.
   </div>
   
-  <div style="background: linear-gradient(135deg, #021C8B 0%, #1B52D7 100%); padding: 30px; border-radius: 12px 12px 0 0;">
+  <div style="background: linear-gradient(135deg, #0524b0 0%, #1B52D7 100%); padding: 30px; border-radius: 12px 12px 0 0;">
     <h1 style="color: white; margin: 0; font-size: 24px;">Nota Finance</h1>
   </div>
   
   <div style="background: #ffffff; padding: 30px; border: 1px solid #e5e5e5; border-top: none; border-radius: 0 0 12px 12px;">
-    <h2 style="color: #021C8B; margin-top: 0;">Vielen Dank für Ihre Einreichung!</h2>
+    <h2 style="color: #0524b0; margin-top: 0;">Vielen Dank für Ihre Einreichung!</h2>
     
     <p>Wir haben Ihre Einreichung erhalten (${fileText}).</p>
     
-    <h3 style="color: #021C8B; margin-top: 25px;">Nächste Schritte:</h3>
+    <h3 style="color: #0524b0; margin-top: 25px;">Nächste Schritte:</h3>
     <ul style="padding-left: 0; list-style: none; margin: 15px 0;">
       <li style="margin: 10px 0; padding-left: 20px; position: relative;">
         <span style="position: absolute; left: 0;">✓</span>
@@ -183,7 +183,7 @@ function getCustomerEmailHtml(fileCount: number): string {
     </ul>
     
     <p>Bei Fragen stehen wir Ihnen gerne zur Verfügung:</p>
-    <p style="margin: 5px 0;">📧 <a href="mailto:service@notafinance.de" style="color: #021C8B;">service@notafinance.de</a></p>
+    <p style="margin: 5px 0;">📧 <a href="mailto:service@notafinance.de" style="color: #0524b0;">service@notafinance.de</a></p>
     
     <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 30px 0;">
     
@@ -211,10 +211,10 @@ function getInternalNotificationHtml(
     const fallNummer = index + 1;
 
     if (!url) {
-      return `<p style="margin: 8px 0; color: #b00020;">⚠️ Fall ${fallNummer}: Link konnte nicht erzeugt werden (Datei ggf. als Anhang beigefügt)</p>`;
+      return `<p style="margin: 8px 0; color: #E11D48;">⚠️ Fall ${fallNummer}: Link konnte nicht erzeugt werden (Datei ggf. als Anhang beigefügt)</p>`;
     }
 
-    return `<a href="${url}" style="display: block; background: #021C8B; color: white; padding: 12px 20px; border-radius: 6px; text-decoration: none; margin: 8px 0; font-weight: 500; text-align: center;">📄 Fall ${fallNummer} (Link, 14 Tage gültig)</a>`;
+    return `<a href="${url}" style="display: block; background: #0524b0; color: white; padding: 12px 20px; border-radius: 6px; text-decoration: none; margin: 8px 0; font-weight: 500; text-align: center;">📄 Fall ${fallNummer} (Link, 14 Tage gültig)</a>`;
   }).join("");
 
   return `
@@ -225,15 +225,15 @@ function getInternalNotificationHtml(
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1a1a1a; max-width: 600px; margin: 0 auto; padding: 20px;">
-  <div style="background: #021C8B; padding: 20px; border-radius: 12px 12px 0 0;">
+  <div style="background: #0524b0; padding: 20px; border-radius: 12px 12px 0 0;">
     <h1 style="color: white; margin: 0; font-size: 20px;">🔔 Neue Einreichung (${filepaths.length} ${filepaths.length === 1 ? "Fall" : "Fälle"})</h1>
   </div>
   
   <div style="background: #ffffff; padding: 30px; border: 1px solid #e5e5e5; border-top: none; border-radius: 0 0 12px 12px;">
-    <div style="background: #f0f7ff; padding: 15px; border-radius: 8px; margin: 0 0 20px 0; border-left: 4px solid #021C8B;">
+    <div style="background: #f0f7ff; padding: 15px; border-radius: 8px; margin: 0 0 20px 0; border-left: 4px solid #0524b0;">
       <p style="margin: 0;"><strong>Kunden-E-Mail:</strong></p>
       <p style="margin: 5px 0 0 0;">
-        <a href="mailto:${customerEmail}" style="color: #021C8B; font-size: 16px;">${customerEmail}</a>
+        <a href="mailto:${customerEmail}" style="color: #0524b0; font-size: 16px;">${customerEmail}</a>
       </p>
     </div>
     

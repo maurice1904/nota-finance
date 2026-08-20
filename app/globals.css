@@ -37,7 +37,7 @@
   /* DERIVED TOKENS */
   --border-subtle: rgba(118, 120, 136, 0.12);
   --border-strong: rgba(19, 17, 31, 0.12);
-  --focus-ring: rgba(2, 28, 139, 0.18);
+  --focus-ring: rgba(5, 36, 176, 0.18);
 }
 
 @theme inline {
