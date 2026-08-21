@@ -214,29 +214,47 @@ export default function BranchenPage() {
               return (
                 <RevealOnScroll key={industry.id} delay={index * 50}>
                   <div className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl overflow-hidden hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
-                    {/* Header - Always Visible */}
-                    <button
-                      onClick={() => toggleIndustry(industry.id)}
-                      className="w-full flex items-center justify-between p-6 text-left hover:bg-surface-100/30 transition-colors duration-300"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center flex-shrink-0">
-                          <Icon className="w-7 h-7 text-white" />
-                        </div>
-                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900">
-                          {industry.title}
-                        </h3>
-                      </div>
-                      <ChevronDown
-                        className={cn(
-                          "w-6 h-6 text-brand-700 transition-transform duration-300",
-                          isOpen && "rotate-180"
-                        )}
-                      />
-                    </button>
+                    {/*
+                      Der Knopf steht IN der Ueberschrift, nicht umgekehrt - nur so erscheint
+                      die Branche in der Ueberschriftenliste eines Screenreaders und laesst sich
+                      damit anspringen (WCAG 2.4.10 / APG-Akkordeon).
+                    */}
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900">
+                      <button
+                        type="button"
+                        onClick={() => toggleIndustry(industry.id)}
+                        aria-expanded={isOpen}
+                        aria-controls={`branche-inhalt-${industry.id}`}
+                        id={`branche-titel-${industry.id}`}
+                        className="w-full flex items-center justify-between p-6 text-left hover:bg-surface-100/30 transition-colors duration-300"
+                      >
+                        <span className="flex items-center gap-4">
+                          <span className="w-14 h-14 bg-gradient-to-br from-brand-900 to-brand-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Icon className="w-7 h-7 text-white" aria-hidden="true" />
+                          </span>
+                          <span>{industry.title}</span>
+                        </span>
+                        <ChevronDown
+                          aria-hidden="true"
+                          className={cn(
+                            "w-6 h-6 text-brand-700 transition-transform duration-300 flex-shrink-0",
+                            isOpen && "rotate-180"
+                          )}
+                        />
+                      </button>
+                    </h3>
 
-                    {/* Expandable Content */}
+                    {/*
+                      Zugeklappter Inhalt ist nur optisch auf Hoehe 0 geschrumpft - deshalb
+                      "inert": nimmt ihn aus dem Vorlesen und aus der Tabulator-Reihenfolge,
+                      ohne die Aufklapp-Animation zu stoeren. Ohne inert liest ein Screenreader
+                      alle Branchentexte am Stueck vor, als waeren sie offen.
+                    */}
                     <div
+                      id={`branche-inhalt-${industry.id}`}
+                      role="region"
+                      aria-labelledby={`branche-titel-${industry.id}`}
+                      inert={!isOpen}
                       className={cn(
                         "overflow-hidden transition-all duration-500",
                         isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
@@ -268,7 +286,7 @@ export default function BranchenPage() {
                           <ul className="space-y-3">
                             {industry.solutions.map((solution, idx) => (
                               <li key={idx} className="flex items-start gap-2.5">
-                                <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-1" strokeWidth={2.5} />
+                                <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-1" strokeWidth={2.5} aria-hidden="true" />
                                 <p className="text-text-900/70 leading-relaxed">
                                   {formatSolutionText(solution)}
                                 </p>

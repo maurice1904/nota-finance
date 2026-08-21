@@ -136,24 +136,42 @@ export default function FAQPage() {
               return (
                 <RevealOnScroll key={index} delay={index * 50}>
                   <div className="bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-xl overflow-hidden hover:shadow-md hover:border-brand-700/30 transition-all duration-300">
-                    {/* Question - Always Visible */}
-                    <button
-                      onClick={() => toggleFAQ(index)}
-                      className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-100/30 transition-colors duration-300"
-                    >
-                      <h3 className="text-sm sm:text-base font-semibold text-text-900 pr-4 flex-1">
-                        {faq.question}
-                      </h3>
-                      <ChevronDown
-                        className={cn(
-                          "w-5 h-5 text-brand-700 transition-transform duration-300 flex-shrink-0",
-                          isOpen && "rotate-180"
-                        )}
-                      />
-                    </button>
+                    {/*
+                      Der Knopf steht IN der Ueberschrift, nicht umgekehrt. Nur so taucht die
+                      Frage in der Ueberschriftenliste eines Screenreaders auf - das ist die
+                      uebliche Art, eine FAQ zu ueberfliegen (WCAG 2.4.10 / APG-Akkordeon).
+                    */}
+                    <h3 className="text-sm sm:text-base font-semibold text-text-900">
+                      <button
+                        type="button"
+                        onClick={() => toggleFAQ(index)}
+                        aria-expanded={isOpen}
+                        aria-controls={`faq-answer-${index}`}
+                        id={`faq-question-${index}`}
+                        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-100/30 transition-colors duration-300"
+                      >
+                        <span className="pr-4 flex-1">{faq.question}</span>
+                        <ChevronDown
+                          aria-hidden="true"
+                          className={cn(
+                            "w-5 h-5 text-brand-700 transition-transform duration-300 flex-shrink-0",
+                            isOpen && "rotate-180"
+                          )}
+                        />
+                      </button>
+                    </h3>
 
-                    {/* Answer - Expandable */}
+                    {/*
+                      Antwort. Zugeklappt ist sie nur optisch auf Hoehe 0 geschrumpft - deshalb
+                      "inert": das nimmt den Bereich aus dem Vorlesen UND aus der Tabulator-
+                      Reihenfolge, ohne die Aufklapp-Animation zu stoeren. Ohne inert liest ein
+                      Screenreader alle Antworten am Stueck vor, als waeren sie offen.
+                    */}
                     <div
+                      id={`faq-answer-${index}`}
+                      role="region"
+                      aria-labelledby={`faq-question-${index}`}
+                      inert={!isOpen}
                       className={cn(
                         "overflow-hidden transition-all duration-500",
                         isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
@@ -168,7 +186,7 @@ export default function FAQPage() {
                                 const text = paragraph.slice(2);
                                 return (
                                   <div key={pIndex} className="flex items-start gap-2.5">
-                                    <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-0.5" strokeWidth={2.5} />
+                                    <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
                                     <p className="text-text-900/70 leading-relaxed">{text}</p>
                                   </div>
                                 );

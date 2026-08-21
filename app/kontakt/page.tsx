@@ -12,11 +12,17 @@ interface FormErrors {
 }
 
 // Error display component - defined outside to avoid recreation on each render
-function FormError({ message }: { message: string | undefined }) {
+function FormError({ message, id }: { message: string | undefined; id?: string }) {
   if (!message) return null;
+  // role="alert" laesst die Meldung beim Erscheinen vorlesen; die Kennung verbindet sie
+  // ueber aria-describedby mit dem zugehoerigen Eingabefeld.
   return (
-    <p className="flex items-center gap-1.5 text-sm text-error mt-2 animate-in fade-in slide-in-from-top-1 duration-200">
-      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+    <p
+      id={id}
+      role="alert"
+      className="flex items-center gap-1.5 text-sm text-error mt-2 animate-in fade-in slide-in-from-top-1 duration-200"
+    >
+      <AlertCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
       {message}
     </p>
   );
@@ -139,9 +145,12 @@ ${formData.message}
       [name]: type === "checkbox" ? checked : value
     }));
 
-    // Clear error for this field
-    if (name in errors) {
-      clearError(name as keyof FormErrors);
+    // Fehler des Feldes zuruecksetzen, sobald der Nutzer es korrigiert.
+    // Das Haekchen heisst im Formular "acceptAGB", der Fehler aber "agb" - ohne diese
+    // Zuordnung blieben Meldung und aria-invalid stehen, obwohl das Haekchen gesetzt ist.
+    const errorKey = name === "acceptAGB" ? "agb" : name;
+    if (errorKey in errors) {
+      clearError(errorKey as keyof FormErrors);
     }
   };
 
@@ -185,8 +194,11 @@ ${formData.message}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Success Message */}
           {isSuccess && (
-            <div className="mb-8 bg-success/10 border-2 border-success/30 rounded-2xl p-6 flex items-start gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
-              <CheckCircle className="w-6 h-6 text-success flex-shrink-0 mt-1" />
+            <div
+              role="status"
+              className="mb-8 bg-success/10 border-2 border-success/30 rounded-2xl p-6 flex items-start gap-4 animate-in fade-in slide-in-from-top-4 duration-500"
+            >
+              <CheckCircle className="w-6 h-6 text-success flex-shrink-0 mt-1" aria-hidden="true" />
               <div>
                 <h3 className="text-lg font-bold text-text-900 mb-1">
                   Vielen Dank für Ihre Nachricht!
@@ -199,7 +211,12 @@ ${formData.message}
           )}
 
           {/* Contact Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {/*
+            noValidate: die Pflichtfeld-Angabe bleibt am Feld (required, wird vorgelesen),
+            aber die Fehlermeldung kommt aus unserem eigenen deutschen Text statt aus der
+            Sprechblase des Browsers.
+          */}
+          <form onSubmit={handleSubmit} noValidate className="space-y-6">
             <div className="bg-gradient-to-br from-white to-surface-100/50 border-2 border-border-subtle rounded-2xl p-8 space-y-6 hover:border-brand-700/30 transition-all duration-300">
               {/* Name */}
               <div>
@@ -210,6 +227,10 @@ ${formData.message}
                   type="text"
                   id="name"
                   name="name"
+                  autoComplete="name"
+                  required
+                  aria-invalid={errors.name ? true : undefined}
+                  aria-describedby={errors.name ? "name-error" : undefined}
                   value={formData.name}
                   onChange={handleChange}
                   className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 transition-all duration-300 ${
@@ -217,7 +238,7 @@ ${formData.message}
                   }`}
                   placeholder="Max Mustermann"
                 />
-                <FormError message={errors.name} />
+                <FormError id="name-error" message={errors.name} />
               </div>
 
               {/* Company */}
@@ -229,6 +250,10 @@ ${formData.message}
                   type="text"
                   id="company"
                   name="company"
+                  autoComplete="organization"
+                  required
+                  aria-invalid={errors.company ? true : undefined}
+                  aria-describedby={errors.company ? "company-error" : undefined}
                   value={formData.company}
                   onChange={handleChange}
                   className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 transition-all duration-300 ${
@@ -236,7 +261,7 @@ ${formData.message}
                   }`}
                   placeholder="Musterfirma GmbH"
                 />
-                <FormError message={errors.company} />
+                <FormError id="company-error" message={errors.company} />
               </div>
 
               {/* Email */}
@@ -248,6 +273,10 @@ ${formData.message}
                   type="email"
                   id="email"
                   name="email"
+                  autoComplete="email"
+                  required
+                  aria-invalid={errors.email ? true : undefined}
+                  aria-describedby={errors.email ? "email-error" : undefined}
                   value={formData.email}
                   onChange={handleChange}
                   className={`w-full px-4 py-3 bg-white border-2 rounded-lg focus:border-brand-900 transition-all duration-300 ${
@@ -255,7 +284,7 @@ ${formData.message}
                   }`}
                   placeholder="max@musterfirma.de"
                 />
-                <FormError message={errors.email} />
+                <FormError id="email-error" message={errors.email} />
               </div>
 
               {/* Phone (optional) */}
@@ -267,6 +296,7 @@ ${formData.message}
                   type="tel"
                   id="phone"
                   name="phone"
+                  autoComplete="tel"
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white border-2 border-border-control rounded-lg focus:border-brand-900 transition-all duration-300"
@@ -282,6 +312,9 @@ ${formData.message}
                 <textarea
                   id="message"
                   name="message"
+                  required
+                  aria-invalid={errors.message ? true : undefined}
+                  aria-describedby={errors.message ? "message-error" : undefined}
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
@@ -290,7 +323,7 @@ ${formData.message}
                   }`}
                   placeholder="Beschreiben Sie hier Ihr Anliegen..."
                 />
-                <FormError message={errors.message} />
+                <FormError id="message-error" message={errors.message} />
               </div>
 
               {/* AGB Checkbox */}
@@ -300,6 +333,9 @@ ${formData.message}
                     type="checkbox"
                     id="acceptAGB"
                     name="acceptAGB"
+                    required
+                    aria-invalid={errors.agb ? true : undefined}
+                    aria-describedby={errors.agb ? "agb-error" : undefined}
                     checked={formData.acceptAGB}
                     onChange={handleChange}
                     className={`mt-1 w-5 h-5 text-brand-900 border-2 rounded transition-all duration-300 ${
@@ -328,7 +364,7 @@ ${formData.message}
                     .
                   </label>
                 </div>
-                <FormError message={errors.agb} />
+                <FormError id="agb-error" message={errors.agb} />
               </div>
 
               {/* Submit Button */}

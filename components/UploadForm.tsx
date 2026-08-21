@@ -725,6 +725,10 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
     }
   };
 
+  // Der Erklaerhinweis unter den E-Mail-Feldern. Steht hier, weil beide Felder ihn per
+  // aria-describedby referenzieren - Anzeige und Verweis duerfen nicht auseinanderlaufen.
+  const showEmailHint = !errors.email && !errors.emailConfirm && !email;
+
   return (
     <div className="max-w-4xl mx-auto">
       {/* Success Message */}
@@ -772,7 +776,13 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      {/*
+        noValidate schaltet nur die Browser-Sprechblasen ab, nicht die Pflichtfeld-Angabe:
+        die Felder behalten "required" (das liest ein Screenreader als "Pflichtfeld" vor),
+        aber die Fehlermeldung kommt aus unserem eigenen, deutschen Text - sonst wuerde die
+        Sprechblase des Browsers z.B. den Tippfehler-Hinweis ueberschreiben.
+      */}
+      <form onSubmit={handleSubmit} noValidate className="space-y-5">
         {/* Error Summary */}
         {errors.submit && (
           <FormErrorSummary errors={[errors.submit]} />
@@ -791,6 +801,13 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
               <input
                 type="email"
                 id="email"
+                name="email"
+                autoComplete="email"
+                required
+                aria-invalid={errors.email ? true : undefined}
+                aria-describedby={
+                  errors.email ? "email-error" : showEmailHint ? "email-hint" : undefined
+                }
                 value={email}
                 onChange={(e) => handleEmailChange(e.target.value)}
                 onBlur={handleEmailBlur}
@@ -800,11 +817,11 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                 placeholder="ihre.email@beispiel.de"
               />
               {!errors.email && email && isValidEmail(email) && (
-                <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-success" />
+                <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-success" aria-hidden="true" />
               )}
             </div>
           </div>
-          <FormError message={errors.email} />
+          <FormError id="email-error" message={errors.email} />
 
           {/* Second Email Field - Confirmation */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mt-4">
@@ -815,6 +832,13 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
               <input
                 type="email"
                 id="emailConfirm"
+                name="emailConfirm"
+                autoComplete="email"
+                required
+                aria-invalid={errors.emailConfirm ? true : undefined}
+                aria-describedby={
+                  errors.emailConfirm ? "emailConfirm-error" : showEmailHint ? "email-hint" : undefined
+                }
                 value={emailConfirm}
                 onChange={(e) => handleEmailConfirmChange(e.target.value)}
                 onBlur={handleEmailConfirmBlur}
@@ -824,14 +848,14 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                 placeholder="ihre.email@beispiel.de"
               />
               {!errors.emailConfirm && emailConfirm && email === emailConfirm && isValidEmail(email) && (
-                <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-success" />
+                <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-success" aria-hidden="true" />
               )}
             </div>
           </div>
-          <FormError message={errors.emailConfirm} />
-          
-          {!errors.email && !errors.emailConfirm && !email && (
-            <p className="text-xs text-neutral-500 mt-3">
+          <FormError id="emailConfirm-error" message={errors.emailConfirm} />
+
+          {showEmailHint && (
+            <p id="email-hint" className="text-xs text-neutral-500 mt-3">
               Sie erhalten die Bestätigung an diese Adresse. Bitte geben Sie die Adresse zweimal ein.
             </p>
           )}
@@ -844,7 +868,7 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
           <h3 className="text-sm font-semibold text-text-900 mb-3">
             Dateien hochladen
           </h3>
-          <FormError message={errors.files} />
+          <FormError id="files-error" message={errors.files} />
 
           {/* Drag & Drop Zone - Compact */}
           <div
@@ -893,7 +917,7 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
               Dateien hier ablegen
             </h4>
 
-            <p className="text-sm text-neutral-500 mb-4">
+            <p id="files-hint" className="text-sm text-neutral-500 mb-4">
               Formate: PDF, XRechnung/ZUGFeRD oder Foto (JPG, PNG) · max. 10 MB je Dokument, 15 MB je Foto
             </p>
 
@@ -901,6 +925,7 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={!isEmailValid()}
+              aria-describedby={errors.files ? "files-error files-hint" : "files-hint"}
               className={`
                 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300
                 ${isEmailValid()
@@ -939,6 +964,7 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                 type="button"
                 onClick={() => cameraInputRef.current?.click()}
                 disabled={!isEmailValid()}
+                aria-describedby={errors.files ? "files-error files-hint" : "files-hint"}
                 className={`
                   inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm border-2 transition-all duration-300
                   ${isEmailValid()
@@ -1056,6 +1082,10 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
               <input
                 type="checkbox"
                 id="acceptAGB"
+                name="acceptAGB"
+                required
+                aria-invalid={errors.agb ? true : undefined}
+                aria-describedby={errors.agb ? "agb-error" : undefined}
                 checked={acceptAGB}
                 onChange={(e) => {
                   setAcceptAGB(e.target.checked);
@@ -1087,7 +1117,7 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                 .
               </label>
             </div>
-            <FormError message={errors.agb} />
+            <FormError id="agb-error" message={errors.agb} />
           </div>
 
           {/* Submit Button - Compact */}

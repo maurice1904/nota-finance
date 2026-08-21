@@ -204,17 +204,71 @@ button, a, input, textarea {
 }
 
 /* Glassmorphism utilities */
+
+/*
+ * DECKKRAFT DER NAVIGATIONSLEISTE (nur .glass, und .glass haengt nur an <nav>)
+ *
+ * Steht seit Januar 2026 auf 0,75 und bleibt dort. Im August 2026 kurzzeitig auf
+ * 0,92 erhoeht, weil die Leiste zu durchsichtig wirkte - vom Auftraggeber geprueft
+ * und zurueckgenommen: In Safari am Rechner und auf dem iPhone stimmte die
+ * Darstellung, der Eindruck trat nur in Google Chrome auf.
+ * Nicht erneut aufwerfen ohne neuen Befund.
+ *
+ * Kontrast bei 0,75 ueber einem hellen Hintergrund (Normalfall, Leiste wirkt weiss):
+ *   Markenname / Menuesymbol #13111F .......... 18,62:1
+ *   Navigationslink inaktiv  #13111F bei 70 % ... 6,96:1
+ *   Navigationslink aktiv    #0524b0 .......... 11,14:1
+ *   Navigationslink Hover    #1B52D7 ........... 6,49:1
+ * Ueber einem dunklen Hero-Bild sinkt der Hover-Wert auf rund 3,5:1. Das faellt nur
+ * an, solange die Weichzeichnung unten NICHT greift - mit ihr wird der Bildhintergrund
+ * so stark aufgehellt, dass der Fall praktisch nicht eintritt. Die beiden Regeln
+ * darunter fangen genau die Faelle ab, in denen sie ausbleibt.
+ */
 .glass {
   background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(14px);
+  /*
+   * REIHENFOLGE IST HIER NICHT KOSMETIK.
+   * Der Minifizierer (Lightning CSS) fasst praefixierte und unpraefixierte Fassung
+   * zu EINER Angabe zusammen und behaelt die ZULETZT geschriebene. Stand die
+   * -webkit-Fassung zuletzt, fiel "backdrop-filter" aus dem gebauten CSS heraus -
+   * und damit die Weichzeichnung in Chrome, das die -webkit-Fassung NICHT kennt
+   * (in Chrome 151 nachgemessen: CSS.supports("-webkit-backdrop-filter", ...) = false).
+   * Safari kennt beide und sah deshalb immer richtig aus.
+   * Also immer: -webkit- zuerst, Standard zuletzt. Tailwind macht es genauso.
+   */
   -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   border: 1px solid var(--white); /* White border highlight */
+}
+
+/*
+ * Ohne Weichzeichnung (aeltere Browser) traegt allein die Deckkraft die
+ * Lesbarkeit - dann deckend darstellen.
+ */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--white);
+  }
+}
+
+/*
+ * Wer im Betriebssystem "Transparenz reduzieren" eingeschaltet hat, bekommt eine
+ * vollstaendig deckende Leiste. Diese Einstellung nutzen vor allem Menschen mit
+ * geringer Sehschaerfe - eine Zeile Aufwand, spuerbarer Gewinn.
+ */
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: var(--white);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 .glass-dark {
   background: rgba(19, 17, 31, 0.75);
-  backdrop-filter: blur(14px);
+  /* Reihenfolge wie bei .glass - siehe Begruendung dort. */
   -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
