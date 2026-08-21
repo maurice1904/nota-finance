@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-admin";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { STORAGE_BUCKET } from "@/lib/config";
 import { buildPdfFromImages } from "@/lib/pdf";
 import { generateStoragePath } from "@/lib/storage";
@@ -63,7 +63,7 @@ function validateRequest(
 
 /** Lädt ein Bild aus dem Storage. Wirft, damit ein fehlendes Bild nicht zu einer leeren Seite führt. */
 async function downloadImage(path: string): Promise<Buffer> {
-  const { data, error } = await supabaseAdmin.storage.from(STORAGE_BUCKET).download(path);
+  const { data, error } = await getSupabaseAdmin().storage.from(STORAGE_BUCKET).download(path);
 
   if (error || !data) {
     throw new Error(`Bild nicht ladbar: ${path} (${error?.message ?? "unbekannt"})`);
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
     // damit das erzeugte Dokument in Storage, Tabelle und Mailanhang sofort erkennbar ist.
     const target = generateStoragePath("zusammengefuehrt.pdf", new Date(), "fotos-");
 
-    const { error: uploadError } = await supabaseAdmin.storage
+    const { error: uploadError } = await getSupabaseAdmin().storage
       .from(STORAGE_BUCKET)
       .upload(target.fullPath, pdf, {
         cacheControl: "3600",

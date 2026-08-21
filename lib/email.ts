@@ -8,7 +8,7 @@
  */
 
 import { Resend } from "resend";
-import { supabaseAdmin } from "./supabase-admin";
+import { getSupabaseAdmin } from "./supabase-admin";
 import { envOr, STORAGE_BUCKET, SUPPORT_EMAIL } from "./config";
 
 // ═══════════════════════════════════════════════════════════════
@@ -61,7 +61,7 @@ export interface NotificationData {
  */
 async function createInternalSignedUrl(filepath: string): Promise<string | null> {
   try {
-    const { data, error } = await supabaseAdmin.storage
+    const { data, error } = await getSupabaseAdmin().storage
       .from(STORAGE_BUCKET)
       .createSignedUrl(filepath, SIGNED_URL_EXPIRY_SECONDS);
 
@@ -87,7 +87,7 @@ async function downloadForAttachment(
   filepath: string
 ): Promise<{ filename: string; content: Buffer } | null> {
   try {
-    const { data, error } = await supabaseAdmin.storage
+    const { data, error } = await getSupabaseAdmin().storage
       .from(STORAGE_BUCKET)
       .download(filepath);
 
