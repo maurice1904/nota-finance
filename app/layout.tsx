@@ -206,8 +206,24 @@ export default function RootLayout({
   const inhalt = (
     <Providers>
       <ScrollToTop />
+      {/*
+        Sprunglink: muss die ERSTE Station beim Tabben sein, steht deshalb vor der
+        Navigationsleiste. Sichtbar wird er nur, solange er den Fokus hat
+        (Gestaltung: .skip-link in app/globals.css).
+      */}
+      <a href="#hauptinhalt" className="skip-link">
+        Zum Inhalt springen
+      </a>
       <Navbar />
-      {children}
+      {/*
+        Ziel des Sprunglinks. tabIndex={-1} macht den Bereich programmatisch
+        fokussierbar - ohne das wuerde der Browser nur scrollen, der Fokus bliebe
+        oben, und die naechste Tabulator-Taste faenge wieder bei der Leiste an.
+        Der Bereich bleibt aus der normalen Tabulator-Reihenfolge heraus.
+      */}
+      <div id="hauptinhalt" tabIndex={-1}>
+        {children}
+      </div>
       <Footer />
     </Providers>
   );

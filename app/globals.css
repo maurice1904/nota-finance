@@ -203,6 +203,57 @@ button, a, input, textarea {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/*
+ * SPRUNGLINK ZUM INHALT (WCAG 2.4.1 "Blöcke umgehen", Stufe A)
+ *
+ * Wer mit der Tastatur arbeitet, muesste sich sonst auf JEDER Seite erst durch
+ * Logo, fuenf Navigationslinks und zwei Knoepfe tabben, bevor der Inhalt kommt.
+ * Der Sprunglink ist die erste Station und ueberspringt das.
+ *
+ * WICHTIG: nicht "display: none" und nicht "visibility: hidden" - beides wuerde
+ * den Link auch fuer die Tastatur entfernen und den Zweck zunichtemachen. Er wird
+ * deshalb nur aus dem sichtbaren Bereich geschoben und rutscht bei Fokus herein.
+ * Mit der Maus bekommt ihn niemand zu sehen.
+ */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid var(--brand-900);
+  border-radius: 0.5rem;
+  background: var(--white);
+  color: var(--text-900);
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(19, 17, 31, 0.15);
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/*
+ * Ziel des Sprunglinks.
+ *
+ * scroll-margin-top haelt den Abstand der festen Navigationsleiste frei (h-20 =
+ * 5rem) - ohne das rutscht der Anfang des Inhalts darunter und bleibt unsichtbar.
+ *
+ * tabindex="-1" steht im Markup, damit der Fokus wirklich hierher wandert und
+ * nicht nur gescrollt wird. Der Fokusrahmen wird hier ausnahmsweise unterdrueckt:
+ * Er wuerde den gesamten Inhaltsbereich umranden, was niemandem hilft. Die
+ * Rueckmeldung ist der Sprung selbst, und die naechste Tabulator-Station im
+ * Inhalt zeigt ihren Rahmen wieder ganz normal.
+ */
+#hauptinhalt {
+  scroll-margin-top: 5rem;
+}
+
+#hauptinhalt:focus {
+  outline: none;
+}
+
 /* Glassmorphism utilities */
 
 /*

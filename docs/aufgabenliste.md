@@ -28,7 +28,7 @@ mehr nachvollziehbar, worauf der Status beruht.
 | P1-0 | Upload-Endpunkt serverseitig absichern (vor Go-live) | **OFFEN** |
 | P1-1 | Zweites E-Mail-Feld bleibt | **ENTFÄLLT** |
 | P1-2 | Trust-Logos abgestimmt | **ERLEDIGT** |
-| P1-3 | Barrierefreiheit WCAG 2.1 AA | **OFFEN** (Etappe 1 erledigt) |
+| P1-3 | Barrierefreiheit WCAG 2.1 AA | **OFFEN** (Etappen 1 und 2 erledigt) |
 | P1-4 | Löschkonzept technisch umsetzen | **OFFEN** |
 | P1-5 | DSGVO-Pflichtdokumentation | **OFFEN** |
 | P1-6 | Erfahrungsangaben und Farbpalette vereinheitlichen | **ERLEDIGT** |
@@ -197,9 +197,12 @@ Unternehmen abgestimmt. **Offene Empfehlung (kein Blocker):** kurze schriftliche
 sichern (E-Mail genügt), da im Abmahnfall die Beweislast bei uns liegt. „TÜV" nur, falls eine
 Zertifizierung tatsächlich vorliegt.
 
-### P1-3 · Barrierefreiheit WCAG 2.1 AA · L — **OFFEN** (Etappe 1 erledigt)
+### P1-3 · Barrierefreiheit WCAG 2.1 AA · L — **OFFEN** (Etappen 1 und 2 erledigt)
 Tastaturbedienbarkeit, Fokus, Kontraste, `label`, Textfehlermeldungen, Alternativtexte, Zoom 200 %.
 Erklärung zur Barrierefreiheit ergänzen, sobald die BFSG-Bewertung vorliegt.
+
+#### Etappe 1 — **erledigt**
+Tastaturbedienung des Uploads, sichtbarer Fokus, Kontraste.
 
 **Korrektur aus P1-12 (August 2026):** Die in Etappe 1 gewählte Lösung für den Upload-Knopf
 (verstecktes `<input type="file">` plus `<label for>` plus Fokus-Spiegelung) war auf dem iPhone
@@ -207,6 +210,46 @@ Erklärung zur Barrierefreiheit ergänzen, sobald die BFSG-Bewertung vorliegt.
 Ersetzt durch echte `<button>`-Elemente, die das Feld per JavaScript öffnen. **Lehre für die
 restlichen Teilaufgaben:** Tastaturlösungen zusätzlich auf einem echten iPhone prüfen, nicht nur
 am Rechner.
+
+#### Etappe 2 — **erledigt (21.08.2026)**
+
+| Schritt | Was | Dateien |
+|---|---|---|
+| 4 | **Formulare** (Einreichen und Kontakt): Pflichtfelder mit `required` bei abgeschalteten Browser-Sprechblasen (`noValidate`), damit die eigenen deutschen Fehlertexte inkl. Tippfehler-Hinweis erhalten bleiben; Fehler mit `aria-invalid` und `aria-describedby` am Feld verankert, `role="alert"` zum Vorlesen; `autoComplete` für E-Mail, Name, Firma, Telefon | `components/UploadForm.tsx`, `app/kontakt/page.tsx`, `components/FormError.tsx` |
+| 5 | **Meldungen unten rechts (Toast):** Container steht dauerhaft im Seitenaufbau (sonst bleibt die erste Meldung stumm); Erfolg/Hinweis als `role="status"`, Fehler/Warnung als `role="alert"`; Schließen-Knopf mit unsichtbarem Text „Benachrichtigung schließen"; **Fehler und Meldungen mit Knopf blenden nicht mehr automatisch aus**, Erfolg/Hinweis pausieren bei Maus oder Tastaturfokus (WCAG 2.2.1) | `components/Toast.tsx` |
+| 6 | **Akkordeons** in FAQ und Branchen: `aria-expanded` und `aria-controls`; zugeklappte Bereiche `inert` (vorher las ein Screenreader alle Antworten am Stück vor); Knopf in die Überschrift verlagert, damit Fragen und Branchen in der Überschriftenliste auftauchen | `app/faq/page.tsx`, `app/branchen/page.tsx` |
+| 7 | **Mobiles Menü:** `inert` statt `aria-hidden` (vorher lief man per Tabulator in unsichtbare Links); `aria-modal` nur im geöffneten Zustand; Name des Dialogs aus der sichtbaren Überschrift „Menü"; doppelter Orientierungspunkt darin entfernt; **Fokusrückgabe an den Menü-Knopf beim Schließen** | `components/Navbar.tsx` |
+| 8 | **Sprunglink „Zum Inhalt springen"** als erste Tabulator-Station, sichtbar nur bei Fokus; Ziel `#hauptinhalt` mit `scroll-margin-top`, damit der Inhalt nicht hinter der festen Leiste landet | `app/layout.tsx`, `app/globals.css` |
+
+Nebenbei behoben: Im Kontaktformular blieb die Fehlermeldung zum AGB-Häkchen stehen, auch nachdem
+es gesetzt war — Feldname (`acceptAGB`) und Fehlerschlüssel (`agb`) fanden sich nicht.
+
+**Nachweis (21.08.2026):** Gegen den Produktionsbuild (`next start`) in **Google Chrome 151**
+gemessen, nicht nur im Code gelesen.
+
+- **Mobiles Menü, geschlossen** (Fensterbreite 500 px, das Panel ist dort *nicht* ausgeblendet,
+  sondern nur seitlich weggeschoben): `display: block`, `inert = true`, und der erste Link darin
+  ließ sich **nicht** fokussieren. Genau der alte Fehler — Tabulator in ein unsichtbares Menü —
+  ist damit nachweislich weg.
+- **Mobiles Menü, geöffnet:** `inert` entfernt, `aria-modal="true"`, kein `aria-hidden`, Name des
+  Dialogs „Menü" aus der sichtbaren Überschrift, Fokus springt auf „Menü schließen".
+- **Fokusrückgabe:** Nach `Esc` **und** nach dem Schließen über das ✕ ist das Panel wieder `inert`
+  und der Fokus liegt auf dem Menü-Knopf. (Über das ✕ war das vorher kaputt.)
+- **Sprunglink:** Auf frisch geladener Seite die erste Tabulator-Station, Text „Zum Inhalt
+  springen", nur bei Fokus sichtbar. Enter setzt den Fokus auf `#hauptinhalt`, dessen Oberkante
+  bei 80 px liegt — exakt unter der 80 px hohen Leiste, nicht dahinter. Kein Fokusrahmen um den
+  ganzen Inhaltsbereich. Die nächste Tabulator-Taste landet **im Inhalt**, nicht wieder in der
+  Navigationsleiste.
+- **Optik unverändert:** Startseite und `/kontakt` bei 1440 px und 500 px gegengeprüft.
+- `npm run lint` und `npm run build` fehlerfrei.
+
+#### Etappe 3 — **offen**
+- **Alternativtexte** aller Bilder prüfen und ergänzen.
+- **Zoom bis 200 %** ohne Verlust von Inhalt oder Bedienbarkeit prüfen.
+- **Sichtprüfung** der Etappen 1 und 2 durch den Auftraggeber — ausdrücklich **auch auf einem
+  echten iPhone** (Lehre aus P1-12: am Rechner funktionierte damals, was am Handy tot war).
+- **Erklärung zur Barrierefreiheit** — hängt an der BFSG-Bewertung durch den Anwalt und wird
+  deshalb erst mit **P0-7** fällig, nicht vorher.
 
 ### P1-4 · Löschkonzept technisch umsetzen · M — **OFFEN**
 Differenzierte Fristen nach `docs/recht-und-datenschutz.md` 2.5; Löschläufe protokollieren.

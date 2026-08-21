@@ -21,6 +21,18 @@ export default function Navbar() {
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
+  /*
+    Schliessen heisst: Panel zu UND Fokus zurueck auf den Menue-Knopf.
+    Das Panel ist geschlossen "inert" - der zuletzt fokussierte Knopf darin
+    verschwindet damit aus der Tabulator-Reihenfolge. Ohne diese Rueckgabe
+    faellt der Fokus auf den Seitenanfang zurueck, und wer per Tastatur
+    arbeitet, muss sich erneut durch die ganze Leiste tabben.
+  */
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false);
+    menuButtonRef.current?.focus();
+  }, []);
+
   // Close menu on route change (e.g., browser back/forward navigation)
   // This effect synchronizes the menu state with the external navigation system.
   // The setState call is intentional and necessary to close the mobile menu
@@ -52,8 +64,7 @@ export default function Navbar() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setIsMenuOpen(false);
-        menuButtonRef.current?.focus();
+        closeMenu();
         return;
       }
 
@@ -83,7 +94,7 @@ export default function Navbar() {
     firstFocusable?.focus();
 
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isMenuOpen]);
+  }, [isMenuOpen, closeMenu]);
 
   // Same-Page-Navigation: Scroll to top wenn bereits auf der Zielseite
   const scrollToTopIfSamePage = useCallback((href: string) => {
@@ -99,10 +110,6 @@ export default function Navbar() {
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(prev => !prev);
-  }, []);
-
-  const closeMenu = useCallback(() => {
-    setIsMenuOpen(false);
   }, []);
 
   return (
@@ -210,7 +217,19 @@ export default function Navbar() {
         aria-hidden="true"
       />
 
-      {/* Panel */}
+      {/*
+        Panel.
+
+        inert statt aria-hidden: Geschlossen ist das Panel nur seitlich aus dem Bild
+        geschoben (translate-x-full), nicht entfernt - seine Links blieben also per
+        Tabulator erreichbar, obwohl sie niemand sieht. aria-hidden allein hat das nicht
+        behoben, sondern verschlimmert: ein fokussierbares Element in einem als "nicht
+        vorhanden" markierten Bereich ist ein Widerspruch, den Vorlese-Software nicht
+        sinnvoll aufloesen kann.
+
+        inert nimmt den Bereich aus BEIDEM - Tabulator-Reihenfolge und Vorlesen - und ist
+        das dafuer vorgesehene HTML-Attribut. Die Einblend-Animation bleibt unberuehrt.
+      */}
       <div
         ref={menuRef}
         id="mobile-menu"
@@ -219,13 +238,14 @@ export default function Navbar() {
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         )}
         role="dialog"
-        aria-modal={isMenuOpen}
-        aria-label="Mobile Navigation"
-        aria-hidden={!isMenuOpen}
+        aria-modal={isMenuOpen || undefined}
+        aria-labelledby="menue-titel"
+        inert={!isMenuOpen}
       >
         {/* Menu Header */}
         <div className="flex items-center justify-between h-20 px-6 border-b border-border-subtle">
-          <span className="text-lg font-bold text-text-900">Menü</span>
+          {/* Traegt zugleich den Namen des Dialogs (aria-labelledby oben). */}
+          <span id="menue-titel" className="text-lg font-bold text-text-900">Menü</span>
           <button
             type="button"
             onClick={closeMenu}
@@ -239,7 +259,12 @@ export default function Navbar() {
         {/* Menu Content */}
         <div className="flex flex-col h-[calc(100%-5rem)] overflow-y-auto">
           {/* Navigation Links */}
-          <div className="flex-1 px-4 py-6" role="navigation" aria-label="Mobile Navigation">
+          {/*
+            Frueher stand hier role="navigation" aria-label="Mobile Navigation".
+            Entfernt: Der Dialog meldet sich bereits als "Menue" - ein zweiter
+            Orientierungspunkt mit demselben Namen darin sagt alles doppelt.
+          */}
+          <div className="flex-1 px-4 py-6">
             <ul className="space-y-1" role="list">
               {navLinks.map((link) => (
                 <li key={link.href}>
