@@ -200,9 +200,9 @@ ${formData.message}
             >
               <CheckCircle className="w-6 h-6 text-success flex-shrink-0 mt-1" aria-hidden="true" />
               <div>
-                <h3 className="text-lg font-bold text-text-900 mb-1">
+                <h2 className="text-lg font-bold text-text-900 mb-1">
                   Vielen Dank für Ihre Nachricht!
-                </h3>
+                </h2>
                 <p className="text-text-900/70">
                   Wir haben Ihre Kontaktanfrage erhalten und werden uns binnen 24 Stunden bei Ihnen melden.
                 </p>

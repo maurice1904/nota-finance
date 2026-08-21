@@ -141,7 +141,7 @@ export default function FAQPage() {
                       Frage in der Ueberschriftenliste eines Screenreaders auf - das ist die
                       uebliche Art, eine FAQ zu ueberfliegen (WCAG 2.4.10 / APG-Akkordeon).
                     */}
-                    <h3 className="text-sm sm:text-base font-semibold text-text-900">
+                    <h2 className="text-sm sm:text-base font-semibold text-text-900">
                       <button
                         type="button"
                         onClick={() => toggleFAQ(index)}
@@ -159,7 +159,7 @@ export default function FAQPage() {
                           )}
                         />
                       </button>
-                    </h3>
+                    </h2>
 
                     {/*
                       Antwort. Zugeklappt ist sie nur optisch auf Hoehe 0 geschrumpft - deshalb

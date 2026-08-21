@@ -219,7 +219,7 @@ export default function BranchenPage() {
                       die Branche in der Ueberschriftenliste eines Screenreaders und laesst sich
                       damit anspringen (WCAG 2.4.10 / APG-Akkordeon).
                     */}
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900">
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-text-900">
                       <button
                         type="button"
                         onClick={() => toggleIndustry(industry.id)}
@@ -242,7 +242,7 @@ export default function BranchenPage() {
                           )}
                         />
                       </button>
-                    </h3>
+                    </h2>
 
                     {/*
                       Zugeklappter Inhalt ist nur optisch auf Hoehe 0 geschrumpft - deshalb
@@ -270,9 +270,9 @@ export default function BranchenPage() {
 
                         {/* Challenge */}
                         <div className="bg-white rounded-xl p-6 border border-border-subtle">
-                          <h4 className="text-base sm:text-lg font-bold text-text-900 mb-3">
+                          <h3 className="text-base sm:text-lg font-bold text-text-900 mb-3">
                             Ihre Herausforderung:
-                          </h4>
+                          </h3>
                           <p className="text-text-900/70 leading-relaxed">
                             {industry.challenge}
                           </p>
@@ -280,9 +280,9 @@ export default function BranchenPage() {
 
                         {/* Solutions */}
                         <div className="bg-white rounded-xl p-6 border border-border-subtle">
-                          <h4 className="text-lg font-bold text-text-900 mb-4">
+                          <h3 className="text-lg font-bold text-text-900 mb-4">
                             Unsere Lösung für Sie:
-                          </h4>
+                          </h3>
                           <ul className="space-y-3">
                             {industry.solutions.map((solution, idx) => (
                               <li key={idx} className="flex items-start gap-2.5">

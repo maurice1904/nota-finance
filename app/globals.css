@@ -87,6 +87,14 @@
  */
 html {
   overflow-x: hidden;
+
+  /*
+   * Sanftes Scrollen stand bisher als Tailwind-Klasse "scroll-smooth" am <html>.
+   * Hier steht es besser: Eine Klasse laesst sich von einer Medienabfrage nicht
+   * ueberstimmen - die Sammelregel weiter unten schaltet es fuer alle ab, die
+   * "Bewegung reduzieren" eingestellt haben.
+   */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -498,5 +506,61 @@ footer :focus-visible,
 @media (prefers-reduced-motion: reduce) {
   .animate-bounce-gentle {
     animation: none;
+  }
+}
+
+/*
+ * BEWEGUNG REDUZIEREN - Sammelregel (WCAG 2.3.3, dazu 2.2.2 fuer Dauerbewegung)
+ *
+ * Wer im Betriebssystem "Bewegung reduzieren" einstellt, tut das meist aus einem
+ * konkreten Grund: Schwindel, Migraene, Uebelkeit bei bewegten Flaechen. Bis August
+ * 2026 haben wir nur zwei einzelne Animationen abgeschaltet - der Dauerzoom des
+ * Hero-Bildes, alle Einblendungen und saemtliche transition-Klassen liefen weiter.
+ *
+ * Statt jede neue Animation einzeln nachzupflegen (und es zu vergessen) greift diese
+ * eine Regel fuer alles. Sie setzt Animationen nicht auf "none", sondern auf nahezu
+ * null Dauer: So erreichen sie ihren Endzustand sofort, statt im Anfangszustand
+ * steckenzubleiben - eine Einblendung endet damit sichtbar und nicht unsichtbar.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /*
+   * Zwei Ausnahmen von "sofort zum Endzustand": Diese beiden laufen endlos und
+   * haben keinen sinnvollen Endzustand. Der Hero-Zoom bliebe sonst dauerhaft auf
+   * 1,4-facher Vergroesserung stehen. Sie werden ganz angehalten.
+   */
+  .animate-slow-zoom,
+  .animate-marquee {
+    animation: none !important;
+  }
+
+  /* Einblenden beim Scrollen entfaellt ganz - der Inhalt steht sofort da. */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/*
+ * SICHERHEITSNETZ OHNE JAVASCRIPT
+ *
+ * RevealOnScroll blendet Inhalte beim Scrollen ein und startet dafuer mit
+ * opacity: 0. Laeuft kein JavaScript, greift der Einblendeschritt nie - grosse
+ * Teile von Startseite, Preisen und Branchen blieben dann DAUERHAFT unsichtbar.
+ * Diese Regel macht sie in dem Fall sofort sichtbar.
+ */
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

@@ -123,12 +123,25 @@ export default function Navbar() {
               onClick={() => handleLinkClick("/")}
               className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity duration-300"
           >
+            {/*
+              width/height sind die ECHTEN Masse der Datei (144 x 147, nachgemessen),
+              nicht die Anzeigegroesse. Nur so kennt der Browser das Seitenverhaeltnis
+              und haelt den Platz beim Laden korrekt frei - vorher stand hier 40 x 40,
+              also ein Quadrat, das die Datei gar nicht ist.
+              Die Anzeigegroesse macht die Klasse: h-10 = 40 px hoch, Breite ergibt sich.
+              Gerendert also 39,18 x 40 px - genau wie vorher.
+
+              shrink-0: In einer schmalen Flex-Zeile wuerde das Logo sonst gestaucht.
+
+              alt="": Das Logo ist hier DEKORATIV, weil direkt daneben "Nota Finance"
+              als Text steht. Mit Alternativtext hoerte man den Namen zweimal.
+            */}
             <Image
               src="/logo.png"
-              alt="Nota Finance Logo"
-              width={40}
-              height={40}
-              className="object-contain"
+              alt=""
+              width={144}
+              height={147}
+              className="h-10 w-auto shrink-0"
             />
               {/* Mobile: Stacked brand name */}
               <span className="sm:hidden text-base font-bold text-text-900 leading-tight">

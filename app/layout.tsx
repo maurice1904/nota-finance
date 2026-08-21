@@ -228,8 +228,11 @@ export default function RootLayout({
     </Providers>
   );
 
+  // Sanftes Scrollen stand hier bis August 2026 als Klasse "scroll-smooth".
+  // Es steht jetzt in app/globals.css - nur dort laesst es sich fuer Menschen
+  // abschalten, die "Bewegung reduzieren" eingestellt haben (Begruendung dort).
   return (
-    <html lang="de" className="scroll-smooth">
+    <html lang="de">
       <head>
         <script
           type="application/ld+json"

@@ -65,11 +65,17 @@ export default function TrustSlider() {
   return (
     <section
       ref={sectionRef}
+      aria-labelledby="partner-titel"
       className={`py-12 sm:py-16 border-t border-border-subtle bg-white transition-all duration-700 ease-out overflow-hidden ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
       }`}
     >
-      <p className="text-center text-xs sm:text-sm font-medium text-neutral-500 mb-8 sm:mb-10 uppercase tracking-widest">
+      {/*
+        Traegt den Namen des Abschnitts (aria-labelledby oben). Bewusst ein <p> und
+        keine Ueberschrift: Die Ueberschriften-Regeln in globals.css wuerden den
+        Zeichenabstand ueberschreiben und die Zeile optisch veraendern.
+      */}
+      <p id="partner-titel" className="text-center text-xs sm:text-sm font-medium text-neutral-500 mb-8 sm:mb-10 uppercase tracking-widest">
         Unsere Partner
       </p>
       
@@ -109,8 +115,14 @@ export default function TrustSlider() {
       <div className="sm:hidden relative">
         <div className="flex animate-marquee">
           {marqueeLogos.map((partner, index) => (
+            /*
+              Fuer das nahtlose Endlos-Laufband steht jedes Logo ZWEIMAL in der Liste.
+              Die zweite Haelfte ist eine reine Wiederholung - ohne aria-hidden liest
+              ein Screenreader jeden Partner doppelt vor.
+            */
             <div
               key={`${partner.name}-${index}`}
+              aria-hidden={index >= partners.length}
               className="flex-shrink-0 flex items-center justify-center w-32 mx-8"
             >
               {/* Uniform container - height-driven sizing */}

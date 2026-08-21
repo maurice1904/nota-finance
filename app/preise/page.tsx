@@ -228,7 +228,7 @@ export default function PreisePage() {
               <RevealOnScroll delay={0}>
                 <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
                   <CheckCircle className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-                  <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Außergerichtlich</h3>
+                  <h2 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Außergerichtlich</h2>
                   <p className="text-text-900/70">Für Sie als Auftraggeber kostenfrei</p>
                 </div>
               </RevealOnScroll>
@@ -236,7 +236,7 @@ export default function PreisePage() {
               <RevealOnScroll delay={100}>
                 <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
                   <Euro className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-                  <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">100% Auszahlung</h3>
+                  <h2 className="text-lg sm:text-xl font-bold text-text-900 mb-2">100% Auszahlung</h2>
                   <p className="text-text-900/70">Sie erhalten Ihren vollen Rechnungsbetrag</p>
                 </div>
               </RevealOnScroll>
@@ -244,7 +244,7 @@ export default function PreisePage() {
               <RevealOnScroll delay={200}>
                 <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
                   <TrendingUp className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-                  <h3 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Plus Nebenforderungen</h3>
+                  <h2 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Plus Nebenforderungen</h2>
                   <p className="text-text-900/70">Mahnkosten & Verzugszinsen zusätzlich</p>
                 </div>
               </RevealOnScroll>

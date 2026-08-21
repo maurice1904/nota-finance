@@ -1056,6 +1056,15 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                         title="Erneut versuchen"
                       >
                         <RefreshCcw className="w-4 h-4" />
+                        {/*
+                          title allein reicht nicht: Es wird nicht von jedem Screenreader
+                          vorgelesen und ist am Handy gar nicht sichtbar. Der Text hier ist
+                          echter Inhalt, nur optisch versteckt - und nennt die Datei, weil
+                          "Erneut versuchen" bei fuenf Dateien sonst mehrdeutig ist.
+                        */}
+                        <span className="sr-only">
+                          {uploadedFile.file.name} erneut hochladen
+                        </span>
                       </button>
                     )}
                     
@@ -1068,6 +1077,9 @@ export default function UploadForm({ showSuccess = false }: UploadFormProps) {
                         title="Entfernen"
                       >
                         <X className="w-4 h-4 text-neutral-500" />
+                        <span className="sr-only">
+                          {uploadedFile.file.name} entfernen
+                        </span>
                       </button>
                     )}
                   </div>

@@ -19,11 +19,17 @@ export default function Footer() {
             >
               <Linkedin className="w-5 h-5 group-hover:text-brand-700 transition-colors duration-300" />
               Folgen Sie uns auf LinkedIn
+              {/* Der Link oeffnet einen neuen Tab. Ohne Hinweis ist das fuer
+                  Screenreader-Nutzer ein unerwarteter Kontextwechsel (WCAG 3.2.5). */}
+              <span className="sr-only"> (öffnet in neuem Tab)</span>
             </a>
           </div>
 
           {/* Right Side - Links */}
-          <div className="flex flex-wrap gap-6 md:justify-end items-center">
+          <nav
+            aria-label="Rechtliches und Kontakt"
+            className="flex flex-wrap gap-6 md:justify-end items-center"
+          >
             <Link 
               href="/impressum" 
               className="text-sm text-surface-100 hover:text-white transition-colors duration-300"
@@ -48,7 +54,7 @@ export default function Footer() {
             >
               Kontakt
             </Link>
-          </div>
+          </nav>
         </div>
       </div>
     </footer>

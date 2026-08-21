@@ -61,9 +61,19 @@ export default function RevealOnScroll({
 
   const Component = Tag as React.ElementType;
 
+  /*
+    data-reveal ist der Haken fuer zwei Sicherheitsnetze in app/globals.css:
+    ohne JavaScript und bei "Bewegung reduzieren" wird der Inhalt sofort sichtbar
+    gemacht. Ohne das blieben ganze Seitenteile DAUERHAFT unsichtbar, weil dieses
+    Element mit opacity: 0 startet und erst JavaScript es einblendet.
+
+    Die Regeln dort arbeiten mit !important - nur so setzen sie sich gegen die
+    Angaben im style-Attribut unten durch.
+  */
   return (
     <Component
       ref={ref}
+      data-reveal={isVisible ? "sichtbar" : "wartet"}
       className={cn(className)}
       style={{
         opacity: isVisible ? 1 : 0,
