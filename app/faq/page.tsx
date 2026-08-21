@@ -37,7 +37,7 @@ const faqs: FAQItem[] = [
     question: "Was passiert, nachdem ich eine Forderung eingereicht habe? Wie ist der Ablauf?",
     answer: [
       "Nachdem Sie Ihre Forderung bei uns eingereicht haben, durchläuft der Fall folgende Schritte:",
-      "• Prüfung & Bestätigung: Wir prüfen Ihre Unterlagen umgehend. Sie erhalten automatisch eine Eingangsbestätigung inklusive Ihres Aktenzeichens per E-Mail.",
+      "• Prüfung & Bestätigung: Sie erhalten sofort eine automatische Eingangsbestätigung per E-Mail. Wir prüfen Ihre Unterlagen umgehend; nach der Prüfung erhalten Sie eine Auftragsbestätigung mit Ihrem Aktenzeichen.",
       "• Außergerichtliches Mahnverfahren: Wir nehmen Kontakt zu Ihrem Schuldner auf und starten das professionelle Mahnverfahren. Unser Ziel ist eine schnelle und gütliche Einigung.",
       "• Kommunikation: Wir halten Sie über wesentliche Entwicklungen auf dem Laufenden.",
       "• Zahlungseingang: Bei erfolgreichem Einzug leiten wir Ihnen 100% Ihrer Hauptforderung zuzüglich den Ihnen zustehenden Mahngebühren und Verzugszinsen umgehend weiter.",

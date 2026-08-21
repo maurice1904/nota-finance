@@ -32,7 +32,7 @@ const faqItems = [
   {
     question: "Was passiert, nachdem ich eine Forderung eingereicht habe?",
     answer:
-      "Nachdem Sie Ihre Forderung bei uns eingereicht haben, prüfen wir Ihre Unterlagen umgehend. Sie erhalten automatisch eine Eingangsbestätigung inklusive Ihres Aktenzeichens per E-Mail. Wir starten das außergerichtliche Mahnverfahren und halten Sie über wesentliche Entwicklungen auf dem Laufenden.",
+      "Nachdem Sie Ihre Forderung bei uns eingereicht haben, erhalten Sie sofort eine automatische Eingangsbestätigung per E-Mail. Wir prüfen Ihre Unterlagen umgehend; nach der Prüfung erhalten Sie eine Auftragsbestätigung mit Ihrem Aktenzeichen. Wir starten das außergerichtliche Mahnverfahren und halten Sie über wesentliche Entwicklungen auf dem Laufenden.",
   },
   {
     question: "Wie lange dauert es, bis ich mein Geld erhalte?",

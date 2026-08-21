@@ -205,10 +205,10 @@ export default function Home() {
                     Wir übernehmen
                   </h3>
                   <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
-                    Den Eingang inklusive Aktenzeichen bestätigen wir automatisch nach Prüfung der 
-                    Dokumente per Bestätigungs-E-Mail. Wir führen das außergerichtliche Mahnverfahren 
-                    durch und leiten bei Bedarf nach Rücksprache mit Ihnen auch das gerichtliche 
-                    Mahnverfahren ein.
+                    Den Eingang bestätigen wir Ihnen sofort per E-Mail. Nach Prüfung der Unterlagen 
+                    erhalten Sie eine Auftragsbestätigung mit Ihrem Aktenzeichen. Wir führen das 
+                    außergerichtliche Mahnverfahren durch und leiten bei Bedarf nach Rücksprache mit 
+                    Ihnen auch das gerichtliche Mahnverfahren ein.
                   </p>
                 </div>
               </RevealOnScroll>
@@ -259,10 +259,10 @@ export default function Home() {
                     Wir übernehmen
                   </h3>
                   <p className="text-sm text-text-900/70 leading-relaxed">
-                    Den Eingang inklusive Aktenzeichen bestätigen wir automatisch nach Prüfung der 
-                    Dokumente per Bestätigungs-E-Mail. Wir führen das außergerichtliche Mahnverfahren 
-                    durch und leiten bei Bedarf nach Rücksprache mit Ihnen auch das gerichtliche 
-                    Mahnverfahren ein.
+                    Den Eingang bestätigen wir Ihnen sofort per E-Mail. Nach Prüfung der Unterlagen 
+                    erhalten Sie eine Auftragsbestätigung mit Ihrem Aktenzeichen. Wir führen das 
+                    außergerichtliche Mahnverfahren durch und leiten bei Bedarf nach Rücksprache mit 
+                    Ihnen auch das gerichtliche Mahnverfahren ein.
                   </p>
                 </div>
               </div>

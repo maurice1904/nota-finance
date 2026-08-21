@@ -102,8 +102,9 @@ export default function ProcessTimeline() {
               <div>
                 <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">Automatische Prüfung & Bestätigung:</h4>
                 <p className="leading-relaxed">
-                  Nach dem Upload prüfen wir die Unterlagen umgehend. Sie erhalten automatisch eine 
-                  Eingangsbestätigung inklusive Ihres Aktenzeichens per E-Mail.
+                  Sie erhalten sofort eine automatische Eingangsbestätigung per E-Mail. Wir prüfen 
+                  Ihre Unterlagen umgehend; nach der Prüfung erhalten Sie eine Auftragsbestätigung 
+                  mit Ihrem Aktenzeichen.
                 </p>
               </div>
             </div>

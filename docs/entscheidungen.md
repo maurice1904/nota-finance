@@ -39,6 +39,7 @@ Neue Entscheidungen werden hier ergänzt, nicht ersetzt. Stand: August 2026.
 | 25 | **„Automatischer Inkassostart" bleibt in den Texten** | Aussage ist korrekt: zuerst fachliche Prüfung, danach automatisierter Verfahrensablauf | — |
 | 26 | **Fotos werden akzeptiert und alle Bilder einer Einreichung zu EINEM mehrseitigen PDF zusammengeführt**; Originale bleiben gespeichert | Kunden fotografieren mehrseitige Rechnungen mit dem Handy — ein Dokument statt loser Bilder ist ein spürbarer Kundenvorteil, besonders für Handwerk und private Vermieter | wenn sich zeigt, dass Fotos häufig zu verschiedenen Forderungen gehören |
 | 27 | **E3 (Hero-Kontrast) und E4 (Trust-Logos grayscale) bleiben unverändert** | vom Auftraggeber am Bildschirm geprüft und für gut befunden — schlägt die Code-Analyse | — |
+| 28 | **`validFrom: "2024-01-01"` bei den Preisangaben (`app/preise/layout.tsx`) bleibt** | vom Auftraggeber geprüft; betrifft die Gültigkeit der Preise, nicht das Gründungsjahr — kein Widerspruch zu „gegründet 2008" aus P1-6/P1-13 | bei einer Preisänderung |
 
 ---
 

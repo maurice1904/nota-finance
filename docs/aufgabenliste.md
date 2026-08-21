@@ -188,7 +188,7 @@ Download der Storage-Dateien in einen datierten lokalen Ordner; Ordner in `.giti
 **Endlösung:** siehe P1-10.
 **Abnahme:** Sicherung einmal erzeugt und Inhalt geprüft; Ergebnis in der TOM-Dokumentation vermerkt.
 
-### P1-11 · Aktenzeichen-Formulierungen vereinheitlichen · S
+### P1-11 · ERLEDIGT — Aktenzeichen-Formulierungen vereinheitlicht
 **Entschieden:** Der **automatische Inkassostart bleibt** in den Texten — die Aussage ist korrekt,
 weil zuerst die fachliche Prüfung erfolgt und der Verfahrensablauf danach automatisiert läuft.
 **Zu ändern:** Überall, wo ein Aktenzeichen erwähnt wird, muss sinngemäß stehen:
@@ -199,6 +199,22 @@ Eingangsbestätigung (Entscheidung 17: der Vater vergibt es erst nach der Prüfu
 ergibt (auch E-Mail-Vorlagen in `lib/email.ts` prüfen).
 **Abnahme:** Keine Fundstelle verspricht ein sofortiges Aktenzeichen; alle Formulierungen knüpfen es
 an die Prüfung.
+
+**Umgesetzt (August 2026) — mit einer Erweiterung gegenüber der ursprünglichen Vorgabe:**
+Beim Durchsehen zeigte sich, dass die **AGB den Ablauf bereits korrekt beschreiben** (§ 4 Abs. 4
+und 5): Es sind **zwei** E-Mails — die Eingangsbestätigung geht unmittelbar nach dem Upload raus,
+dokumentiert nur den Zugang und ist **noch keine Annahme**; erst die separate **Auftragsbestätigung**
+nach der Prüfung nennt das Inkassoaktenzeichen. Die Werbetexte behaupteten dagegen eine einzige
+Bestätigung, die das Aktenzeichen schon enthält. Auf Weisung des Auftraggebers wurden die Texte
+deshalb nicht nur entkoppelt, sondern an den AGB-Ablauf angeglichen — Website und AGB sagen jetzt
+dasselbe (senkt zugleich das UWG-Risiko aus `docs/marke-und-texte.md`, Abschnitt 3).
+
+Geändert: `app/page.tsx` (2 Stellen), `components/ProcessTimeline.tsx`,
+`components/EinreichenContent.tsx`, `app/faq/page.tsx`, `app/faq/layout.tsx` (JSON-LD).
+Bereits korrekt und unverändert: `lib/email.ts` (Kundenmail) und `components/UploadForm.tsx`
+(Bestätigungskasten). **Nicht angefasst:** das RDG-Register-Aktenzeichen im Impressum (andere
+Bedeutung) und die AGB selbst (gesperrter Rechtstext, dort steht es richtig).
+Der automatische Inkassostart bleibt wie entschieden erhalten.
 
 ### P1-12 · ERLEDIGT — Fotos erlauben und zu EINEM PDF zusammenführen
 **Entschieden:** Kunden sollen Rechnungen abfotografieren können. **Alle Bilder einer Einreichung
@@ -265,11 +281,17 @@ speichert. Das ist eine Verarbeitung, die die AGB bisher nicht beschreiben.
 **Abnahme:** AGB nennen die tatsächlich zulässigen Formate (erfüllt); anwaltliche Bestätigung der
 Foto-Verarbeitung liegt vor (offen).
 
-### P1-13 · Strukturierte Daten korrigieren · S
-**Problem:** Im JSON-LD (`app/layout.tsx`, Z. 114–119, 123, 148) stehen `foundingDate: "2024"`,
-„über 15 Jahren Erfahrung" und falsche Logo-Maße (512 × 512 statt 144 × 147).
-**Lösung:** Gründungsjahr 2008, Erfahrungsangabe konsistent zu P1-6, echte Logo-Maße.
-**Abnahme:** Keine widersprüchliche Jahresangabe mehr im Projekt.
+### P1-13 · ERLEDIGT — Strukturierte Daten korrigiert
+**Problem:** Im JSON-LD (`app/layout.tsx`) standen `foundingDate: "2024"` und falsche Logo-Maße.
+**Umgesetzt (August 2026):** `foundingDate` auf **2008**; Logo-Maße auf die tatsächlichen
+**144 × 147** (an `public/logo.png` nachgemessen, nicht aus der Aufgabenbeschreibung übernommen).
+Die Erfahrungsangabe „über 15 Jahren Erfahrung" war bereits durch P1-6 vereinheitlicht und steht so
+an sieben Stellen — sie wurde deshalb **bewusst nicht geändert**; sie ist zu Gründung 2008
+widerspruchsfrei.
+**Geprüft und bewusst so belassen:** `app/preise/layout.tsx` Z. 28 nennt `validFrom: "2024-01-01"`
+für die Preisangaben. Vom Auftraggeber am 21.08.2026 gesichtet und für in Ordnung befunden — es ist
+keine Aussage über das Unternehmensalter. Nicht erneut aufwerfen (Entscheidung 28).
+**Abnahme:** Keine widersprüchliche Jahresangabe zum Unternehmen mehr im Projekt (erfüllt).
 
 ### P1-10 · Supabase-Tarif vor dem Livegang · S
 **Zwei Probleme des kostenlosen Tarifs:**

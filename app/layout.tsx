@@ -114,13 +114,17 @@ const organizationSchema = {
   logo: {
     "@type": "ImageObject",
     url: "https://www.notafinance.de/logo.png",
-    width: 512,
-    height: 512,
+    // Tatsaechliche Masse von public/logo.png. Falsche Angaben hier fuehren dazu, dass
+    // Suchmaschinen das Logo verzerrt oder gar nicht uebernehmen.
+    width: 144,
+    height: 147,
   },
   image: "https://www.notafinance.de/logo.png",
   description:
     "Digitales Inkasso und Forderungsmanagement für Freelancer, Selbstständige und KMU. Ohne Registrierung, ohne Vertragsbindung, ab 50€.",
-  foundingDate: "2024",
+  // Gruendungsjahr der twenty4collect GmbH laut Handelsregister. Muss zu den
+  // Erfahrungsangaben auf der Website passen (P1-6: "ueber 15 Jahren Erfahrung").
+  foundingDate: "2008",
   areaServed: {
     "@type": "Country",
     name: "Germany",

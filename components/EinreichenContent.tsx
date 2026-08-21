@@ -40,7 +40,8 @@ export default function EinreichenContent({ showSuccess = false }: EinreichenCon
               {/* Subtext */}
               <p className="text-text-900/70 leading-relaxed mb-6 lg:mb-8">
                 Laden Sie Ihre Rechnung(en) hoch – als PDF, XRechnung, ZUGFeRD oder einfach abfotografiert.
-                Wir bestätigen den Eingang per E-Mail mit eindeutigem Aktenzeichen und starten das Inkasso direkt.
+                Wir bestätigen den Eingang sofort per E-Mail. Nach der Prüfung erhalten Sie Ihr
+                Aktenzeichen und das Inkasso startet automatisch.
               </p>
 
               {/* Quick Links - Only visible on desktop */}
