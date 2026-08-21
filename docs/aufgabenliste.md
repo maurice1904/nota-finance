@@ -28,7 +28,7 @@ mehr nachvollziehbar, worauf der Status beruht.
 | P1-0 | Upload-Endpunkt serverseitig absichern (vor Go-live) | **OFFEN** |
 | P1-1 | Zweites E-Mail-Feld bleibt | **ENTFÄLLT** |
 | P1-2 | Trust-Logos abgestimmt | **ERLEDIGT** |
-| P1-3 | Barrierefreiheit WCAG 2.1 AA | **OFFEN** (Etappen 1 und 2 erledigt) |
+| P1-3 | Barrierefreiheit WCAG 2.1 AA | **OFFEN** (Etappen 1–3 erledigt) |
 | P1-4 | Löschkonzept technisch umsetzen | **OFFEN** |
 | P1-5 | DSGVO-Pflichtdokumentation | **OFFEN** |
 | P1-6 | Erfahrungsangaben und Farbpalette vereinheitlichen | **ERLEDIGT** |
@@ -197,7 +197,7 @@ Unternehmen abgestimmt. **Offene Empfehlung (kein Blocker):** kurze schriftliche
 sichern (E-Mail genügt), da im Abmahnfall die Beweislast bei uns liegt. „TÜV" nur, falls eine
 Zertifizierung tatsächlich vorliegt.
 
-### P1-3 · Barrierefreiheit WCAG 2.1 AA · L — **OFFEN** (Etappen 1 und 2 erledigt)
+### P1-3 · Barrierefreiheit WCAG 2.1 AA · L — **OFFEN** (Etappen 1–3 erledigt)
 Tastaturbedienbarkeit, Fokus, Kontraste, `label`, Textfehlermeldungen, Alternativtexte, Zoom 200 %.
 Erklärung zur Barrierefreiheit ergänzen, sobald die BFSG-Bewertung vorliegt.
 
@@ -243,13 +243,56 @@ gemessen, nicht nur im Code gelesen.
 - **Optik unverändert:** Startseite und `/kontakt` bei 1440 px und 500 px gegengeprüft.
 - `npm run lint` und `npm run build` fehlerfrei.
 
-#### Etappe 3 — **offen**
-- **Alternativtexte** aller Bilder prüfen und ergänzen.
+#### Etappe 3 — **erledigt (21.08.2026)**
+
+Bewegung, Logo, Überschriftenstruktur und Benennungen.
+
+| Schritt | Was | Dateien |
+|---|---|---|
+| 9 | **Bewegung reduzieren.** Sanftes Scrollen wanderte von der Tailwind-Klasse `scroll-smooth` in die CSS-Datei — nur dort lässt es sich per Medienabfrage abschalten, eine Klasse überstimmt jede Medienabfrage. Statt zwei einzeln abgeschalteter Animationen greift jetzt **eine Sammelregel** für alle Animationen und Übergänge; vorher liefen Hero-Dauerzoom, alle Einblendungen und sämtliche `transition-*`-Klassen ungebremst weiter. Zusätzlich ein **Sicherheitsnetz ohne JavaScript**: `RevealOnScroll` startet mit `opacity: 0` — ohne JavaScript blieben große Teile von Startseite, Preisen und Branchen dauerhaft unsichtbar. | `app/globals.css`, `app/layout.tsx`, `components/RevealOnScroll.tsx` |
+| 10 | **Logo.** `width`/`height` sind jetzt die echten Maße der Datei (**144 × 147**, nachgemessen) statt der falschen Angabe 40 × 40; die Anzeigegröße macht die Klasse `h-10 w-auto`. Dazu `shrink-0` gegen Stauchung in schmalen Zeilen und `alt=""`, weil direkt daneben „Nota Finance" als Text steht — sonst hört man den Namen zweimal. | `components/Navbar.tsx` |
+| 11 | **Überschriftenstruktur und Benennungen.** Vier Seiten sprangen von `h1` direkt auf `h3` (Branchen, Preise, FAQ, Kontakt) — auf `h2` gehoben, Branchen zusätzlich `h4` → `h3`. Die Symbolknöpfe „Erneut versuchen"/„Entfernen" hatten nur ein `title`, das nicht jeder Screenreader vorliest und das am Handy unsichtbar ist — jetzt echter Text **mit Dateiname**. Im Partner-Laufband war jedes Logo doppelt hinterlegt und wurde doppelt vorgelesen. Die Fußzeile bekam einen Orientierungspunkt, und der LinkedIn-Link kündigt den neuen Tab an. | `app/branchen/page.tsx`, `app/preise/page.tsx`, `app/faq/page.tsx`, `app/kontakt/page.tsx`, `components/UploadForm.tsx`, `components/TrustSlider.tsx`, `components/Footer.tsx` |
+
+**Nachweis (21.08.2026):** Gegen den Produktionsbuild in **Google Chrome 151** gemessen.
+
+- **Überschriften:** Startseite `h1 h2 h3 h3 h3 h3 h3 h3 h2 h3 h3 h3 h3 h2 h3 h3 h3 h2` — **keine
+  übersprungene Ebene**. Branchen, Preise, FAQ und Kontakt ebenfalls sprungfrei (vorher überall
+  `h1 → h3`).
+- **Logo:** `alt=""`, gerendert **39,18 × 40 px** — auf zwei Nachkommastellen identisch zu vorher.
+- **Scrollen:** `scroll-behavior` am `<html>` ist `smooth`, kommt aus der CSS-Datei, `<html>` trägt
+  keine Klasse mehr.
+- **Partner-Laufband:** 10 Kacheln, davon **5 vorgelesen** — jeder der fünf Partner genau einmal.
+- **Fußzeile:** Orientierungspunkt „Rechtliches und Kontakt"; der LinkedIn-Link heißt für
+  Vorlese-Software „Folgen Sie uns auf LinkedIn (öffnet in neuem Tab)".
+- **Sicherheitsnetz:** 11 wartende Elemente standen auf `opacity: 0`; mit der Regel wechselten sie
+  auf `1`. Damit ist belegt, dass sich das `!important` gegen das `style`-Attribut durchsetzt —
+  ohne diesen Beleg wäre die Regel wirkungslos gewesen.
+- `npm run lint` und `npm run build` fehlerfrei.
+
+**Bekannte, bewusst hingenommene Nebenwirkung:** `app/globals.css` koppelt die Typografie an die
+Überschriften*ebene* (`h2` enger als `h3`). Das Heben von `h3` auf `h2` verändert deshalb messbar
+die Darstellung — bei den Branchen-Überschriften (24 px) die Zeilenhöhe von 30,0 auf 28,8 px und
+den Zeichenabstand von −0,48 auf −0,60 px je Zeichen. Alle betroffenen Überschriften sind einzeilig,
+sichtbar ist das praktisch nicht. Die saubere Lösung wäre, Aussehen und Ebene in `globals.css` zu
+entkoppeln — **eigene Entscheidung, bewusst nicht nebenbei erledigt.**
+
+**Merkposten aus dieser Etappe:** `npm run build` erzeugte das CSS-Bündel trotz geänderter Quelle
+nicht neu — die neuen Regeln fehlten im Ergebnis. Erst `rm -rf .next` mit anschließendem Neubau
+brachte sie hinein. **Wenn eine CSS-Änderung lokal nicht ankommt, ist das der erste Griff.** Für
+Vercel unkritisch, dort wird ohnehin frisch gebaut.
+
+#### Etappe 4 — **offen**
+- **Alternativtexte** aller Bilder prüfen und ergänzen. (Das Navigations-Logo ist mit Etappe 3
+  erledigt; offen sind vor allem die Partner-Logos und die Hero-Bilder.)
 - **Zoom bis 200 %** ohne Verlust von Inhalt oder Bedienbarkeit prüfen.
-- **Sichtprüfung** der Etappen 1 und 2 durch den Auftraggeber — ausdrücklich **auch auf einem
+- **Sichtprüfung** der Etappen 1 bis 3 durch den Auftraggeber — ausdrücklich **auch auf einem
   echten iPhone** (Lehre aus P1-12: am Rechner funktionierte damals, was am Handy tot war).
-- **Erklärung zur Barrierefreiheit** — hängt an der BFSG-Bewertung durch den Anwalt und wird
-  deshalb erst mit **P0-7** fällig, nicht vorher.
+  Dazu gehört ein Durchgang mit eingeschaltetem „Bewegung reduzieren": Hero-Zoom und Laufband
+  müssen stehen, und **nichts darf unsichtbar bleiben**.
+
+#### Nicht Teil der Etappen: Erklärung zur Barrierefreiheit
+Hängt an der BFSG-Bewertung durch den Anwalt und wird deshalb erst mit **P0-7** fällig, nicht
+vorher. Bewusst getrennt geführt, damit sie die technischen Etappen nicht blockiert.
 
 ### P1-4 · Löschkonzept technisch umsetzen · M — **OFFEN**
 Differenzierte Fristen nach `docs/recht-und-datenschutz.md` 2.5; Löschläufe protokollieren.
