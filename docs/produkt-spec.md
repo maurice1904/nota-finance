@@ -110,7 +110,7 @@ lose Bilder. Das PDF ist die Verpackung, die Originalbilder bleiben der Nachweis
 | Seitenreihenfolge | Auswahlreihenfolge des Kunden |
 | Hochgeladene PDF- und XML-Dateien | bleiben **unverändert** und wandern nicht in das erzeugte PDF |
 | Gemischte Einreichung (z. B. 2 Fotos + 1 PDF) | ergibt zwei Dokumente: erzeugtes Foto-PDF und Original-PDF |
-| Originalbilder | bleiben zusätzlich im Storage — sie werden nie automatisch gelöscht |
+| Originalbilder | bleiben zusätzlich im Storage — kein interner Fehler löscht sie; planmäßige Löschung erst nach Ablauf der Aufbewahrungsfrist (P1-4) |
 | Mailanhang und signierter Link | zeigen auf das **erzeugte** PDF |
 
 **Technisch:** Der Browser lädt die Originale direkt zu Supabase; die Route
@@ -169,8 +169,12 @@ erfolgreichen Datei-Upload, nicht an internen Schritten, die er nicht beeinfluss
 | Bestätigungsmail an Kunden scheitert | unkritisch; Fall bleibt gültig; Fehler loggen |
 
 **Drei feste Regeln:**
-- Die hochgeladene **Datei wird niemals automatisch gelöscht** — sie ist der Fall. (Ein früher Entwurf
-  sah ein Löschen bei DB-Fehler vor — falsch, ausdrücklich verworfen.)
+- Die hochgeladene **Datei wird niemals als Reaktion auf einen internen Fehler gelöscht** — nicht bei
+  fehlgeschlagenem Datenbankeintrag, nicht bei fehlgeschlagenem Mailversand, nicht bei Teilfehlern im
+  Mehrfach-Upload. Sie ist der Fall. (Ein früher Entwurf sah ein Löschen bei DB-Fehler vor — falsch,
+  ausdrücklich verworfen.) **Davon zu unterscheiden ist die planmäßige Löschung nach Ablauf der
+  Aufbewahrungsfrist** (90 Tage, protokolliert, mit Ausnahme über den Aufbewahrungs-Haken) — siehe
+  Löschkonzept, `docs/recht-und-datenschutz.md` 2.5, und Aufgabe P1-4.
 - Die **interne Mail (mit Anhang) wird schon nach erfolgreichem Datei-Upload** ausgelöst, nicht erst
   nach erfolgreichem DB-Insert — so entsteht die unabhängige Kopie unabhängig von der Datenbank.
 - **Bei mehreren Dateien in einem Vorgang:** Die interne Mail wird ausgelöst, sobald **mindestens

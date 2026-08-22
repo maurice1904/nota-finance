@@ -377,3 +377,65 @@ export async function sendUploadNotifications(
     internal: internalResult,
   };
 }
+
+/**
+ * Warnt das Backoffice, wenn der automatische Löschlauf auf Fehler gestoßen ist (P1-4).
+ *
+ * Bewusst **nur** bei Fehlern: Eine tägliche Erfolgsmeldung wären 365 Nachrichten im Jahr, die
+ * niemand liest — und in denen die eine wichtige untergeht. Ein stiller erfolgreicher Lauf ist
+ * über die Tabelle `loeschlaeufe` jederzeit nachvollziehbar.
+ *
+ * Enthält bewusst keine personenbezogenen Daten: nur Anzahlen, Fristen und Fehlertexte.
+ */
+export async function sendLoeschlaufWarnung(
+  ergebnis: string,
+  fehlermeldungen: string[]
+): Promise<EmailResult> {
+  const apiKey = process.env.RESEND_API_KEY;
+
+  if (!apiKey) {
+    const error = "RESEND_API_KEY not configured";
+    console.error("[Email]", error);
+    return { success: false, error };
+  }
+
+  try {
+    const resend = new Resend(apiKey);
+
+    const liste = fehlermeldungen
+      .map((m) => `<li style="margin-bottom: 6px;">${m}</li>`)
+      .join("");
+
+    const { error } = await resend.emails.send({
+      from: EMAIL_FROM,
+      to: EMAIL_INTERNAL_RECIPIENT,
+      subject: "Löschlauf mit Fehlern beendet",
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+          <h2 style="color: #b00020; font-size: 18px;">Der automatische Löschlauf ist auf Fehler gestoßen</h2>
+          <p style="line-height: 1.6;">Ergebnis des Laufs:</p>
+          <p style="background: #f8f9fa; padding: 12px 16px; border-radius: 6px; line-height: 1.6;">${ergebnis}</p>
+          <p style="line-height: 1.6;">Aufgetretene Fehler:</p>
+          <ul style="line-height: 1.6; padding-left: 20px;">${liste}</ul>
+          <p style="line-height: 1.6; font-size: 13px; color: #666;">
+            Nichts ist verloren gegangen: Was nicht gelöscht werden konnte, bleibt liegen und wird
+            beim nächsten Lauf erneut versucht. Alle Läufe stehen in der Supabase-Tabelle
+            <strong>loeschlaeufe</strong>.
+          </p>
+          ${getImpressumFooterHtml()}
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error("[Email] Löschlauf-Warnung failed:", error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
+    console.error("[Email] Löschlauf-Warnung error:", errorMessage);
+    return { success: false, error: errorMessage };
+  }
+}

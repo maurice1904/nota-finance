@@ -29,13 +29,13 @@ mehr nachvollziehbar, worauf der Status beruht.
 | P1-1 | Zweites E-Mail-Feld bleibt | **ENTFÄLLT** |
 | P1-2 | Trust-Logos abgestimmt | **ERLEDIGT** |
 | P1-3 | Barrierefreiheit WCAG 2.1 AA | **OFFEN** (Etappen 1–3 erledigt) |
-| P1-4 | Löschkonzept technisch umsetzen | **OFFEN** |
+| P1-4 | Löschkonzept technisch umsetzen | **ERLEDIGT** |
 | P1-5 | DSGVO-Pflichtdokumentation | **OFFEN** |
 | P1-6 | Erfahrungsangaben und Farbpalette vereinheitlichen | **ERLEDIGT** |
 | P1-7 | Projekt-ID und Konfiguration aus Umgebungsvariablen | **ERLEDIGT** |
 | P1-8 | Sicherheitswarnungen prüfen | **ERLEDIGT** |
-| P1-9 | Datensicherung | **OFFEN** |
-| P1-10 | Supabase-Tarif vor dem Livegang | **OFFEN** |
+| P1-9 | Datensicherung | **ENTFÄLLT** (geht in P1-10 auf) |
+| P1-10 | Supabase-Tarif vor dem Livegang | **OFFEN — Voraussetzung für den Livegang** |
 | P1-11 | Aktenzeichen-Formulierungen vereinheitlicht | **ERLEDIGT** |
 | P1-12 | Fotos erlauben und zu EINEM PDF zusammenführen | **ERLEDIGT** |
 | P1-13 | Strukturierte Daten korrigiert | **ERLEDIGT** |
@@ -72,7 +72,8 @@ erfolgreichen **Datei-Upload** — nicht an internen Schritten, die er nicht bee
   bleibt an den Datei-Upload gekoppelt); der Fehler wird nur geloggt.
 - Die interne Mail (mit Anhang) wird bereits nach erfolgreichem **Datei-Upload** ausgelöst, nicht erst
   nach erfolgreichem DB-Insert — so erreicht der Fall das Backoffice unabhängig von der Datenbank.
-- Die hochgeladene Datei wird **niemals automatisch gelöscht**.
+- Die hochgeladene Datei wird **niemals automatisch gelöscht** (gemeint: nicht als Fehlerreaktion;
+  planmäßige Löschung nach Frist siehe P1-4).
 **Bewusst NICHT gebaut:** kein `notification_status`, keine Warnmail, keine Ratenbegrenzung, kein
 automatisches Löschen.
 **Abnahme:** Normaler Upload → Kunde sieht Erfolg, Backoffice bekommt die Mail mit Anhang. Kein
@@ -294,8 +295,206 @@ Vercel unkritisch, dort wird ohnehin frisch gebaut.
 Hängt an der BFSG-Bewertung durch den Anwalt und wird deshalb erst mit **P0-7** fällig, nicht
 vorher. Bewusst getrennt geführt, damit sie die technischen Etappen nicht blockiert.
 
-### P1-4 · Löschkonzept technisch umsetzen · M — **OFFEN**
+### P1-4 · Löschkonzept technisch umsetzen · M — **ERLEDIGT**
 Differenzierte Fristen nach `docs/recht-und-datenschutz.md` 2.5; Löschläufe protokollieren.
+
+**Umgesetzt (22.08.2026):** Einmal täglich löscht ein automatischer Lauf alles, was älter als
+**90 Tage** ist — **Datei im Storage und Eintrag in `uploads`**, nie nur eines von beidem.
+
+**Warum nicht pg_cron:** `pg_cron` ist im kostenlosen Supabase-Tarif zwar verfügbar, kann aus der
+Datenbank heraus aber nur SQL ausführen — und **SQL kann die Datei nicht löschen.** Ein `delete`
+auf `storage.objects` entfernt nur den Eintrag; die Datei bliebe im S3-Speicher liegen, unsichtbar
+und über die Oberfläche nicht mehr löschbar. Genau der verwaiste Rest, den es nicht geben darf.
+Wirklich entfernt wird eine Datei nur über die Storage-Schnittstelle. Ausgelöst wird der Lauf
+deshalb von **Vercel-Cron** (`vercel.json`, täglich 03:20 UTC) gegen eine eigene API-Route
+(Entscheidung 30).
+
+**Bestandteile:**
+
+| Datei | Zweck |
+|---|---|
+| `lib/loeschlauf.ts` | die Logik: fällige Einträge holen, Geschützte überspringen, **erst Datei, dann Eintrag** löschen, Reste aufräumen, protokollieren |
+| `app/api/cron/loeschlauf/route.ts` | Route mit Geheimwort-Prüfung; `runtime = "nodejs"`, `maxDuration = 60` |
+| `lib/email.ts` | `sendLoeschlaufWarnung()` — Mail ans Backoffice **nur bei Fehlern** |
+| `vercel.json` | der tägliche Auslöser |
+
+**Drei Eigenschaften, auf die es ankommt:**
+1. **Erst die Datei, dann der Eintrag.** Bricht es dazwischen ab, findet der nächste Lauf den
+   Eintrag wieder und räumt ihn ab — der Lauf repariert sich selbst. Andersherum entstünde eine
+   Datei ohne Eintrag. Aus demselben Grund braucht es keine Sperre gegen doppelte Läufe: Vercel
+   sagt ausdrücklich, dass ein Cron-Lauf ausfallen **oder doppelt kommen** kann; beides ist hier
+   folgenlos, weil jeder Schritt beliebig oft wiederholbar ist.
+2. **Reste-Suche.** Schlägt beim Upload der Datenbankeintrag fehl, wird das bewusst nur geloggt
+   (Entscheidung 21) — dann liegt eine Datei ohne Eintrag im Speicher. Der Lauf sucht solche
+   Dateien und entfernt sie ebenfalls. Ohne diesen Schritt blieben sie für immer liegen.
+3. **Der Aufbewahrungs-Haken hält eine Einreichung zusammen.** Ist bei **einer** Datei
+   `aufbewahren` gesetzt, bleiben **alle** Dateien derselben Einreichung erhalten — insbesondere
+   das erzeugte `fotos-….pdf` samt seinen Originalbildern. Erkannt wird die Zusammengehörigkeit
+   an **E-Mail + Zustimmungszeitpunkt**: `components/UploadForm.tsx` erzeugt `consent_at` einmal
+   je Absendevorgang und schreibt ihn in jede Zeile, auch in die des erzeugten PDFs. An echten
+   Daten gegengeprüft (`fotos-c54d1d84…` und `89da5a9a-0860…` tragen denselben Zeitstempel).
+
+**Sicherheitsschalter:** Fehlt die Umgebungsvariable `LOESCHLAUF_AKTIV` oder steht sie nicht auf
+`true`, läuft **jeder Lauf als Probelauf** — er zählt und protokolliert, löscht aber nichts.
+Grund: Bis P1-10 erledigt ist, gibt es **keine Sicherung**, und Löschen ist unumkehrbar.
+Scharfschalten daher erst nach P1-10, siehe dort.
+
+#### Das SQL zu dieser Aufgabe (einmalig im Supabase SQL Editor)
+
+Mehrfach ausführbar; ein zweiter Durchlauf schadet nicht.
+
+```sql
+-- ── 1) Aufbewahrungs-Haken ────────────────────────────────────────────────
+alter table public.uploads
+  add column if not exists aufbewahren boolean not null default false;
+
+comment on column public.uploads.aufbewahren is
+  'AUFBEWAHREN: Haken setzen = dieser Eintrag und seine Datei werden NIE automatisch '
+  'gelöscht. Wirkt für die ganze Einreichung: ist eine Datei markiert, bleiben auch die '
+  'übrigen Dateien derselben Einreichung erhalten (z. B. Foto-PDF und Originalfotos). '
+  'Ohne Haken wird nach 90 Tagen automatisch gelöscht.';
+
+-- ── 2) Indizes ────────────────────────────────────────────────────────────
+create index if not exists uploads_created_at_idx  on public.uploads (created_at);
+create index if not exists uploads_filepath_idx    on public.uploads (filepath);
+create index if not exists uploads_einreichung_idx on public.uploads (email, consent_at);
+
+-- ── 3) Protokolltabelle — der DSGVO-Nachweis ──────────────────────────────
+create table if not exists public.loeschlaeufe (
+  id                  bigint generated always as identity primary key,
+  gestartet_am        timestamptz not null default now(),
+  beendet_am          timestamptz,
+  probelauf           boolean     not null default false,
+  frist_tage          integer     not null,
+  stichtag            timestamptz not null,
+  ergebnis            text,
+  eintraege_geloescht integer     not null default 0,
+  dateien_geloescht   integer     not null default 0,
+  reste_geloescht     integer     not null default 0,
+  aufbewahrt          integer     not null default 0,
+  fehler              integer     not null default 0,
+  details             jsonb       not null default '{}'::jsonb
+);
+
+comment on table public.loeschlaeufe is
+  'Protokoll der automatischen Löschläufe (Art. 5 Abs. 2, Art. 32 DSGVO). Enthält bewusst '
+  'KEINE personenbezogenen Daten: nur Zeitpunkte, Anzahlen und Speicherpfade (zufällige UUIDs).';
+
+comment on column public.loeschlaeufe.ergebnis is
+  'Ergebnis in einem Satz, im Klartext. Bei einem Probelauf steht dort ausdrücklich, dass '
+  'NICHTS gelöscht wurde, sondern was gelöscht worden WÄRE.';
+
+comment on column public.loeschlaeufe.aufbewahrt is
+  'Wie viele fällige Einträge wegen des Aufbewahrungs-Hakens übersprungen wurden. '
+  'Die zugehörigen Pfade stehen in "details".';
+
+create index if not exists loeschlaeufe_gestartet_am_idx
+  on public.loeschlaeufe (gestartet_am desc);
+
+-- Kein Zugriff für Website-Besucher: RLS an, absichtlich keine Policy.
+alter table public.loeschlaeufe enable row level security;
+
+-- ── 4) Welche Einträge sind fällig — und welche sind geschützt? ───────────
+create or replace function public.faellige_uploads(
+  p_stichtag timestamptz,
+  p_limit    integer default 2000
+)
+returns table (id uuid, filepath text, geschuetzt boolean)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select
+    u.id,
+    u.filepath,
+    (
+      u.aufbewahren
+      or exists (
+        select 1
+        from public.uploads g
+        where g.aufbewahren
+          and g.email = u.email
+          and g.consent_at is not null
+          and u.consent_at is not null
+          and g.consent_at = u.consent_at
+      )
+    ) as geschuetzt
+  from public.uploads u
+  where u.created_at < p_stichtag
+  order by u.created_at
+  limit p_limit;
+$$;
+
+-- ── 5) Reste finden: Dateien im Bucket ohne Eintrag ───────────────────────
+create or replace function public.verwaiste_dateien(
+  p_bucket   text,
+  p_stichtag timestamptz,
+  p_limit    integer default 500
+)
+returns table (pfad text)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select o.name
+  from storage.objects o
+  where o.bucket_id = p_bucket
+    and o.created_at < p_stichtag
+    and o.name ~ '^[0-9]{4}/[0-9]{2}/'
+    and not exists (
+      select 1 from public.uploads u where u.filepath = o.name
+    )
+  order by o.created_at
+  limit p_limit;
+$$;
+
+-- ── 6) Beide Funktionen darf nur der Server aufrufen, nie der Browser ─────
+revoke all on function public.faellige_uploads(timestamptz, integer)
+  from public, anon, authenticated;
+grant execute on function public.faellige_uploads(timestamptz, integer)
+  to service_role;
+
+revoke all on function public.verwaiste_dateien(text, timestamptz, integer)
+  from public, anon, authenticated;
+grant execute on function public.verwaiste_dateien(text, timestamptz, integer)
+  to service_role;
+```
+
+#### Kontrolle im Betrieb
+
+```sql
+-- Die letzten Läufe im Klartext
+select gestartet_am, probelauf, frist_tage, ergebnis,
+       eintraege_geloescht, dateien_geloescht, reste_geloescht, aufbewahrt, fehler
+from public.loeschlaeufe
+order by gestartet_am desc
+limit 20;
+
+-- Lief er in den letzten zwei Tagen?
+select case when max(gestartet_am) > now() - interval '48 hours'
+            then 'OK — letzter Lauf: ' || max(gestartet_am)::text
+            else 'ACHTUNG — kein Lauf seit ' || coalesce(max(gestartet_am)::text, 'nie')
+       end as status
+from public.loeschlaeufe;
+
+-- Bleibt nichts liegen? (muss 0 ergeben)
+select count(*) from public.verwaiste_dateien('invoices', now() - interval '90 days', 1000);
+
+-- Vorschau ohne Code: was täte der Lauf jetzt?
+select * from public.faellige_uploads(now() - interval '90 days');
+```
+
+**Einschränkung:** Vercel löst Cron-Jobs **nur auf der Produktions-Bereitstellung** aus, nicht auf
+Vorschau-Bereitstellungen. Solange `umbau-mvp` nicht auf `main` gewandert ist, läuft der Job nicht
+von selbst; von Hand aufrufen geht trotzdem. Im Hobby-Tarif ist genau ein Lauf pro Tag erlaubt,
+und er kann bis zu 59 Minuten später als geplant starten — für einen täglichen Löschlauf ohne
+Bedeutung.
+
+**Abnahme:** siehe Testanleitung unten. `npm run lint` und `npm run build` fehlerfrei (22.08.2026).
+**Offen bis zum Test durch den Auftraggeber:** Das SQL muss im Supabase SQL Editor ausgeführt und
+Test B einmal durchlaufen sein.
 
 ### P1-5 · DSGVO-Pflichtdokumentation · M — **OFFEN**
 Verzeichnis der Verarbeitungstätigkeiten (Art. 30), TOM-Dokumentation, AVV mit Supabase/Vercel/Resend,
@@ -310,26 +509,42 @@ Supabase-Projekt-ID nicht hart in `lib/email.ts`; Empfänger- und Ausweichadress
 ### P1-8 · Sicherheitswarnungen prüfen · M — **ERLEDIGT**
 `npm audit` meldet 15 Schwachstellen. Gezielt bewerten und beheben. **Nie `npm audit fix --force`.**
 
-### P1-9 · Datensicherung · M — **OFFEN**
+### P1-9 · Datensicherung — **ENTFÄLLT** (geht in P1-10 auf)
 **Befund (August 2026):** Der kostenlose Supabase-Tarif enthält **null Tage** Sicherungsaufbewahrung —
 es existiert keine Kopie der Daten. Art. 32 Abs. 1 lit. c DSGVO verlangt jedoch die Fähigkeit, die
 Verfügbarkeit der Daten nach einem Zwischenfall rasch wiederherzustellen.
-**Zwischenlösung (jetzt):** manuell auslösbares Sicherungsskript (Export der Tabelle `uploads` plus
-Download der Storage-Dateien in einen datierten lokalen Ordner; Ordner in `.gitignore`).
-**Endlösung:** siehe P1-10.
-**Abnahme:** Sicherung einmal erzeugt und Inhalt geprüft; Ergebnis in der TOM-Dokumentation vermerkt.
 
-### P1-10 · Supabase-Tarif vor dem Livegang · S — **OFFEN**
+**Entscheidung (22.08.2026):** Die ursprünglich geplante **Zwischenlösung — ein manuell auslösbares
+Sicherungsskript — entfällt.** Der Wechsel auf **Supabase Pro (P1-10)** erfolgt ohnehin vor dem
+Livegang und bringt **automatische tägliche Sicherungen** mit. Ein eigenes Skript wäre damit
+doppelte Arbeit an einer Krücke, die kurz darauf wieder wegfällt.
+
+**Bedingung — nicht verhandelbar:** **P1-10 muss zwingend VOR dem Livegang umgesetzt sein.**
+Bis dahin existiert **keine Datensicherung**. Verschiebt sich P1-10 oder wird der Livegang ohne
+Tarifwechsel erwogen, lebt diese Aufgabe sofort wieder auf.
+
+### P1-10 · Supabase-Tarif vor dem Livegang · S — **OFFEN — Voraussetzung für den Livegang**
+**Kein Livegang ohne diesen Punkt.** Seit dem Entfall von P1-9 (22.08.2026) ist P1-10 die **einzige**
+Maßnahme, die überhaupt eine Datensicherung herstellt — bis zur Umsetzung existiert keine Kopie der
+Daten.
+
 **Zwei Probleme des kostenlosen Tarifs:**
-1. Keine automatischen Sicherungen (siehe P1-9).
+1. Keine automatischen Sicherungen (P1-9 ist hierin aufgegangen).
 2. **Automatische Pausierung nach 7 Tagen ohne Datenbankaktivität** — das Projekt geht offline, bis es
    manuell gestartet wird. Genau der wahrscheinliche Zustand in der Anfangsphase mit wenig Verkehr;
    ein Interessent fände eine tote Seite vor.
-**Lösung:** Wechsel auf Supabase Pro (ca. 25 $/Monat) **vor dem Livegang**. Beseitigt beide Probleme.
-Bei ~3.000 € Budget etwa 1 % pro Monat.
+**Lösung:** Wechsel auf Supabase Pro (ca. 25 $/Monat) **vor dem Livegang**. Beseitigt beide Probleme
+und bringt automatische tägliche Sicherungen mit. Bei ~3.000 € Budget etwa 1 % pro Monat.
 **Alternative (nicht empfohlen):** beim kostenlosen Tarif bleiben und eine automatische
 Wachhalte-Routine einrichten — Krücke, kein Ersatz für Sicherungen.
-**Abnahme:** Tarif umgestellt; anschließend Wiederherstellung einmal erprobt und dokumentiert.
+**Abnahme:** Tarif umgestellt; automatische tägliche Sicherung im Supabase-Dashboard sichtbar;
+anschließend Wiederherstellung einmal erprobt und in der TOM-Dokumentation (P1-5) vermerkt.
+
+**Nach dem Tarifwechsel nicht vergessen (P1-4):** In Vercel → Settings → Environment Variables die
+Variable **`LOESCHLAUF_AKTIV = true`** für **Production** setzen und anschließend neu ausrollen
+(Deployments → „Redeploy"). Erst dann löscht der tägliche Löschlauf wirklich; bis dahin
+protokolliert er nur, ohne etwas anzufassen. **Kontrolle:** In `public.loeschlaeufe` muss die
+neueste Zeile `probelauf = false` zeigen.
 
 ### P1-11 · Aktenzeichen-Formulierungen vereinheitlicht — **ERLEDIGT**
 **Entschieden:** Der **automatische Inkassostart bleibt** in den Texten — die Aussage ist korrekt,
@@ -374,7 +589,8 @@ Vermieter.
    eingefügt. Gemischte Einreichung (z. B. 2 Fotos + 1 PDF) ergibt zwei Dokumente: das erzeugte
    Foto-PDF und das Original-PDF.
 4. **Die Original-Bilder bleiben zusätzlich im Storage** — sie sind der eigentliche Nachweis, das PDF
-   ist die Verpackung (Grundsatz: Dateien werden nie automatisch gelöscht).
+   ist die Verpackung (Grundsatz: Dateien werden nie automatisch gelöscht — gemeint: nicht als
+   Fehlerreaktion; planmäßige Löschung nach Frist siehe P1-4).
 5. **Mail-Anhang und signierter Link zeigen auf das erzeugte PDF.**
 6. **Bildgröße beachten:** Handyfotos sind groß. Bilder vor dem Einbetten sinnvoll auf Seitenformat
    skalieren und komprimieren, damit das erzeugte PDF die 10-MB-Grenze für Mailanhänge möglichst
@@ -452,7 +668,7 @@ Foto-Verarbeitung liegt vor (offen).
 
 ## Reihenfolge bis zum Livegang
 1. P0-1, P0-3, P0-5, P0-6, P0-8, P0-10 abarbeiten (P0-2 entfällt, P0-4 → P1-0)
-2. P1-0 bis P1-9 abarbeiten
+2. P1-0 bis P1-10 abarbeiten (P1-9 entfällt; **P1-10 ist Voraussetzung für den Livegang**)
 3. P0-7 anwaltliche Prüfung, Ergebnisse einarbeiten
 4. `npm run build` fehlerfrei, vollständiger Testdurchlauf
 5. Passwortschutz entfernen, Zweig nach `main`, Deployment prüfen

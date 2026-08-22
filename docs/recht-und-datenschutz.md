@@ -110,6 +110,16 @@ die Löschpflicht — aber nur für die betroffenen Daten und nur für den Aufbe
 (Zugriff einschränken statt aktiv weiterverarbeiten). Fristbeginn ist regelmäßig **das Ende des
 Kalenderjahres**. Löschläufe sind zu **protokollieren**; abgelehnte Löschbegehren sind in der
 Forderungsakte zu dokumentieren.
+
+**Technische Umsetzung (P1-4):** Die Frist „Upload ohne Beauftragung / abgelehnter Fall" ist mit
+**90 Tagen** umgesetzt und läuft täglich automatisch; jeder Lauf wird in der Tabelle `loeschlaeufe`
+protokolliert (Zeitpunkt, Frist, Anzahlen, Speicherpfade — ohne personenbezogene Daten).
+**Das technische Mittel, um laufende und titulierte Forderungen von der 90-Tage-Regel auszunehmen,
+ist der Haken `aufbewahren` in der Tabelle `uploads`:** Ist er bei einer Datei gesetzt, bleiben
+Eintrag und Datei erhalten — und zwar für die gesamte Einreichung, also auch für die übrigen
+Dateien desselben Vorgangs (etwa Foto-PDF und Originalbilder). Damit bleibt die in dieser Tabelle
+geforderte Unterscheidung nach Datenkategorie erhalten, statt alles über eine Frist zu schneiden.
+
 **[ANWALT]** Konkrete Fristen final festlegen; Orientierung bietet der BDIU-Leitfaden zur DSGVO
 im Forderungsmanagement.
 
