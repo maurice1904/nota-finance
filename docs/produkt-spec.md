@@ -230,4 +230,36 @@ Eine Änderung am Einreichungsvorgang gilt erst als fertig, wenn:
 | Aktive Eingaben | 1 Feld + 1–2 Klicks + Datei |
 | Abbruchquote im Flow | < 30 % |
 | Rückfragequote an Kunden | < 20 % |
-| Anteil `notification_status = failed` | 0 % |
+| Verwaiste Dateien im Storage (Datei ohne Datenbankeintrag) | 0 |
+| Zustellquote der internen Benachrichtigung | 100 % |
+
+**Zu den verwaisten Dateien:** Diese Kennzahl ersetzt die frühere Größe
+„Anteil `notification_status = failed`" — dieses Feld gibt es bewusst nicht (P0-3), die Kennzahl war
+damit gegenstandslos. Gemessen wird mit:
+
+```sql
+select count(*) from public.verwaiste_dateien('invoices', now() - interval '1 hour', 5000);
+```
+
+Der **Puffer von einer Stunde** ist nötig: Datei und Datenbankeintrag entstehen Sekunden
+auseinander — ohne ihn zählte man frische Uploads mit, deren Eintrag gerade erst geschrieben wird.
+Ein dauerhaft von Null verschiedener Wert deutet auf fehlgeschlagene Datenbankeinträge hin; die
+werden bewusst nur geloggt (Abschnitt 6), diese Kennzahl macht sie sichtbar.
+
+Die Spalte `reste_geloescht` im Protokoll `loeschlaeufe` zeigt dasselbe **rückblickend**, aber mit
+rund 90 Tagen Verzug — der Löschlauf sieht nur Reste jenseits der Aufbewahrungsfrist. Für die
+laufende Kontrolle gilt die Abfrage oben; das Protokoll ist der Verlauf, nicht der Frühwarnwert.
+
+**Stand 22.08.2026: 0.** Der erste echte Löschlauf räumte 36 Reste aus früheren Tests ab.
+
+**Zur Zustellquote der internen Benachrichtigung:** Diese Mail ist nach Abschnitt 6 die einzige vom
+Storage unabhängige Kopie einer Einreichung. Fällt sie aus, fehlt das eigentliche Sicherheitsnetz —
+während Website und Datenbank unauffällig weiterlaufen und niemand etwas merkt. Ein von 100 %
+abweichender Wert heißt deshalb: Zu mindestens einer Einreichung gibt es nur noch die Datei im
+Storage.
+
+**Wo und wie oft:** Im Resend-Dashboard unter **Emails**, gefiltert auf den Betreff
+„Neue Einreichung" — dort steht je Mail der Zustellstatus. **Einmal wöchentlich**, zusammen mit dem
+ohnehin vorgesehenen wöchentlichen Abgleich von `uploads` gegen Plausible (P0-8); so entsteht eine
+Routine statt eines zweiten Termins. Resend bewahrt die Protokolle **30 Tage** auf — eine
+wöchentliche Kontrolle liegt also mit großem Abstand innerhalb des Fensters. Kein Code nötig.

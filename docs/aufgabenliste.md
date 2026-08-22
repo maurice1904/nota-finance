@@ -28,7 +28,7 @@ mehr nachvollziehbar, worauf der Status beruht.
 | P1-0 | Upload-Endpunkt serverseitig absichern (vor Go-live) | **OFFEN** |
 | P1-1 | Zweites E-Mail-Feld bleibt | **ENTFÄLLT** |
 | P1-2 | Trust-Logos abgestimmt | **ERLEDIGT** |
-| P1-3 | Barrierefreiheit WCAG 2.1 AA | **OFFEN** (Etappen 1–3 erledigt) |
+| P1-3 | Barrierefreiheit WCAG 2.1 AA | **ERLEDIGT** (Erklärung zur Barrierefreiheit → P0-7) |
 | P1-4 | Löschkonzept technisch umsetzen | **ERLEDIGT** |
 | P1-5 | DSGVO-Pflichtdokumentation | **OFFEN** |
 | P1-6 | Erfahrungsangaben und Farbpalette vereinheitlichen | **ERLEDIGT** |
@@ -78,6 +78,12 @@ erfolgreichen **Datei-Upload** — nicht an internen Schritten, die er nicht bee
 automatisches Löschen.
 **Abnahme:** Normaler Upload → Kunde sieht Erfolg, Backoffice bekommt die Mail mit Anhang. Kein
 verwaistes Verhalten, keine Datei wird gelöscht.
+**Nachweis (22.08.2026):** Im Code gegengeprüft: Ein fehlgeschlagener Datenbank-Insert wird in
+`components/UploadForm.tsx` nur protokolliert (`logError`), der Kunde sieht weiterhin Erfolg; die
+interne Mail hängt an `result.success > 0`, also am Datei-Upload und nicht am Insert. Eine Suche über
+den gesamten Upload-Pfad (`UploadForm.tsx`, `lib/storage.ts`, beide API-Routen) findet **keinen
+einzigen Lösch-Aufruf**. Der normale Ablauf — Upload, Kunde sieht Erfolg, Backoffice bekommt die Mail
+mit Anhang — ist zugleich durch den Foto-Test unter P1-12 bestätigt.
 
 ### P0-5 · Zustimmung und Herkunft speichern · S — **ERLEDIGT**
 **Problem:** Das AGB-Häkchen ist Pflicht, wird aber nirgends gespeichert — kein Nachweis, dass/wann
@@ -91,11 +97,20 @@ regulatorisch relevante Audit-Trail über die Fallbearbeitung gehört in das Bac
 sobald es eine Backoffice-Oberfläche mit Logins gibt (→ P2).
 **Abnahme:** Ein neuer Upload erzeugt in `uploads` einen Eintrag mit gefülltem `consent_at`,
 `consent_version` und `source`.
+**Nachweis (22.08.2026):** Code und echte Daten gegengeprüft. `components/UploadForm.tsx` schreibt
+bei jedem Insert `consent_at`, `consent_version` (fest `agb-2026-08`) und `source`. In der Tabelle
+`uploads` sind bei den zehn jüngsten Einträgen **alle drei Felder gefüllt**, Beispiel:
+`consent_at 2026-08-21T14:26:40+00`, `consent_version agb-2026-08`, `source direkt`. Kein Audit-Log
+und kein Status-Feld angelegt — wie festgelegt.
 
 ### P0-6 · Rechtstexte als HTML-Seiten · M — **ERLEDIGT**
 **Lösung:** AGB und Datenschutzerklärung als Seiten (nicht PDF); Datenschutzerklärung um
 Auftragsverarbeiter (Supabase, Vercel, Resend), Löschfristen und Betroffenenrechte ergänzen.
 **Abnahme:** Beide Seiten erreichbar, in der Fußzeile verlinkt, im Einreichungsflow referenziert.
+**Nachweis (22.08.2026):** `app/agb/page.tsx` und `app/datenschutz/page.tsx` vorhanden, beide aus
+`components/Footer.tsx` verlinkt; die Datenschutzerklärung nennt Supabase, Vercel und Resend. Vom
+Auftraggeber am 22.08.2026 zusätzlich **im Browser geprüft**: beide Seiten erreichbar, über die
+Fußzeile auffindbar und im Einreichungsflow verlinkt.
 
 ### P0-7 · Anwaltliche Prüfung · L — **OFFEN**
 AGB, Datenschutzerklärung, Markenkonstruktion, alle **[ANWALT]**-Punkte aus
@@ -135,6 +150,12 @@ Herkunft. Beide Zahlen wöchentlich abgleichen.
 **Abnahme:** Eine Testeinreichung erzeugt Seitenaufruf, `upload_started`, Danke-Seiten-Aufruf und einen
 `source`-Eintrag in der Datenbank; im Netzwerk-Protokoll des Browsers ist kein personenbezogenes Feld
 Richtung Plausible zu sehen.
+**Nachweis (22.08.2026):** Im Code belegt — `PlausibleProvider` in `app/layout.tsx` (nur in
+Produktion aktiv), Proxy über `withPlausibleProxy()` in `next.config.ts`, Ereignis `upload_started`
+in `components/UploadForm.tsx`, eigene Danke-Seite `app/einreichen/danke/page.tsx`, und `source` wird
+je Einreichung geschrieben (in `uploads` nachweislich gefüllt, siehe P0-5).
+Im **Plausible-Dashboard sind die Ziele angelegt**: `cta_einreichen_klick` und `upload_started` als
+Custom Event, `/einreichen/danke` als Seitenaufruf. Der Trichter ist damit vollständig messbar.
 
 ### P0-9 · Domain-Authentifizierung für E-Mail-Versand (SPF/DKIM/DMARC) · M — **ERLEDIGT**
 **Problem:** Mails von `service@notafinance.de` (bzw. `admin@notafinance.de`) landen im Spam-Ordner,
@@ -197,10 +218,17 @@ Statuskommunikation). Damit ist diese Aufgabe erledigt — nichts zu tun.
 Unternehmen abgestimmt. **Offene Empfehlung (kein Blocker):** kurze schriftliche Bestätigung je Logo
 sichern (E-Mail genügt), da im Abmahnfall die Beweislast bei uns liegt. „TÜV" nur, falls eine
 Zertifizierung tatsächlich vorliegt.
+**Nachweis (22.08.2026):** Im Projekt sind genau fünf Logos im Einsatz — BDIU, Wolters Kluwer,
+SCHUFA, GeoTrust, GDD (`components/TrustSlider.tsx`), jedes mit beschreibendem Alternativtext. Eine
+Volltextsuche über `app/`, `components/` und `public/` findet **kein „TÜV"** — die Warnung aus der
+Aufgabe greift also nicht. Die Abstimmung mit den Unternehmen beruht auf der Angabe des
+Auftraggebers; die schriftliche Bestätigung je Logo ist weiterhin offen (Empfehlung, kein Blocker).
 
-### P1-3 · Barrierefreiheit WCAG 2.1 AA · L — **OFFEN** (Etappen 1–3 erledigt)
+### P1-3 · Barrierefreiheit WCAG 2.1 AA · L — **ERLEDIGT** (Etappen 1–4)
 Tastaturbedienbarkeit, Fokus, Kontraste, `label`, Textfehlermeldungen, Alternativtexte, Zoom 200 %.
 Erklärung zur Barrierefreiheit ergänzen, sobald die BFSG-Bewertung vorliegt.
+**Zusatz, nicht Teil dieser Aufgabe:** Die **Erklärung zur Barrierefreiheit** bleibt offen — sie
+hängt an der BFSG-Bewertung durch den Anwalt und wird mit **P0-7** fällig.
 
 #### Etappe 1 — **erledigt**
 Tastaturbedienung des Uploads, sichtbarer Fokus, Kontraste.
@@ -282,7 +310,7 @@ nicht neu — die neuen Regeln fehlten im Ergebnis. Erst `rm -rf .next` mit ansc
 brachte sie hinein. **Wenn eine CSS-Änderung lokal nicht ankommt, ist das der erste Griff.** Für
 Vercel unkritisch, dort wird ohnehin frisch gebaut.
 
-#### Etappe 4 — **offen**
+#### Etappe 4 — **erledigt (22.08.2026)**
 - **Alternativtexte** aller Bilder prüfen und ergänzen. (Das Navigations-Logo ist mit Etappe 3
   erledigt; offen sind vor allem die Partner-Logos und die Hero-Bilder.)
 - **Zoom bis 200 %** ohne Verlust von Inhalt oder Bedienbarkeit prüfen.
@@ -290,6 +318,18 @@ Vercel unkritisch, dort wird ohnehin frisch gebaut.
   echten iPhone** (Lehre aus P1-12: am Rechner funktionierte damals, was am Handy tot war).
   Dazu gehört ein Durchgang mit eingeschaltetem „Bewegung reduzieren": Hero-Zoom und Laufband
   müssen stehen, und **nichts darf unsichtbar bleiben**.
+
+**Nachweis (22.08.2026):**
+- **Alternativtexte:** Im Code gegengeprüft. Alle fünf Partner-Logos tragen einen beschreibenden
+  Text (`components/TrustSlider.tsx`), das Navigations-Logo korrekt `alt=""` (Etappe 3). Die
+  Hero-Bilder sind durchweg **CSS-Hintergründe** (`backgroundImage` in `app/page.tsx`,
+  `app/kontakt/page.tsx`, `app/faq/page.tsx`, `app/produkt/page.tsx`) — sie tragen keine Information
+  und brauchen nach WCAG deshalb keinen Alternativtext. Andere Bilder gibt es im Projekt nicht.
+- **Zoom auf 200 %:** vom Auftraggeber geprüft, ohne Verlust bedienbar — nichts abgeschnitten, keine
+  waagerechte Scrollleiste.
+- **Sichtprüfung am echten iPhone:** alle Seiten durchgescrollt, Darstellung in Ordnung. Mit
+  eingeschaltetem „Bewegung reduzieren" standen Hero-Zoom und Partner-Laufband still, nichts blieb
+  unsichtbar.
 
 #### Nicht Teil der Etappen: Erklärung zur Barrierefreiheit
 Hängt an der BFSG-Bewertung durch den Anwalt und wird deshalb erst mit **P0-7** fällig, nicht
@@ -492,9 +532,31 @@ von selbst; von Hand aufrufen geht trotzdem. Im Hobby-Tarif ist genau ein Lauf p
 und er kann bis zu 59 Minuten später als geplant starten — für einen täglichen Löschlauf ohne
 Bedeutung.
 
-**Abnahme:** siehe Testanleitung unten. `npm run lint` und `npm run build` fehlerfrei (22.08.2026).
-**Offen bis zum Test durch den Auftraggeber:** Das SQL muss im Supabase SQL Editor ausgeführt und
-Test B einmal durchlaufen sein.
+**Abnahme:** Ein Eintrag älter als die Frist verschwindet vollständig — Datei **und** Eintrag; ein
+markierter Eintrag bleibt samt allen Dateien derselben Einreichung erhalten; jeder Lauf hinterlässt
+eine Zeile in `loeschlaeufe`.
+
+**Nachweis (22.08.2026):** `npm run lint` und `npm run build` fehlerfrei. Gegen den Produktionsbuild
+(`next start`) geprüft: Aufruf **ohne** Geheimwort und **mit falschem** Geheimwort liefert jeweils
+**401**. Dabei fiel ein Fehler auf und wurde behoben: Bei gescheiterter Datenbankabfrage meldete das
+Protokoll zuvor „nichts zu tun" (falsche Entwarnung), jetzt „Lauf mit Fehlern beendet … Es wurde
+nichts gelöscht".
+
+Das SQL wurde am 22.08.2026 im Supabase SQL Editor ausgeführt (Aufbewahrungs-Haken, Indizes,
+Protokolltabelle `loeschlaeufe`, Funktionen `faellige_uploads` und `verwaiste_dateien`). Test B lokal
+mit `LOESCHLAUF_AKTIV=true` gegen die echte Datenbank gefahren, **zwei protokollierte Läufe, beide
+mit `fehler = 0`**:
+
+- **Lauf 1:** 48 Einträge wegen Aufbewahrungs-Haken behalten — damit belegt, dass ein Haken bei
+  **einer** von drei Dateien die **gesamte Einreichung** schützt (Foto-PDF und Originalbilder werden
+  zusammengehalten). Zusätzlich 36 verwaiste Storage-Dateien aus früheren Tests entfernt und
+  1 ungeschützter Eintrag gelöscht.
+- **Lauf 2:** nach Entfernen des Hakens genau die drei Testzeilen und ihre Dateien gelöscht,
+  45 geschützte Bestandseinträge unverändert.
+
+Anschließend zurückgestellt: `LOESCHLAUF_AKTIV` und `CRON_SECRET` aus `.env.local` entfernt.
+**Offen bleibt nur das Scharfschalten in Produktion** (`LOESCHLAUF_AKTIV=true` in Vercel), bewusst
+erst nach P1-10 — der Hinweis steht dort.
 
 ### P1-5 · DSGVO-Pflichtdokumentation · M — **OFFEN**
 Verzeichnis der Verarbeitungstätigkeiten (Art. 30), TOM-Dokumentation, AVV mit Supabase/Vercel/Resend,
@@ -502,12 +564,38 @@ Datenpannen-Ablauf schriftlich (72 h), Postfach für Betroffenenanfragen.
 
 ### P1-6 · Erfahrungsangaben und Farbpalette vereinheitlichen · S — **ERLEDIGT**
 Widerspruch „über 15 Jahre" vs. „über 20 Jahre" auflösen (Gründung 2008). Eine Farbpalette festlegen.
+**Nachweis (22.08.2026):** Volltextsuche über `app/` und `components/`: „über 20 Jahre" kommt
+**nirgends mehr vor**; „über 15 Jahre" steht an sechs Stellen und ist zu Gründung 2008
+widerspruchsfrei. Farbpalette: `app/globals.css` enthält genau **einen** `@theme inline`-Block mit
+13 Farbtokens, die alle auf denselben Variablensatz zeigen — keine zweite Palette daneben.
 
 ### P1-7 · Projekt-ID und Konfiguration aus Umgebungsvariablen · S — **ERLEDIGT**
 Supabase-Projekt-ID nicht hart in `lib/email.ts`; Empfänger- und Ausweichadresse konfigurierbar.
+**Nachweis (22.08.2026):** `lib/email.ts` enthält **keine hart kodierte Projekt-ID** mehr; der
+signierte Link entsteht über den Supabase-Client statt über eine selbst zusammengebaute URL.
+Absender (`EMAIL_FROM`) und interner Empfänger (`EMAIL_INTERNAL_RECIPIENT`) kommen über `envOr()`
+mit dokumentiertem Standardwert, der Storage-Bucket aus `lib/config.ts`. Fehlt eine Variable, greift
+der bisherige Wert — nichts bricht.
 
 ### P1-8 · Sicherheitswarnungen prüfen · M — **ERLEDIGT**
 `npm audit` meldet 15 Schwachstellen. Gezielt bewerten und beheben. **Nie `npm audit fix --force`.**
+**Nachweis (21.08.2026, Zählerstand ergänzt am 22.08.2026):** Alle 15 Meldungen wurden **einzeln
+bewertet**. Real angreifbar war nur Next.js selbst — unter anderem mehrere
+„Middleware/Proxy-bypass"-Meldungen, die genau den Mechanismus betrafen, auf dem der Passwortschutz
+in `proxy.ts` beruht, dazu Cache-Poisoning und XSS bei CSP-Nonces. Behoben durch das Update auf
+**next 16.3.1**; das räumte `sharp`, `postcss` und `nanoid` automatisch mit ab.
+Zusätzlich behoben, obwohl nicht ausnutzbar: `@supabase/supabase-js` auf 2.112.3 (`ws` entfällt —
+Nota nutzt kein Realtime), `resend` auf 6.20.0 (`svix` entfällt — Nota empfängt keine Webhooks),
+`uuid` auf 13.0.2 (die Lücke betrifft v3/v5/v6 mit `buf`-Parameter, Nota nutzt nur v4 ohne `buf`).
+Die Updates liefen in **vier getrennten Schritten mit Build-Prüfung nach jedem** — kein Breaking
+Change, keine Zeile Anwendungscode angepasst. Anschließend vom Auftraggeber manuell getestet:
+Passwortschutz, Darstellung, Rechtstexte und der komplette Einreichungsvorgang.
+**Bewusst stehen gelassen:** Die verbleibenden Meldungen hängen alle am Linter, laufen nur auf dem
+Entwicklungsrechner und landen nie im ausgelieferten Code. Ihre Behebung würde ESLint auf Version 10
+zwingen — reales Risiko für die Lint-Konfiguration, null Sicherheitsgewinn.
+**Zählerstand 22.08.2026:** `npm audit` meldet noch **7** Meldungen (1 niedrig, 1 mittel, 5 hoch) —
+`@babel/core`, `ajv`, `brace-expansion`, `flatted`, `js-yaml`, `minimatch`, `picomatch`, sämtlich
+Entwicklungsabhängigkeiten. **Bei jedem Abhängigkeits-Update neu bewerten.**
 
 ### P1-9 · Datensicherung — **ENTFÄLLT** (geht in P1-10 auf)
 **Befund (August 2026):** Der kostenlose Supabase-Tarif enthält **null Tage** Sicherungsaufbewahrung —
@@ -546,6 +634,14 @@ Variable **`LOESCHLAUF_AKTIV = true`** für **Production** setzen und anschließ
 protokolliert er nur, ohne etwas anzufassen. **Kontrolle:** In `public.loeschlaeufe` muss die
 neueste Zeile `probelauf = false` zeigen.
 
+**Verwandte Tarifgrenze, separat zu prüfen — Resend statt Supabase (Notiz 22.08.2026):** Der
+kostenlose Resend-Tarif ist auf **100 Mails pro Tag** begrenzt. Jede Einreichung verschickt zwei
+(Bestätigung an den Kunden, interne Benachrichtigung ans Backoffice) — die Obergrenze liegt also
+bei rund **50 Einreichungen pro Tag**. Betroffen wäre ausgerechnet die interne Mail, die nach
+Abschnitt 6 der `docs/produkt-spec.md` das eigentliche Sicherheitsnetz ist. In der MVP-Phase mit
+wenig Verkehr unkritisch; vor einem Wachstumsschub oder spätestens beim Livegang gegen das dann
+erwartete Volumen prüfen und bei Bedarf auf einen bezahlten Resend-Tarif wechseln.
+
 ### P1-11 · Aktenzeichen-Formulierungen vereinheitlicht — **ERLEDIGT**
 **Entschieden:** Der **automatische Inkassostart bleibt** in den Texten — die Aussage ist korrekt,
 weil zuerst die fachliche Prüfung erfolgt und der Verfahrensablauf danach automatisiert läuft.
@@ -573,6 +669,12 @@ Bereits korrekt und unverändert: `lib/email.ts` (Kundenmail) und `components/Up
 (Bestätigungskasten). **Nicht angefasst:** das RDG-Register-Aktenzeichen im Impressum (andere
 Bedeutung) und die AGB selbst (gesperrter Rechtstext, dort steht es richtig).
 Der automatische Inkassostart bleibt wie entschieden erhalten.
+**Nachweis (22.08.2026):** Volltextsuche nach „Aktenzeichen" über `app/`, `components/` und `lib/`
+ergibt acht Fundstellen — `app/page.tsx` (2×), `app/faq/page.tsx`, `app/faq/layout.tsx`,
+`components/UploadForm.tsx`, `components/EinreichenContent.tsx`, `components/ProcessTimeline.tsx`,
+`lib/email.ts`. **Jede** knüpft das Aktenzeichen an die Prüfung („nach der Prüfung",
+„nach Auftragsprüfung", „Nach Prüfung"); keine verspricht es in der Eingangsbestätigung. Das
+RDG-Register-Aktenzeichen im Impressum (75 E – 52/08) ist wie vorgesehen ausgenommen.
 
 ### P1-12 · Fotos erlauben und zu EINEM PDF zusammenführen — **ERLEDIGT**
 **Entschieden:** Kunden sollen Rechnungen abfotografieren können. **Alle Bilder einer Einreichung
@@ -626,6 +728,13 @@ Reihenfolge und Ausrichtung; die internen Mail enthält dieses PDF als Anhang; d
   wir automatisch zu einem PDF zusammen", am Rechner stattdessen der Hinweis, die Seite zum
   Fotografieren am Mobilgerät zu öffnen (Regeln `.touch-only` / `.pointer-only`).
 
+**Nachweis (22.08.2026):** **Vom Auftraggeber getestet** — drei Fotos in einer Einreichung ergaben
+**ein** PDF mit drei Seiten in richtiger Reihenfolge und Ausrichtung; die interne Mail enthielt
+dieses PDF als Anhang, der signierte Link öffnete dasselbe PDF, und die drei Originalbilder lagen
+weiterhin im Storage. Bausteine im Code gegengeprüft: `lib/pdf.ts`, `lib/fileTypes.ts`,
+`app/api/merge-images-to-pdf/route.ts` sowie der Kamera-Knopf (`capture="environment"`, Regel
+`.touch-only`).
+
 ### P1-13 · Strukturierte Daten korrigiert — **ERLEDIGT**
 **Problem:** Im JSON-LD (`app/layout.tsx`) standen `foundingDate: "2024"` und falsche Logo-Maße.
 **Umgesetzt (August 2026):** `foundingDate` auf **2008**; Logo-Maße auf die tatsächlichen
@@ -637,6 +746,10 @@ widerspruchsfrei.
 für die Preisangaben. Vom Auftraggeber am 21.08.2026 gesichtet und für in Ordnung befunden — es ist
 keine Aussage über das Unternehmensalter. Nicht erneut aufwerfen (Entscheidung 28).
 **Abnahme:** Keine widersprüchliche Jahresangabe zum Unternehmen mehr im Projekt (erfüllt).
+**Nachweis (22.08.2026):** `app/layout.tsx` gegengeprüft — `foundingDate: "2008"`, Logo-Maße
+`width: 144` / `height: 147`, passend zur Datei `public/logo.png`. Keine widersprüchliche
+Jahresangabe zum Unternehmen mehr im Projekt; `validFrom: "2024-01-01"` in `app/preise/layout.tsx`
+bleibt bewusst stehen (Entscheidung 28).
 
 ### P1-14 · AGB an die neuen Einreichungsformate anpassen · S — **OFFEN** (teilweise erledigt)
 **Problem:** Die AGB nannten als zulässige Einreichungsformate „PDF, XRechnung, ZUGFeRD". Mit P1-12
