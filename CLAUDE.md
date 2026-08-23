@@ -94,6 +94,7 @@ Region `eu-central-1`) · Resend (E-Mail) · Vercel
 | Datenschutz, RDG, Pflichtangaben, Automatisierungsgrenzen | @docs/recht-und-datenschutz.md |
 | „Warum ist das so?" / etwas scheint unlogisch | @docs/entscheidungen.md |
 | Was als Nächstes zu tun ist | @docs/aufgabenliste.md |
+| SEO, Ratgeber-Seiten, Städteseiten, AI-Sichtbarkeit | @docs/SEO_Umsetzungskonzept.md |
 
 **Vor dem Vorschlagen einer Änderung an bestehendem Verhalten immer `docs/entscheidungen.md` prüfen** —
 dort stehen bewusst verworfene Ansätze, die nicht erneut eingebaut werden sollen.

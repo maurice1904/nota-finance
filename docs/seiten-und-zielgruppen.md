@@ -73,7 +73,8 @@ Kostenklarheit → Vertrauensblock → CTA. Mindestens ein branchenspezifisches 
   (bzw. auf `noindex` gesetzt). Lieber 200 gute als 1.200 dünne Seiten.
 - **Interne Verlinkung:** Branchenseite ↔ passende Stadtseiten; Stadtseiten untereinander regional;
   jede Seite verlinkt auf „Fall einreichen".
-- **Start klein:** zuerst 2 Branchen × 20 Städte, Wirkung messen, dann ausrollen.
+- **Start klein:** zuerst 2 Branchen × 25 Städte (Pilot-Städteliste in
+  `docs/SEO_Umsetzungskonzept.md`, Teil 3), Wirkung messen, dann ausrollen.
 
 ---
 

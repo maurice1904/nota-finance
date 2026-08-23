@@ -1,6 +1,7 @@
 # Aufgabenliste
 
-**P0** = blockiert den Livegang · **P1** = vor dem Livegang · **P2** = danach / Wachstum
+**P0** = blockiert den Livegang · **P1** = vor dem Livegang · **P2** = danach / Wachstum ·
+**SEO-x** = eigene Gruppe „SEO-Vorbereitung", ebenfalls vor dem Livegang (Begründung dort)
 **Aufwand:** S ≈ < 1 h · M ≈ 1–3 h · L ≈ > 3 h
 
 Jede Aufgabe gilt erst als erledigt, wenn ihr Abnahmekriterium erfüllt ist und
@@ -40,6 +41,12 @@ mehr nachvollziehbar, worauf der Status beruht.
 | P1-12 | Fotos erlauben und zu EINEM PDF zusammenführen | **ERLEDIGT** |
 | P1-13 | Strukturierte Daten korrigiert | **ERLEDIGT** |
 | P1-14 | AGB an die neuen Einreichungsformate anpassen | **OFFEN** (teilweise erledigt) |
+| SEO-1 | Entitäts-Fundament | **OFFEN** |
+| SEO-2 | Technische Grundlage (Sitemap, robots.txt, Search Console, Bing, Google Business Profile) | **OFFEN** |
+| SEO-3 | Bestehende Seiten auf extrahierbare Struktur umbauen | **OFFEN** |
+| SEO-4 | 12 Branchenseiten (Typ A) | **OFFEN** |
+| SEO-5 | 20 Ratgeber-Seiten (Typ B) | **OFFEN** |
+| SEO-6 | Pilot: 50 Stadt-Branche-Seiten (2 Branchen × 25 Städte, Typ C) | **OFFEN** |
 
 ---
 
@@ -767,13 +774,62 @@ Foto-Verarbeitung liegt vor (offen).
 
 ---
 
+## SEO-Vorbereitung — vor dem Livegang (Grundlage: `docs/SEO_Umsetzungskonzept.md`)
+
+**Warum vor dem Livegang statt danach (Entscheidung des Auftraggebers, 22.08.2026):** Solange
+`proxy.ts` die Seite passwortgeschützt hält, wird nichts indexiert — das ist gewollt
+(`docs/seiten-und-zielgruppen.md`, Abschnitt 5). Stünden diese Seiten erst nach dem Livegang bereit,
+begänne die Indexierungs- und Zitier-„Uhr" entsprechend später. Deshalb entstehen sie parallel zur
+Anwaltswartezeit (P0-7), bevor der Passwortschutz fällt. **Sie sind selbst kein Blocker für den
+Livegang** — die eigentlichen Voraussetzungen bleiben P1-10 (Supabase-Tarif) und P0-7 (anwaltliche
+Prüfung); diese Gruppe soll nur *fertig sein*, wenn der Passwortschutz fällt, nicht ihn aufhalten.
+
+### SEO-1 · Entitäts-Fundament · M — **OFFEN**
+Faktenkern, `llms.txt`, Autorenprofil `/ueber/manfred-eberhard`, Presseseite `/presse`,
+strukturierte Daten (`Organization`, `Person`). Details: `docs/SEO_Umsetzungskonzept.md` Teil 1.
+**Zu beachten:** Faktenkern-Zielgruppenzeile bewusst kurz mit Verweis auf die Branchenseite
+(Entscheidung vom 22.08.2026, siehe `docs/entscheidungen.md`) — nicht die volle Zwölferliste
+eintragen.
+
+### SEO-2 · Technische Grundlage · S — **OFFEN**
+`sitemap.xml`, `robots.txt` (KI-Crawler wie GPTBot/ClaudeBot/PerplexityBot ausdrücklich erlauben),
+Google Search Console, Bing Webmaster Tools, Google Business Profile. Details:
+`docs/SEO_Umsetzungskonzept.md` Teil 7.1 (Woche 2), 8.3, 8.5.
+**Zu beachten:** Solange `proxy.ts` aktiv ist, bleibt die Seite trotzdem nicht indexierbar — das ist
+gewollt. Diese Aufgabe bereitet nur vor, damit die Indexierung mit dem Fall des Passwortschutzes
+sofort beginnt.
+
+### SEO-3 · Bestehende Seiten auf extrahierbare Struktur umbauen · M — **OFFEN**
+Direkte Antwort zuerst, FAQ-Auszeichnung. Details: `docs/SEO_Umsetzungskonzept.md` Teil 7.1 (Woche 3).
+
+### SEO-4 · 12 Branchenseiten (Typ A) · L — **OFFEN**
+Vollständige Branchenliste: `docs/seiten-und-zielgruppen.md` Abschnitt 3. Seitenvorlage:
+`docs/SEO_Umsetzungskonzept.md` Teil 5.2.
+
+### SEO-5 · 20 Ratgeber-Seiten (Typ B) · L — **OFFEN**
+Seitenliste, Vorlage, Pflichtangaben: `docs/SEO_Umsetzungskonzept.md` Teil 4, 5.1, 8.2.
+
+### SEO-6 · Pilot: 50 Stadt-Branche-Seiten (Typ C) · L — **OFFEN**
+2 Branchen (Handwerk, private Vermieter) × 25 Städte. Städteliste, Qualitätsschwelle,
+Recherchepunkte: `docs/SEO_Umsetzungskonzept.md` Teil 3, 5.3, 9. **Verbindlich:** Gerichts- und
+Kammerangaben müssen recherchiert und belegt sein, nie geraten (Teil 3.2, Teil 9). Der Ausbau über
+den Pilot hinaus (volle Fläche laut `docs/seiten-und-zielgruppen.md`: ca. 100 Städte × 12 Branchen)
+bleibt **P2-2**, erst nach nachgewiesener Wirkung des Pilots.
+
+---
+
 ## P2 — Nach dem Livegang
 
-- **P2-1 · Branchen-Unterseiten (12)** · L — vollständige Liste in `docs/seiten-und-zielgruppen.md`
-- **P2-2 · Programmatische SEO-Seiten** · L — `/inkasso-[branche]-[stadt]`, Qualitätsregeln beachten
+- **P2-1 · Branchen-Unterseiten (12) — laufende Pflege** · L — die zwölf Seiten selbst entstehen
+  jetzt vor dem Livegang als **SEO-4**; hier verbleibt nur die Pflege/Erweiterung danach
+- **P2-2 · Programmatische SEO-Seiten — Ausbau über den Pilot hinaus** · L — der Pilot
+  (2 Branchen × 25 Städte) entsteht vor dem Livegang als **SEO-6**; hier der Ausbau auf die volle
+  Fläche (`docs/seiten-und-zielgruppen.md`: ca. 100 Städte × 12 Branchen), erst nach nachgewiesener
+  Wirkung des Pilots (`docs/SEO_Umsetzungskonzept.md` Teil 7.2)
 - **P2-3 · Backoffice-Übersicht** · L — geschützte Seite mit Fällen und Status, damit kein Fall nur im Postfach existiert
 - **P2-4 · Einreichung per E-Mail** · M — `fall@notafinance.de`
-- **P2-5 · Strukturierte Daten, Sitemap, robots.txt** · M
+- **P2-5 · Strukturierte Daten, Sitemap, robots.txt — laufende Pflege** · M — die Ersteinrichtung
+  entsteht jetzt vor dem Livegang als **SEO-1** bzw. **SEO-2**; hier nur laufende Pflege danach
 - **P2-6 · Backstage-Extraktion** · L — Rechnungsdaten automatisch auslesen, Fall entscheidungsreif vorlegen
 - **P2-7 · Monitoring** · M — Fehler- und Ausfallbenachrichtigung (z. B. Sentry), Testeinreichung als Wächter
 
@@ -782,7 +838,8 @@ Foto-Verarbeitung liegt vor (offen).
 ## Reihenfolge bis zum Livegang
 1. P0-1, P0-3, P0-5, P0-6, P0-8, P0-10 abarbeiten (P0-2 entfällt, P0-4 → P1-0)
 2. P1-0 bis P1-10 abarbeiten (P1-9 entfällt; **P1-10 ist Voraussetzung für den Livegang**)
-3. P0-7 anwaltliche Prüfung, Ergebnisse einarbeiten
+3. P0-7 anwaltliche Prüfung, Ergebnisse einarbeiten — **parallel dazu: SEO-1 bis SEO-6**
+   (`docs/SEO_Umsetzungskonzept.md`), damit die Seiten mit dem Fall des Passwortschutzes bereitstehen
 4. `npm run build` fehlerfrei, vollständiger Testdurchlauf
 5. Passwortschutz entfernen, Zweig nach `main`, Deployment prüfen
 6. Danach P2 als laufende Arbeit
