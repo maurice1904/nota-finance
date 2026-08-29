@@ -317,6 +317,15 @@ nicht neu — die neuen Regeln fehlten im Ergebnis. Erst `rm -rf .next` mit ansc
 brachte sie hinein. **Wenn eine CSS-Änderung lokal nicht ankommt, ist das der erste Griff.** Für
 Vercel unkritisch, dort wird ohnehin frisch gebaut.
 
+**Nachtrag (29.08.2026):** Die Entwicklerkonsole zeigte erneut die Warnung
+„Detected `scroll-behavior: smooth` on the `<html>` element" — keine Regression der Etappe-3-Lösung,
+sondern eine neue Prüfung des Next.js-Routers seit dem Update auf 16.3.1 (P1-8, 21.08.2026): Er
+verlangt jetzt zusätzlich das Attribut `data-scroll-behavior="smooth"` am `<html>`-Element, um das
+sanfte Scrollen während eines Seitenwechsels kurz abzuschalten. Ergänzt in `app/layout.tsx`
+(`<html lang="de" data-scroll-behavior="smooth">`). Reine Router-Hinweis-Markierung, keine
+CSS-Regel — an `app/globals.css` und der `prefers-reduced-motion`-Regel wurde nichts geändert,
+`npm run build` läuft weiter fehlerfrei.
+
 #### Etappe 4 — **erledigt (22.08.2026)**
 - **Alternativtexte** aller Bilder prüfen und ergänzen. (Das Navigations-Logo ist mit Etappe 3
   erledigt; offen sind vor allem die Partner-Logos und die Hero-Bilder.)

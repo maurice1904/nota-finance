@@ -231,8 +231,10 @@ export default function RootLayout({
   // Sanftes Scrollen stand hier bis August 2026 als Klasse "scroll-smooth".
   // Es steht jetzt in app/globals.css - nur dort laesst es sich fuer Menschen
   // abschalten, die "Bewegung reduzieren" eingestellt haben (Begruendung dort).
+  // data-scroll-behavior="smooth": seit dem Next-Update (P1-8, 16.3.1) noetig,
+  // sonst warnt der Router im Dev-Modus - siehe docs/aufgabenliste.md P1-3.
   return (
-    <html lang="de">
+    <html lang="de" data-scroll-behavior="smooth">
       <head>
         <script
           type="application/ld+json"

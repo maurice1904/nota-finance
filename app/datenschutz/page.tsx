@@ -125,31 +125,38 @@ export default function DatenschutzPage() {
               3. Weitergabe von Daten und Hosting
             </h2>
             <p className="mb-2 font-semibold text-text-900">
-              (1) Hosting und Infrastruktur (Vercel, Supabase & Resend)
+              (1) Empfänger personenbezogener Daten
             </p>
             <p className="mb-4">
-              Wir nutzen für den Betrieb dieser Website und die Speicherung Ihrer Daten
-              spezialisierte technische Dienstleister, mit denen wir
-              Auftragsverarbeitungsverträge (AVV) gemäß Art. 28 DSGVO geschlossen haben.
+              Wir übermitteln personenbezogene Daten an sorgfältig ausgewählte,
+              weisungsgebundene Dienstleister, die diese ausschließlich nach unseren
+              Weisungen im Rahmen eines Auftragsverarbeitungsverhältnisses nach Art. 28
+              DSGVO verarbeiten. Sie sind vertraglich verpflichtet, geeignete technische
+              und organisatorische Maßnahmen nach Art. 32 DSGVO vorzuhalten und ihre
+              Beschäftigten zur Vertraulichkeit zu verpflichten.
             </p>
-            <p className="mb-4">
-              <strong className="text-text-900">Hosting:</strong> Unsere Website wird bei
-              Vercel Inc. (340 S Lemon Ave #4133, Walnut, CA 91789, USA) gehostet. Vercel
-              stellt die technische Infrastruktur bereit. Vercel ist unter dem Data Privacy
-              Framework (DPF) zertifiziert.
+            <p className="mb-2">
+              Es handelt sich um folgende Kategorien von Empfängern:
             </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>
+                Anbieter von Datenbank- und Speicherdiensten (Verarbeitung innerhalb der
+                Europäischen Union)
+              </li>
+              <li>Anbieter von Hosting- und Auslieferungsdiensten für Websites</li>
+              <li>Anbieter von Diensten für den Versand von Transaktions-E-Mails</li>
+              <li>Anbieter von E-Mail- und Bürodiensten</li>
+              <li>
+                Anbieter für die cookiefreie, aggregierte Reichweitenmessung (Verarbeitung
+                innerhalb der Europäischen Union)
+              </li>
+            </ul>
             <p className="mb-4">
-              <strong className="text-text-900">Datenbank &amp; Dateispeicher:</strong> Ihre
-              hochgeladenen Dokumente und Ihre Stammdaten werden bei Supabase Inc. gespeichert.
-              Die physische Speicherung der Daten erfolgt ausschließlich in Frankfurt am Main
-              (Deutschland / AWS Region eu-central-1) erfolgt.
-            </p>
-            <p className="mb-4">
-              <strong className="text-text-900">E-Mail-Versand:</strong> Für den Versand von
-              Bestätigungs- und Benachrichtigungs-E-Mails im Rahmen der Fallbearbeitung setzen
-              wir den E-Mail-Dienstleister Resend ein. Hierbei werden die für den jeweiligen
-              Mailversand erforderlichen Daten (z. B. Ihre E-Mail-Adresse sowie ggf. der Inhalt
-              der Mitteilung und Anhänge) verarbeitet.
+              Soweit einzelne Dienstleister personenbezogene Daten außerhalb des
+              Europäischen Wirtschaftsraums verarbeiten, erfolgt dies auf Grundlage der
+              Standardvertragsklauseln der Europäischen Kommission (Durchführungsbeschluss
+              (EU) 2021/914) sowie, soweit einschlägig, auf Grundlage einer Zertifizierung
+              nach dem EU-U.S. Data Privacy Framework.
             </p>
             <p className="mb-2 font-semibold text-text-900">(2) Inkasso-Dienstleistung</p>
             <p>
@@ -158,35 +165,6 @@ export default function DatenschutzPage() {
               Bonitätsprüfung, bei berechtigtem Interesse), Gerichte und Gerichtsvollzieher
               (im gerichtlichen Mahnverfahren), Rechtsanwälte (falls ein streitiges Verfahren
               notwendig wird und Sie dies beauftragen).
-            </p>
-
-            {/* ============================================================
-                ACHTUNG - NOCH NICHT ANWALTLICH GEPRUEFT (siehe P0-7)
-
-                Der folgende Absatz zu Plausible Analytics wurde im Rahmen von
-                P0-8 ergaenzt und muss vor dem Livegang anwaltlich geprueft und
-                freigegeben werden. Alle uebrigen Texte dieser Seite sind davon
-                nicht beruehrt.
-                ============================================================ */}
-            <p className="mb-2 font-semibold text-text-900">
-              (3) Reichweitenmessung (Plausible Analytics)
-            </p>
-            <p>
-              Zur Auswertung der Nutzung unserer Website setzen wir Plausible Analytics
-              der Plausible Insights OÜ, Västriku tn 2, 50403 Tartu, Estland, ein. Die
-              Verarbeitung erfolgt ausschließlich auf Servern innerhalb der Europäischen
-              Union; eine Übermittlung in Drittländer findet nicht statt. Plausible
-              verwendet <strong className="text-text-900">keine Cookies</strong> und legt
-              keine Kennungen auf Ihrem Endgerät ab. Erfasst werden ausschließlich
-              aggregierte Angaben wie aufgerufene Seite, verweisende Seite, Browser,
-              Betriebssystem, Gerätetyp und Herkunftsland. Ihre IP-Adresse wird dabei
-              nicht gespeichert, sondern lediglich zur Ermittlung des Herkunftslandes
-              ausgewertet und sofort verworfen. Eine Zusammenführung dieser Daten mit
-              anderen Datenquellen, eine Wiedererkennung einzelner Personen oder eine
-              seitenübergreifende Nachverfolgung erfolgen nicht. Rechtsgrundlage ist
-              Art. 6 Abs. 1 S. 1 lit. f DSGVO; unser berechtigtes Interesse liegt in der
-              bedarfsgerechten Gestaltung und der statistischen Auswertung unseres
-              Angebots.
             </p>
           </section>
 
@@ -260,11 +238,27 @@ export default function DatenschutzPage() {
               Browsers in der Regel automatisch gelöscht. Es erfolgt keine Nutzung von
               Tracking- oder Analyse-Cookies zu Werbezwecken (wie z. B. Google Analytics).
             </p>
-            <p>
+            <p className="mb-4">
               Rechtsgrundlage für diese Speicherung ist Art. 6 Abs. 1 lit. f DSGVO (unser
               berechtigtes Interesse an der technischen Funktionsfähigkeit und Sicherheit der
               Website). Eine Einwilligung (Cookie-Banner) ist für diese technisch notwendigen
               Cookies nicht erforderlich.
+            </p>
+            <p>
+              <strong className="text-text-900">Reichweitenmessung:</strong> Zur Auswertung
+              der Nutzung unserer Website setzen wir den in Abschnitt 3 genannten Anbieter für
+              cookiefreie, aggregierte Reichweitenmessung ein. Die Verarbeitung erfolgt
+              ausschließlich auf Servern innerhalb der Europäischen Union; eine Übermittlung
+              in Drittländer findet nicht statt. Der Dienst verwendet keine Cookies und legt
+              keine Kennungen auf Ihrem Endgerät ab. Erfasst werden ausschließlich aggregierte
+              Angaben wie aufgerufene Seite, verweisende Seite, Browser, Betriebssystem,
+              Gerätetyp und Herkunftsland. Ihre IP-Adresse wird dabei nicht gespeichert,
+              sondern lediglich zur Ermittlung des Herkunftslandes ausgewertet und sofort
+              verworfen. Eine Zusammenführung dieser Daten mit anderen Datenquellen, eine
+              Wiedererkennung einzelner Personen oder eine seitenübergreifende Nachverfolgung
+              erfolgen nicht. Rechtsgrundlage ist Art. 6 Abs. 1 S. 1 lit. f DSGVO; unser
+              berechtigtes Interesse liegt in der bedarfsgerechten Gestaltung und der
+              statistischen Auswertung unseres Angebots.
             </p>
           </section>
 
