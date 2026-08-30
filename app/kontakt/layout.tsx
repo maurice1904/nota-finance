@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildBreadcrumbSchema } from "@/lib/breadcrumb";
 
 export const metadata: Metadata = {
   title: "Kontakt aufnehmen",
@@ -12,11 +13,21 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Kontakt", path: "/kontakt" }]);
+
 export default function KontaktLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {children}
+    </>
+  );
 }
 

@@ -10,7 +10,7 @@
 | # | Frage | Entscheidung | Auswirkung |
 |---|---|---|---|
 | 1 | Städte | Top 15 Deutschland + Top 10 Bayern + Gelsenkirchen, Bochum | 25 Städte, siehe Teil 3 |
-| 2 | Sichtbarer Autor | **Manfred Eberhard** | Autorenprofil nötig, siehe Teil 1.3 |
+| 2 | Sichtbarer Autor | ~~Manfred Eberhard~~ **entfällt** (Korrektur 30.08.2026, siehe `docs/entscheidungen.md` Nr. 32) | kein Autorenprofil, keine Personennennung, siehe Teil 1.3 |
 | 3 | twenty4collect nennen | **Ja — twenty4collect ist Nota Finance** | Größter Vertrauensanker, durchgängig nutzen |
 | 4 | Bewertungen | **Nur echte** — siehe Warnung unten | Systematischer Prozess, siehe Teil 6 |
 | 5 | Zeit nach Go-live | **5 Std./Woche** | Bestimmt den Ausrollplan, siehe Teil 7 |
@@ -76,24 +76,21 @@ PAIR Finance verlinkt eine solche Datei in der Fußzeile. Meine ehrliche Bewertu
 - **Wettbewerbsargument:** Wenn der Marktführer es tut, gehört es in eurer Branche zum Standard.
 
 **Empfehlung: machen**, als Teil des Entitäts-Blocks, nicht als eigene Aufgabe. Erreichbar unter
-`/llms.txt`, verlinkt in der Fußzeile neben Impressum.
+`/llms.txt`.
 
-## 1.3 Autorenprofil Manfred Eberhard
+**Umsetzung (30.08.2026):** Auf Wunsch des Auftraggebers zusätzlich als richtige,
+menschenlesbare Seite `/llm-info` gestaltet (Vorbild: PAIR Finance) — strukturierte Fakten statt
+Fließtext, im normalen Nota-Finance-Seitenlayout. Diese Seite, nicht die reine Textdatei, ist in
+der Fußzeile verlinkt (Anzeigename „LLM Info"); `/llm-info` verweist am Ende selbst auf
+`/llms.txt` für den automatisierten Abruf.
 
-Das ist ein starkes E-E-A-T-Signal — gerade im Rechtsbereich, wo Google bei vorgetäuschter
-Expertise besonders streng ist. Ihr habt echte Expertise; sie muss sichtbar werden.
+## 1.3 Autorenprofil — entfällt
 
-**Eigene Seite `/ueber/manfred-eberhard`** mit:
-- Foto
-- Funktion: Geschäftsführer, registrierter Rechtsdienstleister
-- Seit 2008 im Forderungsmanagement
-- Verantwortlich für die fachliche Prüfung jedes Falls
-- DIHK/IHK Digital Award 2017
-- Initiator von gerichtsmahnverfahren.de
-- `Person`-Auszeichnung in JSON-LD, verknüpft mit der Organisation
-
-**Auf jeder Fachseite** (Fragen-Seiten, Branchenseiten): Autorenzeile mit Name, Funktion,
-Verlinkung aufs Profil, Veröffentlichungs- **und** Aktualisierungsdatum.
+**Entscheidung des Auftraggebers (30.08.2026, siehe `docs/entscheidungen.md` Nr. 32):** Es gibt
+kein Autorenprofil und keine Personennennung auf Fach-/Ratgeber-Seiten. Der ursprünglich hier
+geplante Block (eigene Profilseite, `Person`-Auszeichnung, Autorenzeile mit Name auf jeder
+Fachseite) entfällt vollständig. Fach-/Ratgeber-Seiten tragen stattdessen ein
+Veröffentlichungs- und Aktualisierungsdatum ohne Namensnennung (siehe Teil 5.1, Teil 8.2).
 
 ## 1.4 Presseberichte als Drittquellen
 
@@ -118,10 +115,9 @@ Aussagen. Diese drei existieren bereits — sie müssen nur auffindbar verknüpf
 |---|---|---|
 | `Organization` | Layout, alle Seiten | Faktenkern aus 1.1, `sameAs` auf Presseberichte und BDIU |
 | `LocalBusiness` | Unternehmensseite | Adresse, Servicegebiete, Öffnungszeiten |
-| `Person` | Autorenprofil | Manfred Eberhard, verknüpft mit Organisation |
 | `Service` | Produktseite | Leistung, Preismodell, Gebiet |
 | `FAQPage` | FAQ + Fragen-Seiten | jede Frage einzeln ausgezeichnet |
-| `Article` | Fragen-Seiten | mit `author`, `datePublished`, `dateModified` |
+| `Article` | Fragen-Seiten | mit `datePublished`, `dateModified` (kein `author`/Person, siehe 1.3) |
 | `BreadcrumbList` | alle Unterseiten | Navigationspfad |
 
 ---
@@ -248,8 +244,7 @@ H1: [Die Frage im Wortlaut]
 [DIREKTE ANTWORT — 2 bis 3 Sätze, sofort, ohne Einleitung.
  Das ist der Absatz, den ein Sprachmodell zitiert. Konkret, mit Zahlen wo möglich.]
 
-Autorenzeile: Manfred Eberhard, registrierter Rechtsdienstleister · Veröffentlicht [Datum] ·
-Aktualisiert [Datum]
+Veröffentlicht [Datum] · Aktualisiert [Datum] (ohne Namensnennung, siehe 1.3)
 
 H2: [Die ausführliche Erklärung]
     Fließtext, kurze Absätze, konkrete Zahlen und Rechtsnormen.
@@ -274,7 +269,7 @@ Verwandte Themen: [3 bis 5 interne Links auf andere Fragen- und Branchenseiten]
 - Mindestens **drei konkrete, überprüfbare Fakten** je Seite (Beträge, Fristen, Paragrafen)
 - Keine erfundenen Statistiken. Wo eine Zahl nicht belegbar ist: weglassen
 - Rechtsaussagen mit Fundstelle (§, Gesetz) — das macht sie zitierfähig
-- Autorenzeile und beide Daten sichtbar
+- Beide Daten (Veröffentlicht/Aktualisiert) sichtbar, ohne Namensnennung
 
 ## 5.2 Branchenseite (Typ A)
 
@@ -429,7 +424,6 @@ Erfasst wird je Prompt: Wird Nota/twenty4collect genannt? Wie beschrieben? Welch
 | Branche | `/inkasso-[branche]` | `/inkasso-handwerk` |
 | Frage | `/ratgeber/[frage-slug]` | `/ratgeber/was-kostet-inkasso` |
 | Stadt-Branche | `/inkasso-[branche]-[stadt]` | `/inkasso-handwerk-muenchen` |
-| Autor | `/ueber/manfred-eberhard` | |
 | Presse | `/presse` | |
 
 Umlaute in Slugs auflösen (`muenchen`, nicht `münchen`).
@@ -440,7 +434,7 @@ Umlaute in Slugs auflösen (`muenchen`, nicht `münchen`).
 - Genau eine H1, saubere Überschriftenhierarchie
 - Kanonische URL
 - JSON-LD passend zum Seitentyp (Teil 1.5)
-- Autorenzeile mit Veröffentlichungs- und Aktualisierungsdatum
+- Veröffentlichungs- und Aktualisierungsdatum, ohne Namensnennung (siehe 1.3)
 - Mindestens drei interne Links
 
 ## 8.3 `robots.txt` — kritisch

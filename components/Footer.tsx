@@ -48,11 +48,23 @@ export default function Footer() {
             >
               AGB
             </Link>
-            <Link 
-              href="/kontakt" 
+            <Link
+              href="/kontakt"
               className="text-sm text-surface-100 hover:text-white transition-colors duration-300"
             >
               Kontakt
+            </Link>
+            <Link
+              href="/presse"
+              className="text-sm text-surface-100 hover:text-white transition-colors duration-300"
+            >
+              Presse
+            </Link>
+            <Link
+              href="/llm-info"
+              className="text-sm text-surface-100 hover:text-white transition-colors duration-300"
+            >
+              LLM Info
             </Link>
           </nav>
         </div>

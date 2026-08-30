@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildBreadcrumbSchema } from "@/lib/breadcrumb";
 
 export const metadata: Metadata = {
   title: "Häufige Fragen zu Inkasso & Ablauf",
@@ -76,6 +77,8 @@ const faqSchema = {
   })),
 };
 
+const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Häufige Fragen", path: "/faq" }]);
+
 export default function FAQLayout({
   children,
 }: Readonly<{
@@ -87,6 +90,12 @@ export default function FAQLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(faqSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
         }}
       />
       {children}

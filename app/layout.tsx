@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Providers } from "@/components/Providers";
 import PlausibleProvider from "next-plausible";
+import { faktenkern, sameAs } from "@/lib/faktenkern";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -106,7 +107,9 @@ export const metadata: Metadata = {
 // JSON-LD Structured Data for SEO
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": ["Organization", "FinancialService"],
+  // "LegalService" ergaenzt: Inkasso ist nach RDG eine Rechtsdienstleistung, keine reine
+  // Finanzdienstleistung (docs/recht-und-datenschutz.md Abschnitt 1).
+  "@type": ["Organization", "FinancialService", "LegalService"],
   "@id": "https://www.notafinance.de/#organization",
   name: "Nota Finance",
   alternateName: "Nota Finance by twenty4collect",
@@ -151,7 +154,18 @@ const organizationSchema = {
     description:
       "BDIU-zertifiziertes Inkassounternehmen mit über 15 Jahren Erfahrung im Forderungsmanagement in Deutschland.",
   },
-  sameAs: ["https://www.linkedin.com/company/notafinance"],
+  // Registrierung nach RDG (docs/recht-und-datenschutz.md Abschnitt 1), aus dem Impressum.
+  identifier: {
+    "@type": "PropertyValue",
+    propertyID: "Rechtsdienstleistungsregister-Aktenzeichen",
+    value: faktenkern.rdg.aktenzeichen,
+  },
+  memberOf: {
+    "@type": "Organization",
+    name: faktenkern.bdiu,
+  },
+  award: faktenkern.award,
+  sameAs,
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Inkasso-Dienstleistungen",

@@ -41,7 +41,7 @@ mehr nachvollziehbar, worauf der Status beruht.
 | P1-12 | Fotos erlauben und zu EINEM PDF zusammenführen | **ERLEDIGT** |
 | P1-13 | Strukturierte Daten korrigiert | **ERLEDIGT** |
 | P1-14 | AGB an die neuen Einreichungsformate anpassen | **OFFEN** (teilweise erledigt) |
-| SEO-1 | Entitäts-Fundament | **OFFEN** |
+| SEO-1 | Entitäts-Fundament | **ERLEDIGT** |
 | SEO-2 | Technische Grundlage (Sitemap, robots.txt, Search Console, Bing, Google Business Profile) | **OFFEN** |
 | SEO-3 | Bestehende Seiten auf extrahierbare Struktur umbauen | **OFFEN** |
 | SEO-4 | 12 Branchenseiten (Typ A) | **OFFEN** |
@@ -793,12 +793,48 @@ Anwaltswartezeit (P0-7), bevor der Passwortschutz fällt. **Sie sind selbst kein
 Livegang** — die eigentlichen Voraussetzungen bleiben P1-10 (Supabase-Tarif) und P0-7 (anwaltliche
 Prüfung); diese Gruppe soll nur *fertig sein*, wenn der Passwortschutz fällt, nicht ihn aufhalten.
 
-### SEO-1 · Entitäts-Fundament · M — **OFFEN**
-Faktenkern, `llms.txt`, Autorenprofil `/ueber/manfred-eberhard`, Presseseite `/presse`,
-strukturierte Daten (`Organization`, `Person`). Details: `docs/SEO_Umsetzungskonzept.md` Teil 1.
+### SEO-1 · Entitäts-Fundament · M — **ERLEDIGT**
+Faktenkern, `llms.txt`, Presseseite `/presse`, strukturierte Daten (`Organization`,
+`LocalBusiness`, `BreadcrumbList`). **Kein Autorenprofil, keine `Person`-Auszeichnung**
+(Entscheidung vom 30.08.2026, siehe `docs/entscheidungen.md` Nr. 32). Details:
+`docs/SEO_Umsetzungskonzept.md` Teil 1.
 **Zu beachten:** Faktenkern-Zielgruppenzeile bewusst kurz mit Verweis auf die Branchenseite
 (Entscheidung vom 22.08.2026, siehe `docs/entscheidungen.md`) — nicht die volle Zwölferliste
 eintragen.
+
+**Nachweis (30.08.2026):** Zentrale Faktenquelle `lib/faktenkern.ts` angelegt (Stammdaten aus dem
+bestehenden Impressum übernommen, Impressum selbst nicht verändert). Strukturierte Daten ergänzt:
+`Organization` in `app/layout.tsx` trägt jetzt `identifier` (RDG-Aktenzeichen), `memberOf` (BDIU),
+`award` (DIHK/IHK 2017) und `LegalService` im `@type`-Array, `sameAs` mit LinkedIn (vom
+Auftraggeber bestätigt: `nota-finance` mit Bindestrich ist korrekt) und allen drei
+Presseberichten. `LocalBusiness` (Adresse, Telefon, Servicegebiet — Öffnungszeiten fehlen als
+Faktum und wurden nicht erfunden) ergänzt `app/unternehmen/layout.tsx` um dieselbe `@id`.
+`BreadcrumbList` (`lib/breadcrumb.ts`) auf allen zehn Inhaltsseiten ergänzt (agb, datenschutz,
+einreichen, branchen, kontakt, faq, preise, produkt, unternehmen, presse) — bei agb/datenschutz
+über eine neue, separate `layout.tsx`, ohne die geprüften Rechtstexte selbst anzufassen. `/llms.txt`
+als Route Handler umgesetzt (liest aus `lib/faktenkern.ts`), in der Fußzeile verlinkt.
+Unternehmensseite um die Sektion „Fakten auf einen Blick" ergänzt. `components/ArticleMeta.tsx`
+(Veröffentlicht/Aktualisiert, ohne Namensnennung) für SEO-5 vorbereitet, noch ungenutzt.
+
+**Presseseite `/presse`:** alle drei vom Auftraggeber am 30.08.2026 verifizierten Berichte
+(presseportal.de, Braunschweiger Zeitung, lifePR — alle frei zugänglich, keine Bezahlschranke)
+mit Titel, Medium, Datum, Link und zwei-Satz-Zusammenfassung eingebaut, Fußzeilen-Link ergänzt.
+Datum des Braunschweiger-Zeitung-Berichts (19.05.2025, vom Auftraggeber nachgereicht — mein
+automatischer Abruf dieser Seite blieb technisch blockiert, kein Bezahlschranken-Problem) in
+`lib/faktenkern.ts` ergänzt. Alle drei Berichte damit vollständig.
+
+Nebenbei erledigt: `app/preise/layout.tsx` `priceValidUntil` von `2026-12-31` auf `2027-12-31`
+verlängert (vom Auftraggeber angefragt).
+
+**Nachtrag (30.08.2026):** Auf Wunsch des Auftraggebers zusätzlich zur reinen Textdatei `/llms.txt`
+eine richtig gestaltete Seite `/llm-info` gebaut (Vorbild: PAIR Finance) — strukturierte Fakten im
+normalen Nota-Finance-Layout statt Fließtext, liest ebenfalls aus `lib/faktenkern.ts`. Diese Seite
+ist jetzt in der Fußzeile verlinkt (Anzeigename „LLM Info"), nicht mehr die Textdatei direkt;
+`/llm-info` verweist am Ende selbst auf `/llms.txt`. `docs/SEO_Umsetzungskonzept.md` Teil 1.2
+entsprechend ergänzt.
+
+`npm run build` und `npm run lint` fehlerfrei; JSON-LD, `/llms.txt`, `/llm-info`, `/presse` und
+die Fußzeilen-Links gegen den Produktionsbuild geprüft (Basic-Auth-geschützt, `curl -u nota:…`).
 
 ### SEO-2 · Technische Grundlage · S — **OFFEN**
 `sitemap.xml`, `robots.txt` (KI-Crawler wie GPTBot/ClaudeBot/PerplexityBot ausdrücklich erlauben),

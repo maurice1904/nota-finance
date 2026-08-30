@@ -5,6 +5,7 @@ import { Target, Heart, Zap, Shield, ArrowRight, ChevronDown } from "lucide-reac
 import Link from "next/link";
 import CTASection from "@/components/CTASection";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import { faktenkern } from "@/lib/faktenkern";
 
 export default function UnternehmenPage() {
   const timelineRef = useRef<HTMLDivElement>(null);
@@ -223,6 +224,46 @@ export default function UnternehmenPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Fakten auf einen Blick - nuechterne Wiedergabe des Faktenkerns (lib/faktenkern.ts),
+          keine werblichen Formulierungen. Quelle der Stammdaten: app/impressum/page.tsx. */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RevealOnScroll>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-900 mb-8 md:mb-10">
+              Fakten auf einen Blick
+            </h2>
+            <dl className="divide-y divide-border-subtle border-t border-b border-border-subtle">
+              {[
+                ["Träger", `${faktenkern.traeger}, gegründet ${faktenkern.gegruendet}`],
+                [
+                  "Sitz",
+                  `${faktenkern.anschrift.strasse}, ${faktenkern.anschrift.plz} ${faktenkern.anschrift.ort}`,
+                ],
+                [
+                  "Handelsregister",
+                  `${faktenkern.handelsregister.gericht}, ${faktenkern.handelsregister.nummer}`,
+                ],
+                [
+                  "Registrierter Rechtsdienstleister",
+                  `Aktenzeichen ${faktenkern.rdg.aktenzeichen} (Aufsicht: ${faktenkern.rdg.aufsichtsbehoerde})`,
+                ],
+                ["Mitgliedschaft", faktenkern.bdiu],
+                ["Auszeichnung", faktenkern.award],
+                ["Geschäftsführung", faktenkern.geschaeftsfuehrung.join(", ")],
+              ].map(([label, value]) => (
+                <div
+                  key={label}
+                  className="py-4 md:grid md:grid-cols-3 md:gap-4"
+                >
+                  <dt className="text-sm font-semibold text-text-900/70">{label}</dt>
+                  <dd className="mt-1 text-text-900 md:col-span-2 md:mt-0">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </RevealOnScroll>
         </div>
       </section>
 

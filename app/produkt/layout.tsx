@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildBreadcrumbSchema } from "@/lib/breadcrumb";
 
 export const metadata: Metadata = {
   title: "So funktioniert digitales Forderungsmanagement",
@@ -78,6 +79,8 @@ const serviceSchema = {
   },
 };
 
+const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Produkt", path: "/produkt" }]);
+
 export default function ProduktLayout({
   children,
 }: Readonly<{
@@ -89,6 +92,12 @@ export default function ProduktLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(serviceSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
         }}
       />
       {children}

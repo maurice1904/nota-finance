@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildBreadcrumbSchema } from "@/lib/breadcrumb";
 
 export const metadata: Metadata = {
   title: "Preise & Kosten – 0€ für Gläubiger",
@@ -23,7 +24,7 @@ const offerSchema = {
   url: "https://www.notafinance.de/preise",
   price: "0",
   priceCurrency: "EUR",
-  priceValidUntil: "2026-12-31",
+  priceValidUntil: "2027-12-31",
   availability: "https://schema.org/InStock",
   validFrom: "2024-01-01",
   seller: {
@@ -92,6 +93,8 @@ const priceSchema = {
   },
 };
 
+const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Preise", path: "/preise" }]);
+
 export default function PreiseLayout({
   children,
 }: Readonly<{
@@ -109,6 +112,12 @@ export default function PreiseLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(priceSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
         }}
       />
       {children}
