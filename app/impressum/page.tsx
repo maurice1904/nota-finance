@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "Impressum",
   description:
     "Rechtliche Informationen und Anbieterkennzeichnung der Nota Finance Website.",
+  alternates: {
+    canonical: "/impressum",
+  },
   openGraph: {
     title: "Impressum | Nota Finance",
     description:

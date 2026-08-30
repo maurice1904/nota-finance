@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "So funktioniert digitales Forderungsmanagement",
   description:
     "Von Upload bis Auszahlung: Unser transparenter Inkasso-Prozess. Wir kümmern uns um Mahnungen und Kommunikation, damit Sie Ihr Geld erhalten.",
+  alternates: {
+    canonical: "/produkt",
+  },
   openGraph: {
     title: "So funktioniert digitales Forderungsmanagement | Nota Finance",
     description:

@@ -23,6 +23,28 @@ const nextConfig: NextConfig = {
    * werten sie nie aus. Fuer die veroeffentlichte Seite aendert sich dadurch nichts.
    */
   allowedDevOrigins: ["192.168.*.*", "10.*.*.*", "*.local"],
+
+  /**
+   * notafinance.vercel.app ist zusaetzlich zu www.notafinance.de als Production erreichbar
+   * (Vercels automatische Projekt-Domain) und liefert exakt denselben Inhalt - ohne
+   * Weiterleitung waere das doppelter Inhalt unter zwei Domains (30.08.2026).
+   *
+   * Redirects aus next.config.ts laufen VOR proxy.ts (Next.js-Ausfuehrungsreihenfolge:
+   * 1. headers, 2. redirects, 3. Proxy). Der Passwortschutz bleibt dadurch unberuehrt: Fuer
+   * www.notafinance.de greift ohnehin keine Regel hier, dort prueft proxy.ts wie bisher.
+   * Nur wer ueber die Vercel-Adresse kommt, wird zuerst - noch vor jeder Passwortabfrage -
+   * auf www.notafinance.de umgeleitet und durchlaeuft proxy.ts dort ganz normal erneut.
+   */
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "notafinance.vercel.app" }],
+        destination: "https://www.notafinance.de/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 /**

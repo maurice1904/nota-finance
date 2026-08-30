@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Kontakt aufnehmen",
   description:
     "Haben Sie Fragen oder benötigen Sie Hilfe? Unser Support-Team steht Ihnen zur Verfügung.",
+  alternates: {
+    canonical: "/kontakt",
+  },
   openGraph: {
     title: "Kontakt aufnehmen | Nota Finance",
     description:

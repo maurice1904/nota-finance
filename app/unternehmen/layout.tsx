@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Über uns - Powered by 24collect",
   description:
     "Nota Finance als Plattform verbindet über 15 Jahre Inkasso-Erfahrung von 24collect mit modernster Technologie. Seriös, empathisch und effizient. Schnell, digital, kosteneffizient.",
+  alternates: {
+    canonical: "/unternehmen",
+  },
   openGraph: {
     title: "Über uns - Powered by 24collect | Nota Finance",
     description:

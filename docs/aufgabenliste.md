@@ -42,7 +42,7 @@ mehr nachvollziehbar, worauf der Status beruht.
 | P1-13 | Strukturierte Daten korrigiert | **ERLEDIGT** |
 | P1-14 | AGB an die neuen Einreichungsformate anpassen | **OFFEN** (teilweise erledigt) |
 | SEO-1 | Entitäts-Fundament | **ERLEDIGT** |
-| SEO-2 | Technische Grundlage (Sitemap, robots.txt, Search Console, Bing, Google Business Profile) | **OFFEN** |
+| SEO-2 | Technische Grundlage (Sitemap, robots.txt, Search Console, Bing, Google Business Profile) | **TEILWEISE ERLEDIGT** (Code fertig, Dashboards offen) |
 | SEO-3 | Bestehende Seiten auf extrahierbare Struktur umbauen | **OFFEN** |
 | SEO-4 | 12 Branchenseiten (Typ A) | **OFFEN** |
 | SEO-5 | 20 Ratgeber-Seiten (Typ B) | **OFFEN** |
@@ -836,13 +836,57 @@ entsprechend ergänzt.
 `npm run build` und `npm run lint` fehlerfrei; JSON-LD, `/llms.txt`, `/llm-info`, `/presse` und
 die Fußzeilen-Links gegen den Produktionsbuild geprüft (Basic-Auth-geschützt, `curl -u nota:…`).
 
-### SEO-2 · Technische Grundlage · S — **OFFEN**
+### SEO-2 · Technische Grundlage · S — **TEILWEISE ERLEDIGT**
 `sitemap.xml`, `robots.txt` (KI-Crawler wie GPTBot/ClaudeBot/PerplexityBot ausdrücklich erlauben),
 Google Search Console, Bing Webmaster Tools, Google Business Profile. Details:
 `docs/SEO_Umsetzungskonzept.md` Teil 7.1 (Woche 2), 8.3, 8.5.
 **Zu beachten:** Solange `proxy.ts` aktiv ist, bleibt die Seite trotzdem nicht indexierbar — das ist
 gewollt. Diese Aufgabe bereitet nur vor, damit die Indexierung mit dem Fall des Passwortschutzes
 sofort beginnt.
+
+**Nachweis (30.08.2026) — Code-Teil erledigt:**
+- **`app/sitemap.ts`:** durchsucht `app/` zur Build-Zeit selbst nach `page.tsx`-Dateien (keine
+  Handpflege) und schließt nur die absichtlich nicht indexierte Seite `/einreichen/danke` aus.
+  `lastmod` kommt aus der Git-Historie je Datei (`git log -1 --format=%cI`) statt aus dem
+  Dateisystem-Datum, weil Vercel bei einem frischen Checkout jeder Datei denselben
+  Build-Zeitpunkt geben würde. Gegen den Produktionsbuild geprüft: alle 13 zu indexierenden
+  Seiten erscheinen mit plausiblem `lastmod` (neue, noch unversionierte Dateien fallen korrekt
+  auf das heutige Datum zurück und korrigieren sich nach dem ersten Commit von selbst).
+- **`app/robots.ts`:** erlaubt `*` sowie 13 namentlich genannte KI-Crawler ausdrücklich (Liste
+  recherchiert, u. a. gegen Anthropics eigene Crawler-Dokumentation und das
+  Community-Verzeichnis `github.com/ai-robots-txt/ai.robots.txt`, Stand 30.08.2026) — deckt alle
+  vier in Teil 7.3 monatlich gemessenen Systeme ab (GPTBot/OAI-SearchBot/ChatGPT-User für
+  ChatGPT, ClaudeBot/Claude-User/Claude-SearchBot für Claude, PerplexityBot/Perplexity-User,
+  Google-Extended für Gemini) plus CCBot, Applebot-Extended, Amazonbot, meta-externalagent.
+  `/api/` bleibt für alle gesperrt. Verweist auf `sitemap.xml`.
+- **Geprüft, kein blockierendes `noindex` gefunden:** Volltextsuche über `app/` findet genau zwei
+  `index: false` — `app/not-found.tsx` (404-Seite) und `app/einreichen/danke/page.tsx`
+  (Duplicate-Content-Schutz mit `canonical: /einreichen`) — beide korrekt und beabsichtigt.
+  `app/layout.tsx` setzt sitecweit `robots: { index: true, follow: true }`. `proxy.ts` selbst
+  unverändert, wie vorgegeben.
+
+**Noch offen (kein Code, sondern Accounts/Dashboards):** Google Search Console, Bing Webmaster
+Tools, Google Business Profile einrichten — das kann nur der Auftraggeber mit seinem eigenen
+Konto tun. **Einzureichende URL bei beiden:** `https://www.notafinance.de/sitemap.xml` (deckt
+automatisch alle aktuellen und künftigen Seiten ab). Reihenfolge wichtig: erst nach Entfernen des
+Passwortschutzes einreichen, siehe Hinweis oben.
+
+**Nachtrag (30.08.2026) — kanonische Domain:** Bestätigt: `www.notafinance.de` ist die einzig
+richtige Domain (`notafinance.de` leitet per 307 darauf um, nur `www` ist Production in Vercel).
+Geprüft und korrigiert:
+- **`alternates.canonical`** fehlte auf 11 von 13 Seiten komplett (nur `/einreichen/danke` hatte
+  eins) — jetzt trägt jede Seite ihre eigene kanonische URL (`app/layout.tsx` + je Route).
+- Open-Graph-URLs, Organization-JSON-LD, `lib/faktenkern.ts`, `sitemap.xml`, `robots.txt`:
+  durchsucht, nirgends die Variante ohne `www` gefunden.
+- **`notafinance.vercel.app`** ist zusätzlich als Production erreichbar und liefert identischen
+  Inhalt — ohne Gegenmaßnahme wäre das Duplicate Content. Gelöst mit einem host-basierten
+  Redirect in `next.config.ts` (`redirects()`, `has: [{ type: "host", value:
+  "notafinance.vercel.app" }]`), 308 auf `www.notafinance.de`. Geprüft: `withPlausibleProxy`
+  rührt `redirects` nicht an (nur `env`/`rewrites`), keine Kollision. Next.js-Ausführungsreihenfolge
+  bestätigt (`redirects` vor Proxy) — der Passwortschutz auf `www.notafinance.de` bleibt davon
+  unberührt, `proxy.ts` unverändert. Mit simuliertem `Host`-Header gegen den Produktionsbuild
+  geprüft: `notafinance.vercel.app` leitet auch **ohne** Zugangsdaten sofort weiter (Redirect
+  läuft vor der Passwortabfrage), `www.notafinance.de` verlangt weiterhin wie bisher das Passwort.
 
 ### SEO-3 · Bestehende Seiten auf extrahierbare Struktur umbauen · M — **OFFEN**
 Direkte Antwort zuerst, FAQ-Auszeichnung. Details: `docs/SEO_Umsetzungskonzept.md` Teil 7.1 (Woche 3).

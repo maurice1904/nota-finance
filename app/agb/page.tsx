@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "AGB",
   description:
     "Allgemeine Geschäftsbedingungen (AGB) inkl. Vereinbarung zur Auftragsverarbeitung (AVV) für die Serviceplattform notafinance.de der twenty4collect GmbH.",
+  alternates: {
+    canonical: "/agb",
+  },
   openGraph: {
     title: "AGB | Nota Finance",
     description:

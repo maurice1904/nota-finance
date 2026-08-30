@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "LLM Info",
   description:
     "Offizielle, strukturierte Informationen über Nota Finance und die twenty4collect GmbH für KI-Assistenten und Suchmaschinen.",
+  alternates: {
+    canonical: "/llm-info",
+  },
   openGraph: {
     title: "LLM Info | Nota Finance",
     description:

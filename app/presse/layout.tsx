@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Presse",
   description:
     "Presseberichte über gerichtsmahnverfahren.de und twenty4collect GmbH, der Trägergesellschaft von Nota Finance.",
+  alternates: {
+    canonical: "/presse",
+  },
   openGraph: {
     title: "Presse | Nota Finance",
     description:

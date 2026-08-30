@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "Datenschutzerklärung",
   description:
     "Datenschutzerklärung für die Serviceplattform www.notafinance.de der twenty4collect GmbH.",
+  alternates: {
+    canonical: "/datenschutz",
+  },
   openGraph: {
     title: "Datenschutzerklärung | Nota Finance",
     description:

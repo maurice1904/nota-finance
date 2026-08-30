@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Preise & Kosten – 0€ für Gläubiger",
   description:
     "Keine versteckten Kosten: Das außergerichtliche Inkasso ist für Sie als Gläubiger im Erfolgsfall kostenfrei. Die Inkassokosten trägt der Schuldner.",
+  alternates: {
+    canonical: "/preise",
+  },
   openGraph: {
     title: "Preise & Kosten – 0€ für Gläubiger | Nota Finance",
     description:

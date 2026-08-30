@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Häufige Fragen zu Inkasso & Ablauf",
   description:
     "Antworten auf Ihre Fragen: Kosten, Ablauf, Datensicherheit und Erfolgsaussichten. Alles, was Sie wissen müssen.",
+  alternates: {
+    canonical: "/faq",
+  },
   openGraph: {
     title: "Häufige Fragen zu Inkasso & Ablauf | Nota Finance",
     description:

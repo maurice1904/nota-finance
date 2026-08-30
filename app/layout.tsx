@@ -22,6 +22,12 @@ export const metadata: Metadata = {
   },
   description:
     "Fordern Sie offene Rechnungen einfach online ein. Sofortiger Start per Upload, ohne Vertragsbindung, ab 50€. Die Lösung für Freelancer & KMU.",
+  // Kanonische URL fuer alle Seiten ohne eigene alternates.canonical (30.08.2026):
+  // notafinance.vercel.app ist ebenfalls live erreichbar - ohne canonical koennte Google diese
+  // Adresse statt www.notafinance.de als massgeblich waehlen (Duplicate Content).
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "48x48" },
