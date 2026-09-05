@@ -44,9 +44,10 @@ mehr nachvollziehbar, worauf der Status beruht.
 | SEO-1 | Entitäts-Fundament | **ERLEDIGT** |
 | SEO-2 | Technische Grundlage (Sitemap, robots.txt, Search Console, Bing, Google Business Profile) | **TEILWEISE ERLEDIGT** (Code fertig, Dashboards offen) |
 | SEO-3 | Bestehende Seiten auf extrahierbare Struktur umbauen | **OFFEN** |
-| SEO-4 | 12 Branchenseiten (Typ A) | **OFFEN** |
+| SEO-4 | 12 Branchenseiten (Typ A) | **ERLEDIGT** |
 | SEO-5 | 20 Ratgeber-Seiten (Typ B) | **OFFEN** |
 | SEO-6 | Pilot: 50 Stadt-Branche-Seiten (2 Branchen × 25 Städte, Typ C) | **OFFEN** |
+| SEO-7 | Partnerseite für Steuerberater (`/partner/steuerberater`) | **OFFEN** |
 
 ---
 
@@ -891,9 +892,65 @@ Geprüft und korrigiert:
 ### SEO-3 · Bestehende Seiten auf extrahierbare Struktur umbauen · M — **OFFEN**
 Direkte Antwort zuerst, FAQ-Auszeichnung. Details: `docs/SEO_Umsetzungskonzept.md` Teil 7.1 (Woche 3).
 
-### SEO-4 · 12 Branchenseiten (Typ A) · L — **OFFEN**
+### SEO-4 · 12 Branchenseiten (Typ A) · L — **ERLEDIGT**
 Vollständige Branchenliste: `docs/seiten-und-zielgruppen.md` Abschnitt 3. Seitenvorlage:
 `docs/SEO_Umsetzungskonzept.md` Teil 5.2.
+
+**Architektur:** ein gemeinsamer Präsentations-Baustein (`components/BranchenSeite.tsx`), 12
+eigene Content-Objekte (`lib/branchen-content.ts`), ein gemeinsamer Metadata-/JSON-LD-Helfer
+(`lib/branchen-seo.ts`) und 12 schlanke Routen `app/inkasso-<slug>/{page,layout}.tsx` — kein
+dynamisches `[branche]`-Routing, weil das zu austauschbaren Seiten verleiten würde. Ablauf und
+Kosten sind bewusst fest im Baustein verankert (identisch für jede Branche, keine
+Textbausteine); Problem, Fallbeispiel und FAQ sind je Branche recherchiert, mit Rechtsnachweis,
+keine erfundenen Statistiken.
+
+**Slugs (final):** `/inkasso-freiberufler`, `/inkasso-handwerk`, `/inkasso-gesundheitswesen`,
+`/inkasso-agenturen`, `/inkasso-handel`, `/inkasso-gastronomie`, `/inkasso-it` (kurz statt
+„it-unternehmen"), `/inkasso-maschinenbau`, `/inkasso-vermieter`, `/inkasso-hausverwaltung`,
+`/inkasso-fitnessstudio` (statt „mitgliedschaften" — trifft die tatsächliche Suche von
+Fitnessstudio-/Vereinsbetreibern besser), `/inkasso-bildung`.
+
+**Nachweis (01.09.2026):** Alle 12 Seiten umgesetzt und geprüft — `npm run build`/`npm run lint`
+fehlerfrei; gegen den Produktionsbuild je Seite: eigenes `<link rel="canonical">`, genau eine
+H1, `FAQPage`-JSON-LD und `BreadcrumbList`-JSON-LD vorhanden, alle 12 erscheinen automatisch in
+`sitemap.xml`. Kostenformulierung exakt aus `docs/marke-und-texte.md` übernommen und als
+`faktenkern.kostenmodellSieAnsprache` zentralisiert. Jede Nennung von „twenty4collect" im
+Fließtext ist mit „Nota Finance (ein Geschäftsfeld der twenty4collect GmbH)" verknüpft
+(`faktenkern.markeMitTraeger`) — wer nur eine Unterseite sieht, soll den Zusammenhang zu Nota
+Finance sofort erkennen.
+
+**Nachtrag (05.09.2026) — FAQ-Bereich auf 7–8 Fragen je Seite erweitert:** Ursprünglich 4–5
+Fragen (Teil-5.2-Minimum), auf Wunsch des Auftraggebers für mehr Einstiegspunkte in
+KI-Antworten auf 7 (bei Handwerk 8) ausgebaut — 24 neue Frage-Antwort-Paare, jede mit
+mindestens einem konkreten Fakt (Betrag, Frist, Rechtsnorm mit Fundstelle oder Verfahrensweg),
+keine erfundenen Statistiken. Unter anderem neu: § 650f BGB (Bauhandwerkersicherung,
+Handwerk), § 648 BGB (freie Kündigung bei Werkverträgen, Agenturen und IT), § 355 Abs. 2 BGB
+(Widerrufsfrist Fernabsatz, Handel und Bildung), § 556b Abs. 1 BGB und § 286 Abs. 2 Nr. 1 BGB
+(Fälligkeit und automatischer Verzug bei Miete, Vermieter), § 28 Abs. 1 BGB sowie § 27 WEG
+(Wirtschaftsplan-Beschluss und Vertretungsmacht, Hausverwaltung), § 309 Nr. 13 BGB (Kündigung
+höchstens Textform, Fitnessstudio). Besonders geprüft: keine Doppelung zwischen Freiberufler
+und Agenturen sowie zwischen Vermieter und Hausverwaltung — die bereits zuvor recht ähnlich
+klingende Nebenkosten-Frage bei Hausverwaltung wurde dabei zusätzlich auf die
+Vollmacht-Perspektive geschärft. `FAQPage`-JSON-LD erweitert sich automatisch aus
+`lib/branchen-content.ts` (`lib/branchen-seo.ts`), kein manueller Eingriff je Seite nötig.
+Alle 12 Seiten gegen den Produktionsbuild geprüft: FAQ-Anzahl im JSON-LD stimmt exakt mit dem
+Content-Objekt überein.
+
+Je Branche mindestens drei nachprüfbare, branchenspezifische Fakten (Rechtsnorm mit Fundstelle
+plus konkretes Fallbeispiel mit Zahlen), unter anderem: § 641/§ 632a BGB (Handwerk), § 640
+Abs. 2 BGB — fiktive Abnahme (IT), § 271a BGB — 60-Tage-Grenze zwischen Unternehmern
+(Maschinenbau), § 288 Abs. 1/2 BGB — Verzugszinshöhe (Handel), § 543 Abs. 2 Nr. 3 BGB —
+Kündigung ab zwei Monatsmieten (Vermieter), § 9a WEG — Rechtsfähigkeit der
+Eigentümergemeinschaft (Hausverwaltung), § 309 Nr. 9 BGB — Laufzeitgrenzen seit der Reform
+2022 (Fitnessstudio), §§ 106 ff. BGB — Vertragspartner bei Minderjährigen (Bildung).
+
+**`/branchen`-Übersicht umgebaut:** Akkordeon (9 Einträge, davon 8 der 12 Branchen als
+Vorarbeit-Text) ersetzt durch ein reines 12-Karten-Raster (Icon, Name, Kernbotschaft aus
+`docs/seiten-und-zielgruppen.md`, Link) — kein Fließtext mehr auf der Übersichtsseite, um
+Keyword-Kannibalisierung mit den Unterseiten zu vermeiden (Hub = breite Navigation, Unterseite
+= einzige Stelle mit Tiefe). Die 8 vorhandenen „Herausforderung"/„Lösung"-Texte sind in die
+jeweilige neue Einzelseite eingeflossen. Der „Steuerberater"-Akkordeon-Eintrag wurde **nicht
+gelöscht**, sondern nach `lib/steuerberater-content.ts` verschoben — Ausgangsmaterial für SEO-7.
 
 ### SEO-5 · 20 Ratgeber-Seiten (Typ B) · L — **OFFEN**
 Seitenliste, Vorlage, Pflichtangaben: `docs/SEO_Umsetzungskonzept.md` Teil 4, 5.1, 8.2.
@@ -904,6 +961,16 @@ Recherchepunkte: `docs/SEO_Umsetzungskonzept.md` Teil 3, 5.3, 9. **Verbindlich:*
 Kammerangaben müssen recherchiert und belegt sein, nie geraten (Teil 3.2, Teil 9). Der Ausbau über
 den Pilot hinaus (volle Fläche laut `docs/seiten-und-zielgruppen.md`: ca. 100 Städte × 12 Branchen)
 bleibt **P2-2**, erst nach nachgewiesener Wirkung des Pilots.
+
+### SEO-7 · Partnerseite für Steuerberater (`/partner/steuerberater`) · M — **OFFEN**
+**Kein Bestandteil von SEO-4** — Steuerberater gehören nicht zur 12er-Branchenliste (sie dürfen
+nach RDG selbst keine Forderungen einziehen), sind laut `docs/entscheidungen.md` Nr. 7 aber der
+wertvollste **Partnerkanal**: Sie sehen die OPOS-Listen ihrer Mandanten und können auf Nota Finance
+verweisen. Eigene Aufgabe, weil die Ansprache eine andere ist als bei einer Branchenseite — **nicht
+„Inkasso für Sie", sondern „Lösung für Ihre Mandanten"**.
+**Ausgangsmaterial:** der bestehende „Steuerberater"-Text (Subtitle, Challenge, Solutions) steht
+seit dem Umbau der `/branchen`-Übersicht (SEO-4) unverändert in `lib/steuerberater-content.ts` —
+dort abholen, in „Lösung für Ihre Mandanten"-Ansprache umformulieren.
 
 ---
 

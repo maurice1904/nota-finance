@@ -16,6 +16,13 @@ export const BASE_URL = "https://www.notafinance.de";
 export const faktenkern = {
   marke: "Nota Finance",
   traeger: "twenty4collect GmbH",
+  /**
+   * Für Fließtext auf Marketingseiten (z. B. Branchenseiten): "twenty4collect" allein wirkt
+   * verwirrend, wenn jemand nur diese eine Seite sieht, ohne den Impressum-Zusammenhang zu
+   * kennen. Wortlaut wie im Impressum ("ist ein Geschäftsfeld der twenty4collect GmbH"), damit
+   * keine neue, ungeprüfte Formulierung entsteht.
+   */
+  markeMitTraeger: "Nota Finance (ein Geschäftsfeld der twenty4collect GmbH)",
   gegruendet: "2008",
 
   anschrift: {
@@ -43,6 +50,13 @@ export const faktenkern = {
   mindestforderung: 50,
   kostenmodell:
     "Für den Gläubiger kostenfrei — die gesetzlichen Verzugskosten trägt der Schuldner",
+  /**
+   * Wortlaut aus docs/marke-und-texte.md, Tabelle "Erlaubt und belegbar" - direkte
+   * Sie-Ansprache fuer Kundentexte (Branchenseiten etc.). Nicht selbst umformulieren: P1-6
+   * hat genau die uneinheitlichen Kostenformulierungen zwischen Seiten bereinigt.
+   */
+  kostenmodellSieAnsprache:
+    "Für Sie kostenfrei — die gesetzlichen Verzugskosten trägt der Schuldner.",
   leistung:
     "Digitales Inkasso im Self-Service — Rechnung hochladen oder abfotografieren, fertig",
 
