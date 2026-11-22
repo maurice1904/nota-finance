@@ -42,14 +42,14 @@ const offerSchema = {
     "@type": "Service",
     name: "Digitales Forderungsmanagement",
     description:
-      "Von der Forderungseinreichung bis zur Auszahlung. 100% der Hauptforderung wird an den Gläubiger ausgezahlt.",
+      "Von der Forderungseinreichung bis zur Auszahlung. Die Hauptforderung wird nach vollständigem Ausgleich in voller Höhe an den Gläubiger ausgezahlt.",
     provider: {
       "@id": "https://www.notafinance.de/#organization",
     },
     serviceOutput: {
       "@type": "MonetaryAmount",
       name: "Auszahlung an Gläubiger",
-      description: "Sie erhalten 100% Ihrer ursprünglichen Hauptforderung.",
+      description: "Sie erhalten Ihre ursprüngliche Hauptforderung nach vollständigem Ausgleich in voller Höhe.",
     },
   },
   shippingDetails: {

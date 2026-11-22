@@ -78,7 +78,7 @@ const serviceSchema = {
     "@type": "Thing",
     name: "Einzug offener Forderungen",
     description:
-      "100% der Hauptforderung wird an den Gläubiger ausgezahlt. Inkassokosten trägt der Schuldner.",
+      "Die Hauptforderung wird nach vollständigem Ausgleich in voller Höhe an den Gläubiger ausgezahlt. Inkassokosten trägt der Schuldner.",
   },
 };
 

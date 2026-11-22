@@ -616,7 +616,7 @@ export const branchenContent: Record<string, BranchenContent> = {
     problemText:
       "Einzelne Beitragsausfälle wirken klein, summieren sich bei vielen Mitgliedern aber schnell zu einem echten Ausfallrisiko. Der Aufwand, jeden einzelnen Rückstand selbst zu mahnen, steht dabei oft in keinem Verhältnis zur Höhe der einzelnen Forderung.",
     fallText:
-      "Ein Fitnessstudio hat mit einem Mitglied einen Vertrag mit 12 Monaten Erstlaufzeit. Der monatliche Beitrag von 39,90 € bleibt seit drei Monaten unbezahlt — macht 119,70 € Rückstand, obwohl der Vertrag weiterläuft. Nach den seit dem 1. März 2022 geltenden Regeln für Verbraucherverträge über wiederkehrende Leistungen (§ 309 Nr. 9 BGB) darf die Erstlaufzeit höchstens 24 Monate betragen; die Zahlungspflicht besteht für die gesamte vereinbarte Laufzeit fort, solange nicht wirksam gekündigt wurde.",
+      "Ein Fitnessstudio hat mit einem Mitglied einen Vertrag mit 12 Monaten Erstlaufzeit. Der monatliche Beitrag von 39,90 € bleibt seit drei Monaten unbezahlt — macht 119,70 € Rückstand, obwohl der Vertrag weiterläuft. In Allgemeinen Geschäftsbedingungen darf die Erstlaufzeit bei Verbraucherverträgen über wiederkehrende Leistungen höchstens 24 Monate betragen (§ 309 Nr. 9 Buchst. a BGB) — diese Grenze gilt unverändert seit Jahren. Verschärft hat die Reform zum 1. März 2022 nur die Anschlussregeln in AGB: Eine automatische Verlängerung ist seither nur noch auf unbestimmte Zeit mit höchstens einem Monat Kündigungsfrist zulässig (§ 309 Nr. 9 Buchst. b und c BGB). Die Zahlungspflicht besteht für die gesamte vereinbarte Laufzeit fort, solange nicht wirksam gekündigt wurde.",
     faqUeberschrift: "Häufige Fragen von Fitnessstudios & Vereinen",
     faq: [
       {
@@ -627,7 +627,7 @@ export const branchenContent: Record<string, BranchenContent> = {
       {
         frage: "Wie lang dürfen Mitgliedsverträge mit Verbrauchern laufen?",
         antwort:
-          "Seit der Reform zum 1. März 2022 beträgt die zulässige Erstlaufzeit bei Verbraucherverträgen über wiederkehrende Leistungen höchstens 24 Monate (§ 309 Nr. 9 BGB).",
+          "In Allgemeinen Geschäftsbedingungen darf die Erstlaufzeit höchstens 24 Monate betragen (§ 309 Nr. 9 Buchst. a BGB) — das galt schon vor der Reform zum 1. März 2022. Diese Reform hat nur die AGB-Anschlussregeln verschärft: Eine automatische Verlängerung ist seither nur noch auf unbestimmte Zeit mit höchstens einem Monat Kündigungsfrist zulässig (§ 309 Nr. 9 Buchst. b und c BGB), statt zuvor bis zu einem Jahr Verlängerung mit bis zu drei Monaten Kündigungsfrist.",
       },
       {
         frage: "Kann ich viele kleine Beitragsrückstände auf einmal einreichen?",

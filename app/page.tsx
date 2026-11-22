@@ -223,8 +223,10 @@ export default function Home() {
                     Zahlung erhalten
                   </h3>
                   <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
-                    Sobald der Kunde die Forderung beglichen hat, erhalten Sie 100% des Rechnungsbetrages. 
-                    Die gesetzlich festgelegten Gebühren sind nicht von Ihnen, sondern vom Schuldner zu tragen.
+                    Nach vollständigem Ausgleich der Forderung — also sobald Hauptforderung, Zinsen und
+                    Kosten in voller Höhe beglichen sind — wird Ihnen Ihr ursprünglicher Rechnungsbetrag
+                    vollständig ausgezahlt. Die gesetzlich festgelegten Gebühren sind nicht von Ihnen,
+                    sondern vom Schuldner zu tragen.
                   </p>
                 </div>
               </RevealOnScroll>
@@ -277,8 +279,10 @@ export default function Home() {
                     Zahlung erhalten
                   </h3>
                   <p className="text-sm text-text-900/70 leading-relaxed">
-                    Sobald der Kunde die Forderung beglichen hat, erhalten Sie 100% des Rechnungsbetrages. 
-                    Die gesetzlich festgelegten Gebühren sind nicht von Ihnen, sondern vom Schuldner zu tragen.
+                    Nach vollständigem Ausgleich der Forderung — also sobald Hauptforderung, Zinsen und
+                    Kosten in voller Höhe beglichen sind — wird Ihnen Ihr ursprünglicher Rechnungsbetrag
+                    vollständig ausgezahlt. Die gesetzlich festgelegten Gebühren sind nicht von Ihnen,
+                    sondern vom Schuldner zu tragen.
                   </p>
                 </div>
               </div>
@@ -437,8 +441,8 @@ export default function Home() {
                 Unser Versprechen
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-text-900/70 max-w-3xl mx-auto font-semibold">
-                Im Erfolgsfall erhalten Sie 100% Ihrer Forderung plus gesetzlich festgelegte 
-                Mahnkosten und Verzugszinsen.
+                Nach vollständigem Ausgleich der Forderung wird Ihnen Ihre Forderung in voller Höhe
+                ausgezahlt, plus gesetzlich festgelegte Mahnkosten und Verzugszinsen.
               </p>
             </div>
           </RevealOnScroll>
@@ -482,9 +486,9 @@ export default function Home() {
                   Volle Rechnungsbegleichung
                 </h3>
                 <p className="text-sm md:text-base text-text-900/70 leading-relaxed">
-                  Im Erfolgsfall erhalten Sie 100% des Rechnungsbetrages Ihrer Ausgangsrechnung 
-                  zuzüglich der Ihnen zustehenden, gesetzlich festgeschriebenen Kosten für Mahnungen 
-                  und Verzugszinsen bei Zahlung durch Ihren Kunden.
+                  Nach vollständigem Ausgleich der Forderung erhalten Sie den Rechnungsbetrag Ihrer
+                  Ausgangsrechnung in voller Höhe zuzüglich der Ihnen zustehenden, gesetzlich
+                  festgeschriebenen Kosten für Mahnungen und Verzugszinsen.
                 </p>
               </div>
             </RevealOnScroll>

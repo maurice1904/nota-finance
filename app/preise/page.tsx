@@ -16,10 +16,10 @@ const calculationRows = [
     isYourMoney: true,
   },
   {
-    label: "Ihre Mahnkosten",
-    amount: "20,00 €",
+    label: "Ihre Mahnkosten (Beispielbetrag)",
+    amount: "2,50 €",
     prefix: "+",
-    tooltip: "Pauschale für Mahnschreiben / außergerichtliche Erinnerungen; wird dem Schuldner zusätzlich berechnet.",
+    tooltip: "Beispielbetrag für ein Mahnschreiben (Material, Druck, Porto) — kein pauschaler Anspruch; die tatsächliche Höhe ist im Einzelfall nachzuweisen.",
     highlight: false,
     isYourMoney: true,
   },
@@ -32,24 +32,24 @@ const calculationRows = [
     isYourMoney: true,
   },
   {
-    label: "Gebührenforderung Nota Finance gemäß RDGEG i.V.m. dem RVG, gesetzlich geregelt",
-    amount: "49,00 €",
+    label: "Gebührenforderung Nota Finance im Regelfall (0,9-Satz) gemäß § 13e RDG i. V. m. § 13 RVG und Nr. 2300 VV RVG, gesetzlich geregelt",
+    amount: "46,35 €",
     prefix: "+",
-    tooltip: "Gesetzlich geregelte Inkassogebühr (RDGEG / RVG-orientiert) – Betrag wird dem Schuldner in Rechnung gestellt.",
+    tooltip: "Gesetzlich gedeckelte Inkassogebühr im Regelfall (0,9-Satz nach Nr. 2300 VV RVG) – Betrag wird dem Schuldner in Rechnung gestellt.",
     highlight: false,
     isYourMoney: false,
   },
   {
     label: "zuzügl. Auslagenpauschale, gesetzlich geregelt",
-    amount: "11,70 €",
+    amount: "9,27 €",
     prefix: "+",
-    tooltip: "Pauschale für Auslagen (Porto etc.), gesetzlich vorgesehen und dem Schuldner berechnbar.",
+    tooltip: "Pauschale für Auslagen (Porto etc.) nach Nr. 7002 VV RVG — 20 % der Gebühr, gesetzlich vorgesehen und dem Schuldner berechenbar.",
     highlight: false,
     isYourMoney: false,
   },
   {
     label: "Gesamtzahlungsaufforderung an Ihren Kunden",
-    amount: "282,44 €",
+    amount: "259,86 €",
     prefix: "=",
     tooltip: "Summe aller Posten: das ist der Gesamtbetrag, den der Schuldner zahlen soll.",
     highlight: true,
@@ -57,7 +57,7 @@ const calculationRows = [
   },
   {
     label: "Ihr Kunde zahlt an uns",
-    amount: "282,44 €",
+    amount: "259,86 €",
     prefix: "",
     tooltip: "Der Schuldner begleicht die vollständige Forderung inklusive Gebühren und Auslagen an das Inkassounternehmen.",
     highlight: false,
@@ -65,9 +65,9 @@ const calculationRows = [
   },
   {
     label: "Wir zahlen an Sie aus",
-    amount: "221,74 €",
+    amount: "204,24 €",
     prefix: "+",
-    tooltip: "Ausgezahlter Betrag an den Auftraggeber: Rechnungsbetrag + Mahnkosten + Verzugszinsen = 221,74 €. Inkassogebühr + Auslagenpauschale werden einbehalten (60,70 €).",
+    tooltip: "Ausgezahlter Betrag an den Auftraggeber: Rechnungsbetrag + Mahnkosten + Verzugszinsen = 204,24 €. Inkassogebühr + Auslagenpauschale werden einbehalten (55,62 €).",
     isPayout: true,
     isYourMoney: true,
   },
@@ -211,10 +211,10 @@ export default function PreisePage() {
             <RevealOnScroll>
               <div className="prose prose-lg max-w-none text-text-900/70">
                 <p className="text-lg text-text-900/70 leading-relaxed mb-8">
-                  Für Sie als Auftraggeber ist das <span className="font-bold text-text-900">außergerichtliche Mahnverfahren</span> bei Nota Finance 
-                  kostenneutral. Die anfallenden Inkassokosten sowie Verzugszinsen 
-                  sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. 
-                  Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung zuzüglich den Ihnen zustehenden Mahngebühren und Verzugszinsen.
+                  Für Sie als Auftraggeber ist das <span className="font-bold text-text-900">außergerichtliche Mahnverfahren</span> bei Nota Finance
+                  kostenneutral. Die anfallenden Inkassokosten sowie Verzugszinsen
+                  sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen.
+                  Nach vollständigem Ausgleich der Forderung — also sobald Hauptforderung, Zinsen und Kosten in voller Höhe beglichen sind — wird Ihnen Ihre ursprüngliche Hauptforderung in voller Höhe zuzüglich den Ihnen zustehenden Mahngebühren und Verzugszinsen ausgezahlt.
                 </p>
                 <p className="text-lg text-text-900/70 leading-relaxed">
                   Bei Nichtzahlung Ihres Kunden wird das <span className="font-bold text-text-900">gerichtliches Mahnverfahren</span> (Beantragung Mahnbescheid und Vollstreckungsbescheid) nach Bonitätsprüfung eingeleitet. Auch anfallende Gerichtskosten sind im Erfolgsfall von 
@@ -236,8 +236,8 @@ export default function PreisePage() {
               <RevealOnScroll delay={100}>
                 <div className="group bg-gradient-to-br from-white to-surface-100/50 border border-border-subtle rounded-2xl p-6 hover:shadow-lg hover:border-brand-700/30 transition-all duration-300">
                   <Euro className="w-12 h-12 text-brand-700 mb-4 group-hover:scale-110 transition-transform duration-300" />
-                  <h2 className="text-lg sm:text-xl font-bold text-text-900 mb-2">100% Auszahlung</h2>
-                  <p className="text-text-900/70">Sie erhalten Ihren vollen Rechnungsbetrag</p>
+                  <h2 className="text-lg sm:text-xl font-bold text-text-900 mb-2">Volle Auszahlung</h2>
+                  <p className="text-text-900/70">Nach vollständigem Ausgleich der Forderung</p>
                 </div>
               </RevealOnScroll>
 
@@ -309,8 +309,11 @@ export default function PreisePage() {
               {/* Footer Note */}
               <div className="bg-surface-100/50 px-4 sm:px-6 py-4 border-t border-border-subtle">
                 <p className="text-xs sm:text-sm text-neutral-500 text-center leading-relaxed">
-                  * Gebühren entsprechen der Gebührentabelle nach §13 RVG. Verzugszinsen werden 
-                  nach den gesetzlichen Bestimmungen berechnet. Gebühren variieren je nach Größe der Forderung. Änderungen vorbehalten.
+                  * Beispielrechnung für den Regelfall (0,9-Gebührensatz nach Nr. 2300 VV RVG). Gebühren
+                  entsprechen der Gebührentabelle nach § 13 RVG, die Auslagenpauschale Nr. 7002 VV RVG.
+                  Verzugszinsen werden nach den gesetzlichen Bestimmungen berechnet, die Mahnkosten sind ein
+                  Beispielbetrag ohne pauschalen Anspruch. Gebühren variieren je nach Größe und Schwierigkeit
+                  des Falls. Änderungen vorbehalten.
                 </p>
               </div>
             </div>
@@ -331,7 +334,7 @@ export default function PreisePage() {
                   {/* Sie erhalten */}
                   <div className="bg-gradient-to-br from-brand-700/10 to-brand-700/5 rounded-2xl p-5 sm:p-6 border border-brand-700/20 shadow-md text-center">
                     <p className="text-base font-bold text-brand-900 mb-2">Sie erhalten</p>
-                    <p className="text-xl sm:text-2xl font-bold font-mono text-brand-900">+221,74 €</p>
+                    <p className="text-xl sm:text-2xl font-bold font-mono text-brand-900">+204,24 €</p>
                     <p className="text-xs text-text-900/60 mt-1">+ Mahnkosten + Verzugszinsen</p>
                   </div>
                   {/* Ihre Kosten */}

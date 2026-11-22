@@ -243,10 +243,11 @@ export default function ProcessTimeline() {
             
             <div className="space-y-4 text-text-900/70">
               <div>
-                <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">100% für Sie:</h4>
+                <h4 className="font-bold text-base sm:text-lg text-text-900 mb-2">Volle Auszahlung für Sie:</h4>
                 <p className="leading-relaxed">
-                  Sobald Ihr Kunde die Forderung begleicht, erhalten Sie 100% des ursprünglichen Rechnungsbetrages 
-                  Ihrer Ausgangsrechnung.
+                  Nach vollständigem Ausgleich der Forderung — also sobald Hauptforderung, Zinsen und
+                  Kosten in voller Höhe beglichen sind — wird Ihnen Ihr ursprünglicher Rechnungsbetrag
+                  vollständig ausgezahlt.
                 </p>
               </div>
               <div>

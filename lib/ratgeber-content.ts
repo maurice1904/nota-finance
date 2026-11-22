@@ -274,7 +274,7 @@ export const ratgeberContent: Record<string, RatgeberContent> = {
       {
         frage: "Was genau zählt als „einfacher Fall“ mit nur 0,5 Gebühr?",
         antwort:
-          "Das ist nicht abschließend gesetzlich definiert. Als Beispiel wird die Zahlung auf die erste Zahlungsaufforderung hin genannt. Eine feste zeitliche Frist (etwa eine bestimmte Anzahl Tage) konnte in den geprüften Quellen nicht eindeutig belegt werden. Dieser Punkt ist für die anwaltliche Prüfung vorgemerkt.",
+          "Nach der Anmerkung Absatz 2 zu Nummer 2300 VV RVG liegt ein einfacher Fall in der Regel vor, wenn die Forderung innerhalb von zwei Wochen nach der ersten Zahlungsaufforderung beglichen wird — das ist eine Regelvermutung für den Normalfall, keine starre Grenze. Dieser Punkt ist vom Anwalt zu bestätigen.",
       },
       {
         frage: "Gilt der Kostendeckel auch bei bestrittenen Forderungen?",

@@ -21,7 +21,7 @@ const faqItems = [
   {
     question: "Was kostet mich die Beauftragung von Nota Finance?",
     answer:
-      "Für Sie als Auftraggeber ist das außergerichtliche und das gerichtliche Mahnverfahren bei Nota Finance im Erfolgsfall kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen und etwaige Gerichtskosten sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. Sie erhalten im Erfolgsfall 100% Ihrer ursprünglichen Hauptforderung zuzüglich den Ihnen zustehenden Mahngebühren und Verzugszinsen.",
+      "Für Sie als Auftraggeber ist das außergerichtliche und das gerichtliche Mahnverfahren bei Nota Finance im Erfolgsfall kostenfrei. Die anfallenden Inkassokosten sowie Verzugszinsen und etwaige Gerichtskosten sind gesetzlich geregelt und werden von Ihrem säumigen Kunden (Schuldner) getragen. Nach vollständigem Ausgleich der Forderung erhalten Sie Ihre ursprüngliche Hauptforderung in voller Höhe zuzüglich den Ihnen zustehenden Mahngebühren und Verzugszinsen.",
   },
   {
     question: "Muss ich mich registrieren, um eine Forderung einzureichen?",

@@ -183,7 +183,7 @@ export default function ProduktPage() {
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-1" strokeWidth={2.5} />
-                    <span>Im Erfolgsfall erhalten Sie 100% Ihrer Hauptforderung plus Nebenforderungen.</span>
+                    <span>Nach vollständigem Ausgleich erhalten Sie Ihre Hauptforderung in voller Höhe plus Nebenforderungen.</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-brand-700 flex-shrink-0 mt-1" strokeWidth={2.5} />
