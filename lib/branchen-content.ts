@@ -35,11 +35,20 @@ export type BranchenContent = {
   faq: BranchenFAQ[];
   /** Optional: ersetzt den generischen CTA-Titel "Jetzt Forderung einreichen". */
   ctaTitel?: string;
+  /**
+   * Optional: Rückverweis auf die passende Ratgeber-Seite (SEO-5), die denselben Praxisfall aus
+   * prozessualer statt werblicher Sicht behandelt - Ergänzung, kein Ersatz für diese Seite.
+   */
+  ratgeberLink?: { label: string; href: string };
 };
 
 export const branchenContent: Record<string, BranchenContent> = {
   handwerk: {
     slug: "handwerk",
+    ratgeberLink: {
+      label: "Ablauf im Detail: Kunde zahlt nicht",
+      href: "/ratgeber/handwerker-kunde-zahlt-rechnung-nicht",
+    },
     branchenname: "Handwerk & Baugewerbe",
     metaTitle: "Inkasso für Handwerk & Baugewerbe",
     metaDescription:
@@ -62,7 +71,7 @@ export const branchenContent: Record<string, BranchenContent> = {
       {
         frage: "Kann ich auch Abschlagsrechnungen einreichen, nicht nur die Schlussrechnung?",
         antwort:
-          "Ja — nach § 632a BGB können Sie für in sich abgeschlossene Teile Ihrer Leistung Abschlagszahlungen verlangen; auch offene Abschläge sind einreichbar.",
+          "Ja — nach § 632a Abs. 1 BGB können Sie eine Abschlagszahlung in Höhe des Wertes der bereits erbrachten, vertraglich geschuldeten Leistungen verlangen; anders als vor der Bauvertragsrechtsreform 2018 muss die Leistung dafür nicht mehr in sich abgeschlossen sein. Auch offene Abschläge sind einreichbar.",
       },
       {
         frage: "Ab wann ist mein Kunde im Verzug?",
@@ -82,7 +91,7 @@ export const branchenContent: Record<string, BranchenContent> = {
       {
         frage: "Kann ich vor Baubeginn eine Sicherheit für meine Vergütung verlangen?",
         antwort:
-          "Ja — bei Bauverträgen können Sie vom Besteller nach § 650f BGB eine Sicherheit in Höhe von 10 % des voraussichtlichen Vergütungsanspruchs verlangen.",
+          "Ja — bei Bauverträgen können Sie vom Besteller nach § 650f BGB eine Sicherheit in Höhe Ihrer noch offenen Vergütung verlangen, zuzüglich 10 % für Nebenforderungen.",
       },
       {
         frage: "Verjährt meine Werklohnforderung irgendwann?",
@@ -99,6 +108,10 @@ export const branchenContent: Record<string, BranchenContent> = {
 
   freiberufler: {
     slug: "freiberufler",
+    ratgeberLink: {
+      label: "Ablauf im Detail: Honorarrechnung unbezahlt",
+      href: "/ratgeber/honorarrechnung-unbezahlt-freiberufler",
+    },
     branchenname: "Freiberufler & Kreative",
     metaTitle: "Inkasso für Freiberufler & Kreative",
     metaDescription:
@@ -152,6 +165,10 @@ export const branchenContent: Record<string, BranchenContent> = {
 
   gesundheitswesen: {
     slug: "gesundheitswesen",
+    ratgeberLink: {
+      label: "Ablauf im Detail: Privatrechnung nicht bezahlt",
+      href: "/ratgeber/privatrechnung-unbezahlt-praxis",
+    },
     branchenname: "Gesundheitswesen & Heilberufe",
     metaTitle: "Inkasso für Gesundheitswesen & Heilberufe",
     metaDescription:
@@ -242,7 +259,7 @@ export const branchenContent: Record<string, BranchenContent> = {
       {
         frage: "Was, wenn der Kunde das Projekt vorzeitig kündigt, ohne die bisherige Leistung zu bezahlen?",
         antwort:
-          "Bei einer freien Kündigung des Bestellers vor Fertigstellung bleibt der Vergütungsanspruch für die bereits erbrachte Leistung grundsätzlich bestehen (§ 648 BGB) — abzüglich ersparter Aufwendungen.",
+          "Bei einer freien Kündigung des Bestellers vor Fertigstellung bleibt der vereinbarte Vergütungsanspruch grundsätzlich für den gesamten Auftrag bestehen, abzüglich ersparter Aufwendungen und anderweitigen Erwerbs; für den nicht mehr erbrachten Teil wird gesetzlich vermutet, dass Ihnen davon mindestens 5 % zustehen (§ 648 BGB).",
       },
       {
         frage: "Kann ich auch eine Anzahlungs- oder Kick-off-Rechnung einreichen?",
@@ -295,7 +312,7 @@ export const branchenContent: Record<string, BranchenContent> = {
       {
         frage: "Kann ich eine Forderung einreichen, während die Widerrufsfrist des Kunden noch läuft?",
         antwort:
-          "Bei Verbrauchern besteht bei Fernabsatzverträgen ein 14-tägiges Widerrufsrecht (§ 355 Abs. 2 BGB) — vor Fristablauf ist die Forderung nicht zweifelsfrei durchsetzbar.",
+          "Bei Verbrauchern besteht bei Fernabsatzverträgen ein 14-tägiges Widerrufsrecht (§ 312g Abs. 1 i. V. m. § 355 Abs. 2 BGB) — vor Fristablauf ist die Forderung nicht zweifelsfrei durchsetzbar.",
       },
       {
         frage: "Kann ich viele kleine offene Rechnungen gesammelt einreichen?",
@@ -385,7 +402,7 @@ export const branchenContent: Record<string, BranchenContent> = {
       {
         frage: "Was, wenn der Kunde die Abnahme verweigert oder hinauszögert?",
         antwort:
-          "Nach § 640 Abs. 2 BGB gilt ein Werk auch als abgenommen, wenn der Besteller es nicht innerhalb einer angemessenen, gesetzten Frist unter Angabe mindestens eines konkreten Mangels ablehnt.",
+          "Nach § 640 Abs. 2 BGB gilt ein Werk auch als abgenommen, wenn der Besteller es nicht innerhalb einer angemessenen, gesetzten Frist unter Angabe mindestens eines konkreten Mangels ablehnt. Ist der Besteller Verbraucher, muss er zusätzlich in Textform auf diese Folge hingewiesen worden sein.",
       },
       {
         frage: "Sind auch laufende Wartungs- oder Lizenzgebühren einreichbar?",
@@ -399,7 +416,7 @@ export const branchenContent: Record<string, BranchenContent> = {
       {
         frage: "Was, wenn der Kunde das Softwareprojekt vorzeitig beendet, ohne die bisherige Leistung zu bezahlen?",
         antwort:
-          "Bei freier Kündigung des Bestellers vor Fertigstellung eines Werkvertrags bleibt der Vergütungsanspruch für die bereits erbrachte Leistung bestehen (§ 648 BGB), abzüglich ersparter Aufwendungen.",
+          "Bei freier Kündigung des Bestellers vor Fertigstellung eines Werkvertrags bleibt der vereinbarte Vergütungsanspruch grundsätzlich für den gesamten Auftrag bestehen, abzüglich ersparter Aufwendungen und anderweitigen Erwerbs; für den nicht mehr erbrachten Teil wird gesetzlich vermutet, dass Ihnen davon mindestens 5 % zustehen (§ 648 BGB).",
       },
       {
         frage: "Ist eine SaaS-Lizenzgebühr rechtlich dasselbe wie eine Werklohnforderung?",
@@ -452,7 +469,7 @@ export const branchenContent: Record<string, BranchenContent> = {
       {
         frage: "Sind auch Abschlagsrechnungen bei langen Fertigungsprojekten einreichbar?",
         antwort:
-          "Ja — wie bei jedem Werkvertrag können Sie nach § 632a BGB für abgeschlossene Teilleistungen Abschlagszahlungen verlangen; auch offene Abschläge sind einreichbar.",
+          "Ja — wie bei jedem Werkvertrag können Sie nach § 632a Abs. 1 BGB eine Abschlagszahlung in Höhe des Wertes der bereits erbrachten, vertraglich geschuldeten Leistungen verlangen, ohne dass die Leistung dafür in sich abgeschlossen sein muss. Auch offene Abschläge sind einreichbar.",
       },
       {
         frage: "Ist eine gesonderte Sicherheit als Nachweis für die Forderung nötig?",
@@ -469,6 +486,10 @@ export const branchenContent: Record<string, BranchenContent> = {
 
   vermieter: {
     slug: "vermieter",
+    ratgeberLink: {
+      label: "Ablauf im Detail: Mietrückstand",
+      href: "/ratgeber/mietrueckstand-was-tun-vermieter",
+    },
     branchenname: "Private Vermieter",
     metaTitle: "Inkasso für private Vermieter",
     metaDescription:
@@ -480,13 +501,13 @@ export const branchenContent: Record<string, BranchenContent> = {
     problemText:
       "Ein Mieter zahlt nicht — und die Mietrendite ist sofort in Gefahr. Anders als bei einem gewerblichen Vermieter gibt es meist keine eigene Verwaltung, die sich um Mahnungen kümmert: Das übernehmen private Vermieter neben Beruf und Alltag selbst. Viele scheuen zudem die direkte Auseinandersetzung, weil das Mietverhältnis oft weiterläuft.",
     fallText:
-      "Ein Mieter zahlt zwei Monatsmieten von je 850 € nicht — macht zusammen 1.700 € Rückstand. Nach zwei erfolglosen eigenen Mahnungen reicht der Vermieter den Fall bei Nota Finance ein. Bleibt der Mieter zahlungsunfähig oder -unwillig, kann der Vermieter zusätzlich kündigen: Nach § 543 Abs. 2 Nr. 3 BGB ist eine fristlose Kündigung möglich, sobald der Rückstand zwei Monatsmieten erreicht.",
+      "Ein Mieter zahlt zwei Monatsmieten von je 850 € nicht, macht zusammen 1.700 € Rückstand. Nach zwei erfolglosen eigenen Mahnungen reicht der Vermieter den Fall bei Nota Finance ein. Bleibt der Mieter zahlungsunfähig oder -unwillig, kann der Vermieter zusätzlich kündigen: Schon bei zwei aufeinanderfolgenden ausbleibenden Zahlungen mit einem Rückstand von mehr als einer Monatsmiete ist eine fristlose Kündigung möglich (§ 543 Abs. 2 Satz 1 Nr. 3 Buchst. a BGB i. V. m. § 569 Abs. 3 Nr. 1 BGB).",
     faqUeberschrift: "Häufige Fragen von privaten Vermietern",
     faq: [
       {
         frage: "Ab wann darf ich wegen Mietrückstand kündigen?",
         antwort:
-          "Nach § 543 Abs. 2 Nr. 3 BGB regelmäßig, sobald der Mieter mit einem Betrag in Höhe von zwei Monatsmieten in Verzug ist.",
+          "Es gibt zwei gesetzliche Varianten: Sind zwei aufeinanderfolgende Mietzahlungen um mehr als eine Monatsmiete rückständig, oder hat sich der Rückstand über einen längeren Zeitraum auf insgesamt zwei Monatsmieten summiert, ist eine fristlose Kündigung möglich (§ 543 Abs. 2 Satz 1 Nr. 3 BGB i. V. m. § 569 Abs. 3 Nr. 1 BGB).",
       },
       {
         frage: "Was, wenn der Mieter bereits ausgezogen ist?",
@@ -523,6 +544,10 @@ export const branchenContent: Record<string, BranchenContent> = {
 
   hausverwaltung: {
     slug: "hausverwaltung",
+    ratgeberLink: {
+      label: "Ablauf im Detail: Zahlungsrückstände richtig behandeln",
+      href: "/ratgeber/zahlungsrueckstaende-hausverwaltung",
+    },
     branchenname: "Hausverwaltungen",
     metaTitle: "Inkasso für Hausverwaltungen",
     metaDescription:
@@ -564,7 +589,7 @@ export const branchenContent: Record<string, BranchenContent> = {
       {
         frage: "Muss jeder einzelne Eigentümer einem Inkassoverfahren zustimmen?",
         antwort:
-          "Nein — die rechtsfähige Gemeinschaft der Wohnungseigentümer handelt im eigenen Namen, vertreten durch die Verwaltung (§ 9a i. V. m. § 27 WEG).",
+          "Nein — die rechtsfähige Gemeinschaft der Wohnungseigentümer handelt im eigenen Namen, gerichtlich und außergerichtlich vertreten durch die Verwaltung (§ 9a i. V. m. § 9b WEG).",
       },
       {
         frage: "Muss ich einen Anwalt einschalten?",
@@ -576,6 +601,10 @@ export const branchenContent: Record<string, BranchenContent> = {
 
   fitnessstudio: {
     slug: "fitnessstudio",
+    ratgeberLink: {
+      label: "Ablauf im Detail: Mitgliedsbeiträge einziehen",
+      href: "/ratgeber/offene-mitgliedsbeitraege-einziehen",
+    },
     branchenname: "Fitness, Abo & Mitgliedschaften",
     metaTitle: "Inkasso für Fitnessstudios & Vereine",
     metaDescription:
@@ -664,7 +693,7 @@ export const branchenContent: Record<string, BranchenContent> = {
       {
         frage: "Gilt für eine online oder telefonisch gebuchte Kursanmeldung ein Widerrufsrecht?",
         antwort:
-          "Bei Vertragsschluss im Fernabsatz besteht für Verbraucher grundsätzlich ein 14-tägiges Widerrufsrecht (§ 355 Abs. 2 BGB).",
+          "Bei Vertragsschluss im Fernabsatz besteht für Verbraucher grundsätzlich ein 14-tägiges Widerrufsrecht (§ 312g Abs. 1 i. V. m. § 355 Abs. 2 BGB).",
       },
       {
         frage: "Kann ich mehrere rückständige Monatsraten gesammelt einreichen?",

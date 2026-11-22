@@ -126,6 +126,11 @@ export default function BranchenSeite({ content }: { content: BranchenContent })
             <Link href="/branchen" className="text-brand-900 hover:underline font-medium">
               Alle Branchen →
             </Link>
+            {content.ratgeberLink && (
+              <Link href={content.ratgeberLink.href} className="text-brand-900 hover:underline font-medium">
+                {content.ratgeberLink.label} →
+              </Link>
+            )}
           </nav>
         </RevealOnScroll>
       </div>

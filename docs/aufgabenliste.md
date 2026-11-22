@@ -45,7 +45,7 @@ mehr nachvollziehbar, worauf der Status beruht.
 | SEO-2 | Technische Grundlage (Sitemap, robots.txt, Search Console, Bing, Google Business Profile) | **TEILWEISE ERLEDIGT** (Code fertig, Dashboards offen) |
 | SEO-3 | Bestehende Seiten auf extrahierbare Struktur umbauen | **OFFEN** |
 | SEO-4 | 12 Branchenseiten (Typ A) | **ERLEDIGT** |
-| SEO-5 | 20 Ratgeber-Seiten (Typ B) | **OFFEN** |
+| SEO-5 | 20 Ratgeber-Seiten (Typ B) | **ERLEDIGT** |
 | SEO-6 | Pilot: 50 Stadt-Branche-Seiten (2 Branchen × 25 Städte, Typ C) | **OFFEN** |
 | SEO-7 | Partnerseite für Steuerberater (`/partner/steuerberater`) | **OFFEN** |
 
@@ -952,8 +952,259 @@ Keyword-Kannibalisierung mit den Unterseiten zu vermeiden (Hub = breite Navigati
 jeweilige neue Einzelseite eingeflossen. Der „Steuerberater"-Akkordeon-Eintrag wurde **nicht
 gelöscht**, sondern nach `lib/steuerberater-content.ts` verschoben — Ausgangsmaterial für SEO-7.
 
-### SEO-5 · 20 Ratgeber-Seiten (Typ B) · L — **OFFEN**
+### SEO-5 · 20 Ratgeber-Seiten (Typ B) · L — **ERLEDIGT**
 Seitenliste, Vorlage, Pflichtangaben: `docs/SEO_Umsetzungskonzept.md` Teil 4, 5.1, 8.2.
+
+**Architektur (wie SEO-4):** `components/RatgeberSeite.tsx` (Präsentation, inkl. optionalem
+„Ausnahme"-Abschnitt für Rechtsausnahmen wie § 497 BGB), `lib/ratgeber-content.ts` (Texte je Seite),
+`lib/ratgeber-seo.ts` (Metadata, `Article`- und `FAQPage`-JSON-LD, `BreadcrumbList` — bewusst ohne
+Zwischenschritt „Ratgeber", da es dafür noch keine eigene Übersichtsseite gibt), je Seite ein
+schlankes `app/ratgeber/<slug>/{page,layout}.tsx`-Paar. Nutzt erstmals `components/ArticleMeta.tsx`
+aus SEO-1 (Veröffentlicht/Aktualisiert, ohne Namensnennung, Entscheidung 32).
+
+**Befund vor dem Bau (bestätigt):** Block 3 (B-12–B-17) hätte sich sonst mit sechs Branchenseiten
+aus SEO-4 überschnitten. Auftraggeber-Entscheidung: alle 20 Seiten bleiben, die sechs
+Überschneidungen bekommen einen **prozessualen statt werblichen Blickwinkel** und verlinken eng
+mit der passenden Branchenseite — Umsetzung folgt in Block 3.
+
+**Block 1 (B-01 bis B-05) — Nachweis (05.09.2026):**
+Fünf Seiten gebaut: `/ratgeber/was-kostet-inkasso`, `/ratgeber/ab-welchem-betrag-lohnt-sich-inkasso`,
+`/ratgeber/teilzahlung-367-bgb`, `/ratgeber/was-darf-inkasso-kosten`, `/ratgeber/inkasso-oder-anwalt`.
+
+Rechtsangaben recherchiert und mit Primärquellen (gesetze-im-internet.de, dejure.org) geprüft, nicht
+aus dem Gedächtnis geschrieben: § 367 Abs. 1/2 BGB, § 497 Abs. 3 BGB (Ausnahme für
+Verbraucherdarlehen — abweichende Reihenfolge Kosten→Hauptforderung→Zinsen, Darlehensgeber darf
+Teilzahlung nicht zurückweisen), § 13e RDG, Anm. Abs. 2 zu Nr. 2300 VV RVG (Gebührenrahmen 0,5–1,3,
+Regelsatz 0,9), § 13 Abs. 1/2/3 RVG, § 10 Abs. 1 Nr. 1 RDG, § 78 ZPO.
+
+**Wichtige Korrektur gegenüber der ursprünglichen Recherche:** Die RVG-Gebührensätze wurden zum
+1.6.2025 angehoben. Aktuell gelten **51,50 €** (Gegenstandswert bis 500 €) und **31,50 €**
+(Inkasso bei unbestrittenen Forderungen bis 50 €) statt der älteren 49,00 €/30,00 €, die noch in
+mehreren Sekundärquellen kursieren. Alle fünf Seiten verwenden die aktuellen Werte.
+**Nicht behoben, nur festgestellt:** `app/preise/page.tsx` verwendet in seinem Rechenbeispiel
+weiterhin die ältere Zahl 49,00 €. Das liegt außerhalb des Auftrags dieser Aufgabe (Preise-Seite
+ist bestehender Inhalt) und wird hier nur vermerkt, nicht angefasst.
+
+Zur „Zwei-Wochen-Frist" für die abgesenkte 0,5-Gebühr (B-04, ursprünglich als offene Frage markiert):
+In der geprüften Anmerkung zu Nr. 2300 VV RVG selbst ist keine feste Frist genannt, nur der
+unbestimmte Begriff „einfacher Fall". Die Zwei-Wochen-Angabe stammt ausschließlich aus
+Sekundärquellen und wurde deshalb **nicht** als Fakt geschrieben, sondern in der FAQ von
+`was-darf-inkasso-kosten` ausdrücklich als ungeklärt gekennzeichnet und für die anwaltliche Prüfung
+(P0-7) vorgemerkt.
+
+`teilzahlung-367-bgb` enthält zusätzlich zur ursprünglichen Musterseite die vom Auftraggeber
+geforderte Ausnahme für Verbraucherdarlehen (§ 497 Abs. 3 BGB) als eigenen Abschnitt.
+
+Geprüft gegen den Produktionsbuild (`next build` + `next start`, jeweils mit sauberem
+Server-Neustart über `lsof`/`kill`, nicht über eine gespeicherte PID): `npm run lint` und
+`npm run build` fehlerfrei, alle fünf Seiten werden statisch erzeugt. Je Seite bestätigt: korrekter
+kanonischer Link auf `www.notafinance.de`, genau eine H1, `Article`-, `FAQPage`- und
+`BreadcrumbList`-JSON-LD vorhanden, `ArticleMeta` rendert „Veröffentlicht am …" ohne Namensnennung,
+die Tabelle rendert als echtes `<table>`, der Ausnahme-Abschnitt auf `teilzahlung-367-bgb` ist
+sichtbar. Die neuen Seiten erscheinen automatisch in `sitemap.xml` (dateisystembasierte Erkennung,
+keine Änderung an `app/sitemap.ts` nötig).
+
+**Nachtrag (06.09.2026) — Gedankenstriche reduziert:** Auf Wunsch des Auftraggebers wurden die
+Gedankenstriche in den fünf Block-1-Seiten deutlich reduziert (von rund 30 auf 3), da sie zu
+„AI-typisch" wirkten. Ersetzt durch normale Satzzeichen (Punkt, Komma, gelegentlich Doppelpunkt).
+Stehen geblieben sind nur die beiden Seitentitel im Wortlaut des SEO-Konzepts sowie ein
+Tabellen-Platzhalter für „keine Angabe". Inhalt, Zahlen und Rechtsverweise unverändert. Dieser
+zurückhaltendere Stil wurde ab Block 2 direkt so geschrieben.
+
+**Block 2 (B-06 bis B-10) — Nachweis (06.09.2026):**
+Fünf weitere Seiten gebaut: `/ratgeber/rechnung-im-verzug`,
+`/ratgeber/aussergerichtliches-und-gerichtliches-mahnverfahren`, `/ratgeber/was-ist-ein-mahnbescheid`,
+`/ratgeber/dauer-inkassoverfahren`, `/ratgeber/verjaehrung-von-forderungen`.
+
+Rechtsangaben erneut ausschließlich anhand des Gesetzestexts auf gesetze-im-internet.de recherchiert
+und geprüft, nicht aus dem Gedächtnis geschrieben: § 286 Abs. 1/2/3 BGB (Verzug, Mahnung, 30-Tage-Regel
+für Entgeltforderungen), § 288 Abs. 1/2/5 BGB (Verzugszinssätze 5/9 Prozentpunkte über Basiszins,
+40-Euro-Pauschale gegenüber Unternehmern), § 688 Abs. 1/2 ZPO (Zulässigkeit des Mahnverfahrens),
+§ 692 Abs. 1 Nr. 3 ZPO (zweiwöchige Widerspruchsfrist), § 699 ZPO (Vollstreckungsbescheid, frühestens
+nach Ablauf der Widerspruchsfrist), § 701 ZPO (Sechs-Monats-Frist für den Antrag, sonst verliert der
+Mahnbescheid seine Wirkung), § 700 Abs. 1 i. V. m. § 339 Abs. 1 ZPO (zweiwöchige Einspruchsfrist gegen
+den Vollstreckungsbescheid), §§ 195, 199 Abs. 1/4, 197 Abs. 1 Nr. 3, 201 BGB (Verjährung: 3 Jahre
+regelmäßig, 10 Jahre Höchstfrist, 30 Jahre bei Titulierung ab Rechtskraft).
+
+Bei `dauer-inkassoverfahren` bewusst **keine pauschale Gesamtdauer als Zahl genannt** — dafür gibt es
+keine belastbare Quelle, nur die gesetzlich fixen Teilfristen (2 Wochen, 6 Monate, 2 Wochen). Das
+Rechenbeispiel im Text macht daraus transparent eine Beispielrechnung („in diesem Beispiel"), keine
+Durchschnittsangabe.
+
+Geprüft gegen den Produktionsbuild (`next build` + `next start`, sauberer Server-Neustart über
+`lsof`/`kill`): `npm run lint` und `npm run build` fehlerfrei, alle fünf Seiten statisch erzeugt. Je
+Seite bestätigt: korrekter kanonischer Link, genau eine H1, `Article`-, `FAQPage`- und
+`BreadcrumbList`-JSON-LD, `ArticleMeta` ohne Namensnennung, Tabellen rendern als `<table>`. Die in
+Block 1 bereits vorab gesetzten Querverweise auf diese fünf Seiten (aus `teilzahlung-367-bgb` und
+`inkasso-oder-anwalt`) wurden gegengeprüft und liefern jetzt 200 statt ins Leere zu laufen.
+
+**Block 3 (B-11 bis B-17) — Nachweis (06.09.2026):**
+Sieben weitere Seiten gebaut, damit alle sechs mit den Branchenseiten überschneidungsgefährdeten
+Themen in einem Durchgang geprüft werden können: `/ratgeber/schuldner-kann-nicht-zahlen`,
+`/ratgeber/handwerker-kunde-zahlt-rechnung-nicht`, `/ratgeber/mietrueckstand-was-tun-vermieter`,
+`/ratgeber/honorarrechnung-unbezahlt-freiberufler`, `/ratgeber/privatrechnung-unbezahlt-praxis`,
+`/ratgeber/zahlungsrueckstaende-hausverwaltung`, `/ratgeber/offene-mitgliedsbeitraege-einziehen`.
+
+**Umgang mit der Überschneidungsgefahr (Block 3 = B-11–B-17, nicht die ursprünglich geplanten
+B-11–B-15):** Die sechs zielgruppenspezifischen Seiten (B-12–B-17) behandeln bewusst nicht dieselben
+Rechtsfragen wie ihre Branchenseite noch einmal, sondern den **Ablauf/Prozess**, wenn ein Kunde nicht
+zahlt, mit jeweils mindestens einem auf der Branchenseite noch nicht verwendeten Rechtsfakt:
+§ 273 BGB Zurückbehaltungsrecht (Handwerk), § 569 Abs. 3 Nr. 2 BGB Schonfristzahlung (Vermieter),
+§ 614 BGB Fälligkeit beim Dienstvertrag (Freiberufler), § 12 Abs. 1 GOÄ Fälligkeit der ärztlichen
+Vergütung (Praxen), § 9a Abs. 1/2 WEG Rechtsfähigkeit der Gemeinschaft statt der Hausverwaltung
+selbst (Hausverwaltung), § 58 Nr. 2 BGB Satzungspflicht zu Beiträgen (Vereine/Studios). B-11 ist
+branchenneutral (Zahlungsunfähigkeit, Vermögensauskunft, Insolvenzverfahren) und wurde ergänzt, um
+den prozessualen Themenblock inhaltlich abzurunden.
+
+**Echte Verlinkung in beide Richtungen umgesetzt**, wie im Plan gefordert: Jede der sechs Seiten
+verlinkt auf ihre passende Branchenseite, und jede der sechs Branchenseiten bekam umgekehrt einen
+neuen Rückverweis „Ablauf im Detail: …" im Abschnitt „Weiterführende Links". Dafür wurde
+`BranchenContent` (`lib/branchen-content.ts`) um das optionale Feld `ratgeberLink` erweitert und
+`components/BranchenSeite.tsx` rendert es nur, wenn gesetzt — die übrigen sechs Branchenseiten ohne
+Entsprechung bleiben unverändert.
+
+Rechtsangaben erneut ausschließlich anhand des Gesetzestexts recherchiert, nicht aus dem Gedächtnis:
+§ 802c ZPO (Vermögensauskunft), § 174 InsO (Forderungsanmeldung, ausdrücklich auch durch
+Inkassodienstleister möglich), § 287 Abs. 2 InsO (dreijährige Abtretungsfrist bis zur
+Restschuldbefreiung, verlängert sich bei wiederholter Restschuldbefreiung auf fünf Jahre), § 273 BGB,
+§ 614 BGB, § 543 Abs. 2 Nr. 3 BGB und § 569 Abs. 3 Nr. 2 BGB (Vermieter, bereits teilweise aus der
+Branchenseite bekannt, Schonfristzahlung neu recherchiert), § 12 Abs. 1 GOÄ, § 9a Abs. 1/2 WEG,
+§ 58 Nr. 2 BGB.
+
+**Wichtige Korrektur während der Recherche:** Eine erste automatisierte Zusammenfassung zu § 300 InsO
+behauptete fälschlich, die Restschuldbefreiung dauere „üblicherweise 6 Jahre" — das ist die vor der
+Reform 2020 geltende, inzwischen überholte Frist. Der tatsächliche Gesetzestext (§ 287 Abs. 2 InsO)
+wurde direkt geprüft und nennt **drei Jahre**. Nur dieser verifizierte Wert wurde verwendet.
+
+Geprüft gegen den Produktionsbuild (`next build` + `next start`, sauberer Server-Neustart über
+`lsof`/`kill`): `npm run lint` und `npm run build` fehlerfrei, alle sieben Seiten statisch erzeugt. Je
+Seite bestätigt: korrekter kanonischer Link, genau eine H1, `Article`-, `FAQPage`- und
+`BreadcrumbList`-JSON-LD, `ArticleMeta` ohne Namensnennung. Die Rückverweise wurden in beide
+Richtungen gegengeprüft: Alle sechs Branchenseiten zeigen jetzt den neuen Link, alle sechs Ziele
+liefern 200, und umgekehrt verlinkt jede der sechs Ratgeber-Seiten zurück auf ihre Branchenseite.
+
+**Block 4 (B-18 bis B-20) — Nachweis (06.09.2026), SEO-5 damit vollständig:**
+Die letzten drei Seiten gebaut: `/ratgeber/serioeses-inkassounternehmen-erkennen`,
+`/ratgeber/selbst-mahnen-oder-inkasso-beauftragen`, `/ratgeber/inkasso-ohne-kundenbeziehung-zu-zerstoeren`.
+
+Diese drei Seiten sind stärker vertrauens-/entscheidungsorientiert als rechtlich (Teil 4 des
+Konzepts nennt sie „Vertrauen und Entscheidung"), tragen aber weiterhin je mindestens drei belegte
+Fakten statt Marketingaussagen: § 16 Abs. 1 RDG (öffentliches, kostenloses
+Rechtsdienstleistungsregister beim Bundesamt für Justiz), § 12 Abs. 1 RDG (Berufshaftpflicht ab
+250.000 € Deckung als Registrierungsvoraussetzung), § 13e RDG (Kostendeckel), § 2 Abs. 1 RDG
+(RDG gilt nur für fremde Angelegenheiten, nicht die eigene Forderung), § 79 Abs. 1 ZPO (kein
+Anwaltszwang vor dem Amtsgericht, wo auch das Mahnverfahren angesiedelt ist), § 13a RDG
+(Pflichtangaben beim ersten Kontakt mit Verbraucher-Schuldnern) und § 367 BGB (Anrechnung bei
+Ratenzahlung, Rückverweis auf `teilzahlung-367-bgb`).
+
+Geprüft gegen den Produktionsbuild: `npm run lint` und `npm run build` fehlerfrei, alle drei Seiten
+statisch erzeugt, korrekter kanonischer Link, genau eine H1, `Article`-, `FAQPage`- und
+`BreadcrumbList`-JSON-LD, `ArticleMeta` ohne Namensnennung. Das dynamische Handlungsaufforderungs-Feld
+auf `serioeses-inkassounternehmen-erkennen` (nutzt `faktenkern.markeMitTraeger`/`gegruendet`/
+`rdg.aktenzeichen`) wurde im gerenderten HTML gegengeprüft und zeigt korrekt „Nota Finance (ein
+Geschäftsfeld der twenty4collect GmbH) ist seit 2008 als Rechtsdienstleister registriert,
+Aktenzeichen 75 E – 52/08."
+
+**SEO-5 insgesamt abgeschlossen:** Alle 20 Ratgeber-Seiten sind live, `sitemap.xml` enthält alle 20
+automatisch (dateisystembasierte Erkennung, keine manuelle Pflege nötig — gegengeprüft:
+20 `/ratgeber/…`-Einträge in der Sitemap). Keine erfundenen Statistiken; zwei Stellen wurden bewusst
+als „für die anwaltliche Prüfung vorgemerkt" statt als Fakt geschrieben (Zwei-Wochen-Kriterium bei
+der 0,5-RVG-Gebühr in `was-darf-inkasso-kosten`). Ein Nebenfund bleibt offen und unangetastet: die
+veraltete RVG-Beispielzahl 49,00 € auf `app/preise/page.tsx` (siehe Nachweis zu Block 1).
+
+**Nachtrag (07.09.2026) — Systematische Nachprüfung aller 20 Seiten auf veraltete Angaben:**
+Nach dem Fund bei § 300 InsO (Block 3) wurden auf Wunsch des Auftraggebers **alle** in den 20 Seiten
+verwendeten Rechtsnormen einzeln gegen den Gesetzestext auf gesetze-im-internet.de erneut geprüft
+(nicht nur die neu recherchierten aus Block 2–4, auch die aus Block 1 aus einer früheren Sitzung
+übernommenen). Geprüft und **bestätigt unverändert korrekt**: § 367 Abs. 1/2 BGB, § 497 Abs. 3 BGB,
+§ 13 Abs. 1/2/3 RVG (51,50 €/31,50 €/15 €, Stand seit 1.6.2025), § 10 Abs. 1 Nr. 1 RDG, § 78 ZPO,
+§ 247 BGB, § 641 BGB, § 556b Abs. 1 BGB, § 28 Abs. 1 WEG, § 12 Abs. 1 RDG, § 16 Abs. 1 RDG,
+§ 2 Abs. 1/2 RDG, § 79 Abs. 1 ZPO, § 13a RDG.
+
+**Zwei echte Fehler gefunden und korrigiert:**
+
+1. **`mietrueckstand-was-tun-vermieter`, § 543 Abs. 2 Nr. 3 BGB zu grob vereinfacht.** Die Seite
+   behauptete pauschal „fristlos kündbar ab mehr als zwei Monatsmieten Rückstand". Der Gesetzestext
+   kennt tatsächlich **zwei** Varianten: Buchst. a) zwei aufeinanderfolgende Termine mit einem
+   Rückstand von mehr als **einer** Monatsmiete (Schwelle „nicht unerheblich" aus § 569 Abs. 3 Nr. 1
+   BGB), oder Buchst. b) ein über einen längeren Zeitraum auf zwei Monatsmieten aufgelaufener
+   Rückstand. Die alte Formulierung hätte Vermietern eine zu hohe Rückstandsschwelle suggeriert, ehe
+   eine fristlose Kündigung möglich ist. Korrigiert in direkter Antwort, Erklärung, Beispiel,
+   Tabelle und einer FAQ-Antwort.
+
+   **Nachtrag (07.09.2026):** Derselbe Fehler steckte auch in der Branchenseite `/inkasso-vermieter`
+   (`lib/branchen-content.ts`, Fallbeispiel und eine FAQ-Antwort) und wurde auf Weisung des
+   Auftraggebers ebenfalls korrigiert — Fallbeispiel nennt jetzt korrekt die Buchst.-a-Variante
+   (zwei aufeinanderfolgende Zahlungen, mehr als eine Monatsmiete), die FAQ-Antwort nennt beide
+   Varianten. Gegen den Produktionsbuild geprüft: alte Formulierung („sobald der Rückstand zwei
+   Monatsmieten erreicht" / „mit einem Betrag in Höhe von zwei Monatsmieten in Verzug") kommt im
+   gerenderten HTML nicht mehr vor. `npm run build` und `npm run lint` weiterhin fehlerfrei.
+
+**Nachtrag (07.09.2026) — dieselbe Nachprüfung auf die übrigen elf Branchenseiten ausgeweitet:**
+Auf Wunsch des Auftraggebers wurden auch alle Rechtsnormen in `lib/branchen-content.ts` (die
+zwölf Branchenseiten aus SEO-4) einzeln gegen den Gesetzestext auf gesetze-im-internet.de geprüft,
+nicht nur die Vermieter-Seite. **Vier weitere echte Fehler gefunden und korrigiert:**
+
+1. **§ 632a BGB (Abschlagszahlungen) mit vorreform-Wortlaut**, in `/inkasso-handwerk` und
+   `/inkasso-maschinenbau` (je eine FAQ-Antwort). Beide behaupteten, Abschläge seien nur „für in
+   sich abgeschlossene Teile" der Leistung möglich — das war die Rechtslage **vor** der
+   Bauvertragsrechtsreform zum 1.1.2018. Seither kann der Unternehmer eine Abschlagszahlung in
+   Höhe des Wertes **jeder** bereits erbrachten, vertraglich geschuldeten Leistung verlangen, ganz
+   ohne Erfordernis eines abgeschlossenen Teilstücks — eine für Handwerker und Zulieferer günstigere
+   Regel, als die alte Formulierung suggerierte. Beide Stellen korrigiert.
+2. **§ 650f BGB (Bauhandwerkersicherung) falsch berechnet**, in `/inkasso-handwerk`. Die Seite
+   behauptete, die Sicherheit betrage „10 % des voraussichtlichen Vergütungsanspruchs" — tatsächlich
+   kann der volle noch offene Vergütungsanspruch als Sicherheit verlangt werden, **zuzüglich** 10 %
+   für Nebenforderungen (Beispiel aus der Fachliteratur: 80.000 € Restvergütung → 88.000 €
+   Sicherheit). Die alte Formulierung hätte die Bauhandwerkersicherung auf einen Bruchteil ihres
+   tatsächlichen Werts heruntergerechnet. Korrigiert.
+3. **§ 648 BGB (freie Kündigung durch den Besteller) zu eng formuliert**, in `/inkasso-agenturen`
+   und `/inkasso-it` (je eine FAQ-Antwort). Beide behaupteten, der Vergütungsanspruch bleibe „für
+   die bereits erbrachte Leistung" bestehen — tatsächlich bleibt der **vereinbarte
+   Vergütungsanspruch für den gesamten Auftrag** bestehen (abzüglich ersparter Aufwendungen und
+   anderweitigen Erwerbs), mit einer gesetzlichen Vermutung von mindestens 5 % für den nicht mehr
+   erbrachten Teil. Die alte Formulierung hätte Agenturen und IT-Unternehmen bei einer vorzeitigen
+   Kündigung zu einem verfrühten Verzicht auf einen Teil ihres Anspruchs verleiten können.
+   Beide Stellen korrigiert.
+4. **§ 27 WEG statt § 9b WEG** als Fundstelle für die Vertretungsmacht der Hausverwaltung, in
+   `/inkasso-hausverwaltung`. § 27 WEG regelt nur interne Verwaltungsbefugnisse gegenüber der
+   Gemeinschaft, nicht die Außenvertretung; die Befugnis, die Gemeinschaft gerichtlich und
+   außergerichtlich zu vertreten (relevant für die Beauftragung eines Inkassodienstleisters), ergibt
+   sich aus § 9b WEG. Korrigiert.
+
+**Zwei zusätzliche Präzisierungen** (keine Fehler, aber unvollständige Angaben):
+- `/inkasso-it`: Die FAQ-Antwort zu § 640 Abs. 2 BGB (fiktive Abnahme) ergänzt um die zusätzliche
+  Voraussetzung bei Verbraucher-Bestellern (Textform-Hinweis auf die Rechtsfolge), die im Gesetz
+  neben der Fristsetzung gefordert wird.
+- `/inkasso-handel` und `/inkasso-bildung`: Die Existenz des 14-tägigen Widerrufsrechts bei
+  Fernabsatzverträgen ergibt sich aus § 312g Abs. 1 BGB, § 355 Abs. 2 BGB regelt nur dessen Dauer.
+  Beide FAQ-Antworten zitieren jetzt beide Normen zusammen.
+
+Geprüft gegen den Produktionsbuild (`next build` + `next start`, sauberer Server-Neustart über
+`lsof`/`kill`): `npm run build` und `npm run lint` fehlerfrei, alle neun geänderten Textstellen
+einzeln im gerenderten HTML bestätigt. Damit sind jetzt alle zwölf Branchenseiten und alle 20
+Ratgeber-Seiten auf denselben Prüfstand gestellt worden.
+2. **`privatrechnung-unbezahlt-praxis`, Widerspruch zwischen Zitat und Beispiel.** Die Seite zitierte
+   korrekt § 12 Abs. 1 GOÄ (Ärzte), das Beispiel nannte aber eine „Zahnarztpraxis" — für Zahnärzte
+   gilt die inhaltsgleiche Regelung tatsächlich unter einer anderen Norm (§ 10 GOZ, nicht § 12 GOZ),
+   die hier nicht geprüft und nicht zitiert wurde. Beispiel auf eine hautärztliche Praxis geändert,
+   damit Zitat und Beispiel zusammenpassen. Die bereits vorhandene FAQ-Antwort („Die
+   berufsrechtlichen Gebührenordnungen unterscheiden sich im Detail…") war schon korrekt zurückhaltend
+   formuliert und blieb unverändert.
+
+**Ein Verdachtsfall geprüft und als unbegründet verworfen:** Eine automatisierte Abfrage des
+Gesetzestextes zu Nr. 2300 VV RVG Anmerkung Abs. 2 behauptete zunächst, der „einfache Fall" (0,5-Gebühr)
+sei wörtlich an eine **Zwei-Wochen-Frist** geknüpft — also genau die Angabe, die in
+`was-darf-inkasso-kosten` bereits bewusst als unbelegt gekennzeichnet worden war. Gegenprüfung über
+mehrere unabhängige Fachquellen (Haufe, IWW, BRAK-Stellungnahme) ergab übereinstimmend den
+tatsächlichen Wortlaut ohne Fristangabe: „ein einfacher Fall liegt in der Regel vor, wenn die
+Forderung auf die erste Zahlungsaufforderung hin beglichen wird". Die ursprüngliche Zurückhaltung auf
+der Seite war also richtig; nichts geändert, aber als zweiter Beleg dafür protokolliert, dass eine
+einzelne automatisierte Quellenzusammenfassung nicht ausreicht und Gegenprüfung über mehrere
+unabhängige Quellen nötig ist (Lehre aus dem § 300-InsO-Fund in Block 3).
+
+`npm run build` und `npm run lint` nach den Korrekturen erneut fehlerfrei; beide geänderten Stellen
+gegen den Produktionsbuild gegengeprüft.
 
 ### SEO-6 · Pilot: 50 Stadt-Branche-Seiten (Typ C) · L — **OFFEN**
 2 Branchen (Handwerk, private Vermieter) × 25 Städte. Städteliste, Qualitätsschwelle,
